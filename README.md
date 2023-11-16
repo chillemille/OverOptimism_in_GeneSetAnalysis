@@ -14,7 +14,7 @@ This is the first script to run when reproducing the results.
   1. both gene expression data sets and true labels of the respective samples 
   2. the ten random permutations of the true sample labels for each for both gene expression data sets
   
-  The generated random phenotype permutations and the gene expression data set "bottomly" are additionally provided in the folder **GeneExpression_data** in this repository
+  The generated random phenotype permutations and the gene expression data set "bottomly" are additionally provided in the folder **GeneExpression_data** in this repository.
  
  -------------------------------  
 **Preparation of the gene expression data for the GSA methods**
