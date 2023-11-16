@@ -1,10 +1,5 @@
 #Investigation of Potential for over-optimistic results for clusterProfiler's ORA tool
 
-#approach: 
-# (i) blockwise optimization of pre-processing, then of internal parameters 
-# (ii) joint optimization of parameters (pre-processing and internal parameters)
-
-
 #Load required packages
 library(clusterProfiler)
 library(org.Hs.eg.db)
@@ -55,7 +50,7 @@ cP_input_preparation <- function(DE_results){
  
   # classify those genes as DE that have an EXISTING adjusted p-value < 0.05 in the results
   # table of differential expression analysis 
-  DEG_vec <- rownames(DE_results[(DE_results$p_adj < 0.05) & (!is.na(DE_results$p_adj)),])
+  DEG_vec <- rownames(DE_results[(DE_results$p_adj < 0.05) & (!is.na(DE_results$p_adj)), ])
   
   # return vector of differentially expressed genes 
   return(DEG_vec)
@@ -132,13 +127,13 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
   # get indicator of pre-filtering using filterByExpr
   # -> apply to  expression data set where gene IDs have not been converted yet as 
   # filtering is performed prior to gene ID conversion 
-  keep <- DGEList(expression_data, group=phenotype_labels) %>% filterByExpr()
+  keep <- DGEList(expression_data, group = phenotype_labels) %>% filterByExpr()
   
   # generate design matrix 
   mm <- model.matrix(~ phenotype_labels)
   
   # as before, pre-filtering is performed prior to the conversion of gene IDs 
-  limma_results <- geneID_conversion(expression_data[keep,], dupl_removal_method = 1) %>% 
+  limma_results <- geneID_conversion(expression_data[keep, ], dupl_removal_method = 1) %>% 
                    DGEList(group = phenotype_labels) %>% calcNormFactors() %>%
                    voom(design = mm) %>% lmFit(design = mm) %>% eBayes() %>% topTable(coef = ncol(mm), number = 60000) %>%
                    as.data.frame() %>% dplyr::rename(p_adj = adj.P.Val)
@@ -175,10 +170,12 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
   ##### 2. step: choose optimal pre-filtering threshold 
   #############
   
-  # note: in this step, different options of pre-filtering are used for the different DE techniques (in accordance with the 
-  # corresponding user manuals)
+  # note: in this step, different options for pre-filtering are used for the 
+  #different DE techniques (in accordance with the corresponding user manuals)
   # for DESeq2, manual pre-filtering is performed using different filtering thresholds 
-  # for edgeR and limma, pre-filtering is performed using (i) filterByExpr (default) and (ii) cpm-transformed values 
+  # for limma, pre-filtering is performed using 
+  # (i) filterByExpr (default) and 
+  # (ii) cpm-transformed values 
   
   
   # 1. case: DESeq2 is optimal DE technique
@@ -186,7 +183,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
   if(opt_DE_technique == "DESeq2"){
     
     # alternative pre-filtering thresholds of X read counts across all samples 
-    filt_threshold_alt <- c(10,50)
+    filt_threshold_alt <- c(10, 50)
     
     # perform pre-filtering according to both (default and alternative) thresholds
     exprdat_list_prefilt <- lapply(X = filt_threshold_alt, 
@@ -196,6 +193,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
     
     # (i) perform differential expression analysis with default parameters
     
+    # run DESeq2 workflow
     deseq2_results_prefilt <- lapply(X = exprdat_list_prefilt, FUN = geneID_conversion, dupl_removal_method = 1) %>%  
                               lapply(FUN=deseq_preprocess, phenotype_labels = phenotype_labels) %>%
                               lapply(FUN = DESeq) %>% lapply(FUN = results) %>% 
@@ -229,7 +227,9 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
     
     
     
-  } else if(opt_DE_technique  == "limma"){ # for limma, pre-filtering is performed differently, namely using filterByExpr (default) OR using cpm()
+  } else if(opt_DE_technique  == "limma"){ 
+    # for limma, pre-filtering is performed differently, namely using 
+    # filterByExpr (default) OR using cpm()
     
     # DEFAULT pre-filtering using filterByExpr
     keep1 <- DGEList(counts=expression_data, 
@@ -246,9 +246,9 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
     # for all methods of pre-filtering: store resulting gene expression data sets in list 
     exprdat_list_prefilt <- list()
     # pre-filtered gene expression data set using keep1 
-    exprdat_list_prefilt[[1]] <-  expression_data[keep1,]
+    exprdat_list_prefilt[[1]] <-  expression_data[keep1, ]
     # pre-filtered gene expression data set using keep2
-    exprdat_list_prefilt[[2]] <-  expression_data[keep2,]
+    exprdat_list_prefilt[[2]] <-  expression_data[keep2, ]
     
       
     limma_resuls <- list()
@@ -447,7 +447,7 @@ cP_rkegg_optim <- function(DE_results, oragnism_kegg){
   ##########
   #change universe to all genes measured in the experiment (i.e. all genes with a non-missing adjusted
   # p-value )
-  univ_adapt <- rownames(DE_results[!is.na(DE_results$p_adj),])
+  univ_adapt <- rownames(DE_results[!is.na(DE_results$p_adj), ])
   #rerun function
   cp_ora_kegg_univ <- enrichKEGG(DEG_vec,
                                organism= organism_kegg, 
@@ -510,7 +510,7 @@ cPORA_GO_optim <- function(DE_results, organism_go){
   
   
   # adapted universe consists of all genes with a nonNA adjusted p-value  
-  univ_adapt<-rownames(DE_results[!is.na(DE_results$p_adj),])
+  univ_adapt<-rownames(DE_results[!is.na(DE_results$p_adj), ])
   
 
   
@@ -628,16 +628,16 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
   
   
   #compute lossfunction for all 3 ORA results and store store them in a matrix
-  n_DEGS_vec<-c()
-  n_DEGS_vec[1]<-lossfunction_cPORA(cP_default_go)
-  n_DEGS_vec[2]<-lossfunction_cPORA(cP_default_kegg)
+  n_DEGS_vec <- c()
+  n_DEGS_vec[1] <- lossfunction_cPORA(cP_default_go)
+  n_DEGS_vec[2] <- lossfunction_cPORA(cP_default_kegg)
   #indicate which gene set database yields highest number of DEGS
-  ind_db<-c("GO","KEGG")
+  ind_db  <- c("GO","KEGG")
   
   #depending on which gene set database yields highest number of DEGS with default
   #configuration, perform optimization with function corresponding function 
   #in case of a tie, procees with gene set database with lower index 
-  best_db <- ind_db[min(which(n_DEGS_vec==max(n_DEGS_vec)))]
+  best_db <- ind_db[min(which(n_DEGS_vec == max(n_DEGS_vec)))]
   
   #perform optimization for gene set database which yields highest 
   #number of DEGS with default configuration
@@ -685,7 +685,7 @@ cP_ORA_joint_optimization <- function(expression_data, phenotype_labels){
   
   # merge documentation frames 
   doc <- rbind(optim_preprocess$documentation, 
-               optim_internalparam$documentation[optim_internalparam$documentation$step != "Default",])
+               optim_internalparam$documentation[optim_internalparam$documentation$step != "Default", ])
   
   
   
