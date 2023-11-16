@@ -1,6 +1,6 @@
-#Investigation of Potential for over-optimistic results for clusterProfiler's ORA tool
+# Investigation of Potential for over-optimistic results for clusterProfiler's ORA tool
 
-#Load required packages
+# Load required packages
 library(clusterProfiler)
 library(org.Hs.eg.db)
 library(org.Mm.eg.db)
@@ -8,7 +8,7 @@ library(DESeq2)
 library(dplyr)
 library(edgeR)
 
-# set working directory 
+# set working directory
 setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
 
 # get gene expression datasets, phenotype assignments and random phenotype permutations
