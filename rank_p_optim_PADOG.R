@@ -8,7 +8,6 @@ library(clusterProfiler)
 library(edgeR)
 library(org.Hs.eg.db)
 library(org.Mm.eg.db)
-#library(stringr)
 
 
 # set working directory 
@@ -47,7 +46,9 @@ phenotype_prep  <-  function(phenotype_labels){
   } else{
     
     # from initial phenotype labels, create vector with levels "c" and "d"
-    return(factor(phenotype_labels, levels=c(0,1), labels=c("c","d")))
+    return(factor(phenotype_labels, 
+                  levels=c(0,1), 
+                  labels=c("c","d")))
     
   }
 }
@@ -59,7 +60,7 @@ phenotype_prep  <-  function(phenotype_labels){
 
 pre_filt <- function(expression_data, threshold){
   
-  expression_data_filt <- expression_data[rowSums(expression_data)>=threshold,]
+  expression_data_filt <- expression_data[rowSums(expression_data) >= threshold, ]
   
   return(expression_data_filt)
   
@@ -73,9 +74,7 @@ pre_filt <- function(expression_data, threshold){
 
 
 geneID_conversion <- function(expression_data, dupl_removal_method){
-  
-  # expression_data  <-  exprdat_list_prefilt[[1]]
-  # dupl_removal_method  <-  1
+
   
   # identify organism for which gene expression is measured from the format of the gene IDs (all are Ensembl)
   # ENSEMBL gene ID ENSMUSGXXXXXXXXXXX corresponds to mouse; identifiable by substring "ENSMUSG"
@@ -109,14 +108,14 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
   ###take closer look at duplicates 
   
   #CASE 1: single ENSEMBL IDs are mapped to multiple ENTREZ IDs
-  #View(bitr_toKEGG[(duplicated(bitr_toKEGG$ENSEMBL)),])
+  #View(bitr_toKEGG[(duplicated(bitr_toKEGG$ENSEMBL)), ])
   sum(duplicated(bitr_enstoentr$ENSEMBL)) #number of times an ENSEMBL gene ID was converted to several ENTREZ IDs
   #determine all duplicated ENSEMBL gene IDS
   dupl_ensembl  <-  unique(bitr_enstoentr$ENSEMBL[duplicated(bitr_enstoentr$ENSEMBL)])
   #number of ENSEMBL IDs that have at least one duplicate
   length(dupl_ensembl)
   #display of conversion scheme of duplicated ENSEMBL IDs
-  duplicated_conversion_ens  <-  bitr_enstoentr[bitr_enstoentr$ENSEMBL %in% dupl_ensembl,]
+  duplicated_conversion_ens  <-  bitr_enstoentr[bitr_enstoentr$ENSEMBL %in% dupl_ensembl, ]
   dim(duplicated_conversion_ens)
   
   
@@ -127,7 +126,7 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
   #number of ENTREZ IDs that have at least one duplicate
   length(dupl_entrez)
   #display of conversion scheme of duplicated ENTREZ IDs
-  duplicated_conversion_entrez  <-  bitr_enstoentr[bitr_enstoentr$ENTREZID %in% dupl_entrez,]
+  duplicated_conversion_entrez  <-  bitr_enstoentr[bitr_enstoentr$ENTREZID %in% dupl_entrez, ]
   dim(duplicated_conversion_entrez)
   
   
@@ -143,11 +142,11 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
     ### 1. option: keep first subscript among duplicates #########################
     
     #1. remove duplicated ENTREZ gene IDs
-    exprdat_dupl  <-  expression_data[!duplicated(expression_data$ENTREZID),]
+    exprdat_dupl  <-  expression_data[!duplicated(expression_data$ENTREZID), ]
     dim(expression_data)
     
     #2. remove duplicated ENSEMBL gene IDs
-    exprdat_dupl  <-  exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl  <-  exprdat_dupl[!duplicated(exprdat_dupl$Row.names), ]
     dim(exprdat_dupl)
     
     #3. ENTREZ IDs as row names and 
@@ -170,7 +169,7 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
     
     for(i in 1:length(dupl_entrez)){#go through each ENTREZ IDs which occurs multiple times
       #determine all rows whose ENTREZ IDs correspond to current ENTREZ ID 
-      counts_dupl  <-  expression_data[expression_data$ENTREZID %in% unique(dupl_entrez)[i],]
+      counts_dupl  <-  expression_data[expression_data$ENTREZID %in% unique(dupl_entrez)[i], ]
       #for rows duplicated ENTREZ ID compute (rounded) mean expression value 
       dupl_id  <-  round(colMeans(counts_dupl[,c(2:(ncol(expression_data)-1))]))
       #store rounded mean expression value in matrix 
@@ -183,7 +182,7 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
     nrow(mean_entrez)==length(dupl_entrez)
     
     #remove all rows from the expression data whose ENTREZ ID has at least one duplicate
-    exprdat_dupl  <-  expression_data[!expression_data$ENTREZID %in% dupl_entrez,]
+    exprdat_dupl  <-  expression_data[!expression_data$ENTREZID %in% dupl_entrez, ]
     #test whether number of rows in resulting data set equals nrow of inital data set 
     #minus number of genes with at least one duplicate
     nrow(exprdat_dupl)==nrow(expression_data)-nrow(duplicated_conversion_entrez)
@@ -199,11 +198,11 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
     #->pointless to compute mean expression values
     #verifiable by looking at data set only containing those ENSEMBL IDs that are
     #mapped by multiple ENTREZ IDs:
-    #test_dupl_ensembl  <-  expression_data[expression_data$Row.names %in% dupl_ensembl,]
+    #test_dupl_ensembl  <-  expression_data[expression_data$Row.names %in% dupl_ensembl, ]
     #View(test_dupl_ensembl)
     
     #therefore: proceed as in option 1 and use ENTREZ ID that occurs first, remove the rest
-    exprdat_dupl  <-  exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl  <-  exprdat_dupl[!duplicated(exprdat_dupl$Row.names), ]
     dim(exprdat_dupl)
     #set ENTREZ ID as rownames
     rownames(exprdat_dupl)  <-  exprdat_dupl$ENTREZID
@@ -270,7 +269,7 @@ pvalue_rank_padog <- function(term,padog_results, metric){
   } else {
 
   #for doublecheck reasons: order results by adjusted p-value in ascencing manner 
-  padog_results <-  padog_results[order(padog_results$p_adj,decreasing = FALSE),]
+  padog_results <-  padog_results[order(padog_results$p_adj,decreasing = FALSE), ]
   
   if(metric=="rank"){
     #return row number of respective gene set
@@ -375,7 +374,7 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
  
   
   #add pre-filtered expression data set to the list 
-  exprdat_list_prefilt <- append(exprdat_list_prefilt, list(expression_data[ind_genes1,]))
+  exprdat_list_prefilt <- append(exprdat_list_prefilt, list(expression_data[ind_genes1, ]))
   
   
   PADOG_prefilt_list  <-  list()
