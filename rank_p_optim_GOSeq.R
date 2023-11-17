@@ -55,11 +55,29 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
       return(1)
       
     } else{ # case: GOSeq results table is NOT empty 
+      
+      
+      # prepare the relative ranks such that all gene sets with the same adjusted p-value
+      # are given the same (i.e. average) rank
+      # We divide by the maximum rank such that those gene sets with the highest 
+      # adjusted p-values are given the (relative) rank 1, which is the worst rank
+      
+      goseq_results$ranks <- rank(goseq_results$p_adj_overrep) / max(rank(goseq_results$p_adj_overrep)) 
+      
+      # get the relative rank of the gene set of interest 
+      rank <- goseq_results$ranks[grep(term, goseq_results$category)]
+      
+      
+      # if the gene set is not contained in the results, return the rank 1.2
+      # this shall serve as an indicator in the results that the gene set 
+      # was not contained in the results 
+      
+      
     
     #return row number of respective gene set
     return(ifelse(!is.integer0(grep(term, goseq_results$category)), 
-                  grep(term, goseq_results$category)/nrow(goseq_results), 
-                  1))
+                  rank, 
+                  1.2))
     #note: in the case that a gene set is not reported in the results table of goseq_results,
     #ifelse() in combination with !is.integer0() then ensures that a rank of 1 is returned,
     #meaning that each adaption leading to any infinite rank is considered an improvement
