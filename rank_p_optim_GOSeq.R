@@ -79,7 +79,7 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
                   rank, 
                   1.2))
     #note: in the case that a gene set is not reported in the results table of goseq_results,
-    #ifelse() in combination with !is.integer0() then ensures that a rank of 1 is returned,
+    #ifelse() in combination with !is.integer0() then ensures that a rank of 1.2 is returned,
     #meaning that each adaption leading to any infinite rank is considered an improvement
     
     }
