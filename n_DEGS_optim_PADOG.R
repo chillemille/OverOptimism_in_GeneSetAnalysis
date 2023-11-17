@@ -1,29 +1,19 @@
 #PADOG optimization
 
 
-#structure 
-#one single optimization function: padog_optim()
-
-#further required functions
-#-phenotype_prep(): prepare phenotype permutations (required for PADOG)
-#-lossfunction_padog(): count number of differentially enriched gene sets
-
-
 library(PADOG)
 library(dplyr)
 library(org.Hs.eg.db)
 library(org.Mm.eg.db)
 library(edgeR) # for pre-filtering function filterByExpr()
-#library(stringr)
 
-# set working directory 
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
 
 # load gene expression data set with true phenotype randomly permuted phenotype assignments 
 source("./Random_Phenotype_Permutations.R")
 
 # load require pre-processing functions 
 source("./PreProcessing_Functions.R")
+
 # load functions to perform RNA-Seq transformation for (approximate) alignment with the normal distribution
 source("./RNASeq_Transformation.R")
 

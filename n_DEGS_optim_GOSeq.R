@@ -8,9 +8,6 @@ library(dplyr)
 library(edgeR)
 library(goseq)
 
-# set working directory 
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
-
 # load gene expression data set with true phenotype randomly permuted phenotype assignments 
 source("./Random_Phenotype_Permutations.R")
 

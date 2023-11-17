@@ -8,9 +8,6 @@ library(DESeq2)
 library(dplyr)
 library(edgeR)
 
-# set working directory
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
-
 # get gene expression datasets, phenotype assignments and random phenotype permutations
 source("./Random_Phenotype_Permutations.R")
 

@@ -2,10 +2,6 @@
 ### Upload of RNA-seq gene expression data sets and creation of random phenotype permutations ######
 ####################################################################################################
 
-# set working directory for the upload of Bottomly et al. data set 
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
-
-
 
 ############################################################################
 ### Function to create random permutations of the true sample conditions ###

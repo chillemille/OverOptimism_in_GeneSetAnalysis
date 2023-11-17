@@ -11,7 +11,7 @@ library(org.Mm.eg.db)
 
 
 #load phenotype permutations and gene expression data sets 
-source("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Random_Phenotype_Permutations.R")
+source("./Random_Phenotype_Permutations.R")
 
 
 
