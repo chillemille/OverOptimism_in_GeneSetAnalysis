@@ -104,7 +104,7 @@ if(metric == "rank"){
  
  if(is.null(ora_results)){
   
-  return(1)
+  return(1.2)
   
  } else if(nrow(ora_results) == 0){
   
@@ -121,10 +121,12 @@ if(metric == "rank"){
  ind_row <- grep(term, ora_results$ID)
  
  #return respective adjusted p-value
- return(ifelse(!is.integer0(ind_row), ora_results$p.adjust[ind_row], 1))
+ return(ifelse(!is.integer0(ind_row), 
+               ora_results$p.adjust[ind_row], 
+               1.2))
  #note: in the case that a gene set is not reported in the results table of ora_results, 
- #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1 is returned,
- #meaning that each adaption leading to a an adjusted p-value in (0,1) is considered an improvement
+ #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
+ #meaning that each adaption leading to a an adjusted p-value in (0,1] is considered an improvement
  
 } # if no gene sets are reported in the ORA results (which is the case when the input
  # list of differentially expressed genes is empty) return the rank Inf for the given gene set 

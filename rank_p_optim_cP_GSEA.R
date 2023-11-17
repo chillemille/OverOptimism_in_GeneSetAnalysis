@@ -7,7 +7,6 @@ library(org.Mm.eg.db)
 library(DESeq2)
 library(edgeR)
 library(apeglm)
-library(ashr)
 library(ggplot2)
 library(tidyverse)
 
@@ -16,7 +15,7 @@ library(tidyverse)
 source("./Random_Phenotype_Permutations.R")
 
 # load required pre-processing functions 
-source("./ALT_PreProcessing_Functions.R")
+source("./PreProcessing_Functions.R")
 
 
 ##################################################################################
@@ -112,16 +111,25 @@ is.integer0 <- function(x){
 #argument term must be in the form of a GO ID resp. KEGG ID 
 pvalue_rank <- function(term, GSEA_results, metric){
  
- #for doublecheck reasons: order results by adjusted p-value in ascending manner 
- GSEA_results <- GSEA_results[order(GSEA_results$p.adjust,decreasing = FALSE),]
- 
  if(metric == "rank"){
- #return row number of respective gene set
- return(ifelse(!is.integer0(grep(term, GSEA_results$ID)), 
-               grep(term, GSEA_results$ID)/nrow(GSEA_results), 1))
- #note: in the case that a gene set is not reported in the results table of GSEA_results,
- #ifelse() in combination with !is.integer0() then ensures that a rank of Inf is returned,
- #meaning that each adaption leading to any infinite rank is considered an improvement
+   
+   # prepare the relative ranks such that all gene sets with the same adjusted p-value
+   # are given the same (i.e. average) rank
+   # We divide by the maximum rank such that those gene sets with the highest 
+   # adjusted p-values are given the (relative) rank 1, which is the worst rank
+   
+   GSEA_results$ranks <- rank(GSEA_results$p.adjust) /max(rank(GSEA_results$p.adjust)) 
+   
+   # get the relative rank of the gene set of interest 
+   rank <- GSEA_results$ranks[grep(term, GSEA_results$ID)]
+   
+   
+   # if the gene set is not contained in the results, return the rank 1.2
+   # this shall serve as an indicator in the results that the gene set 
+   # was not contained in the results 
+    return(ifelse(!is.integer0(grep(term, GSEA_results$ID)), 
+               rank,
+               1.2))
  
  }else if(metric == "p_adj"){
  
@@ -130,10 +138,11 @@ pvalue_rank <- function(term, GSEA_results, metric){
  
  #return respective adjusted p-value
  return(ifelse(!is.integer0(ind_row),
-               GSEA_results$p.adjust[ind_row], 1))
+               GSEA_results$p.adjust[ind_row], 
+               1.2))
  #note: in the case that a gene set is not reported in the results table of GSEA_results, 
- #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1 is returned,
- #meaning that each adaption leading to a an adjusted p-value in (0,1) is considered an improvement
+ #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
+ #meaning that each adaption leading to a an adjusted p-value in (0,1] is considered an improvement
  }
 }
 

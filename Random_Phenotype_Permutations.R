@@ -70,7 +70,7 @@ create_phenpermutations <- function(expression_data, true_sample_conditions, npe
 ### Bottomly et al. data set
 ############################
 
-load("./GeneExpression_Measurements/bottomly_eset.RData")
+load("./GeneExpression_data/bottomly_eset.RData")
 # note: we can extract the count data using the command 
 # Biobase::exprs(bottomly.eset)
 
@@ -86,7 +86,7 @@ phen_bottomly <- create_phenpermutations(Biobase::exprs(bottomly.eset), bottomly
 # check dimension 
 dim(phen_bottomly)
 # save in working directory
-save(phen_bottomly, file = "./GeneExpression_Measurements/Save_Phenotype_Permutations_Bottomly.Rdata")
+# save(phen_bottomly, file = "./GeneExpression_Measurements/Save_Phenotype_Permutations_Bottomly.Rdata")
 
 ############################
 ### Pickrell et al. data set 
@@ -100,4 +100,4 @@ phen_pickrell <- create_phenpermutations(Biobase::exprs(pickrell.eset), pickrell
 
 dim(phen_pickrell)
 # save in working directory 
-save(phen_pickrell, file = "./GeneExpression_Measurements/Phenotype_Permutations_Pickrell.Rdata")
+# save(phen_pickrell, file = "./GeneExpression_Measurements/Phenotype_Permutations_Pickrell.Rdata")

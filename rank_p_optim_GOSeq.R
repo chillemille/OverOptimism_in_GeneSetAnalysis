@@ -1,13 +1,12 @@
 #### GOSeql: minimization of a given gene set's 
 #(i) (adjusted) p-value / 
-#(ii) rank among the remaining gene sets 
+#(ii) relative rank among the remaining gene sets 
 
 library(clusterProfiler)
 library(dplyr)
 library(DESeq2)
 library(edgeR)
 library(org.Hs.eg.db)
-library(rlang)
 library(goseq)
 
 # load gene expression data set with true phenotype randomly permuted phenotype assignments 
