@@ -47,39 +47,60 @@ is.integer0 <- function(x){
 #note: function works for GO as well as KEGG as results table "ora_results" 
 #contains relevant information automatically
 #argument term must be in the form of a GO ID resp. KEGG ID 
+
 pvalue_rank <- function(term, ora_results, metric){
  
 if(metric == "rank"){
  # if the ora_result is NULL, this means that no gene set is reported as differentially enriched
- # we then set the rank of the given gene set to Inf as it cannot be determined 
+ # note that ORA only reports those gene sets from the geneset database that have 
+ # at least one differentially enriched gene sets from the gene set database 
+ # We therefore cannot know whether the gene set was contained by the gene set database or not
+ # we then set the rank of the given gene set to the worst possible value, i.e. 1.2
  
  if(is.null(ora_results)){
   
- return(Inf)
+ return(1.2)
   
  } else if(nrow(ora_results) == 0){
   # if no gene sets are reported in the ORA results (which is the case when
-  # the input list of differentially expressed genes is empty) return the rank 1 for the given gene set
+  # the input list of differentially expressed genes is empty), none of the genes
+  # from the geneset database are differentially enriched 
+  # -> return the rank 1 (i.e. worst rank) for the given gene set
 
   return(1)
 
  } else if(nrow(ora_results) != 0){
-  
- #for doublecheck reasons: order results by adjusted p-value in ascending manner 
- ora_results <- ora_results[order(ora_results$p.adjust, decreasing = FALSE),] 
-  
-  
+  # the ORA results are non-empty, i.e. there is at least one differentially 
+   # enriched gene set
+   
+   
+   # prepare the relative ranks such that all gene sets with the same adjusted p-value
+   # are given the same (i.e. average) rank
+   # We divide by the maximum rank such that those gene sets with the highest 
+   # adjusted p-values are given the (relative) rank 1, which is the worst rank
+   
+   ora_results$ranks <- rank(ora_results$p.adjust) / max(rank(ora_results$p.adjust)) 
+   
+   # get the relative rank of the gene set of interest 
+   rank <- ora_results$ranks[grep(term, ora_results$ID)]
+   
+   
+  # if the gene set is not contained in the results, return the rank 1.2
+  # this shall serve as an indicator in the results that the gene set 
+  # was not contained in the results 
+
  #return row number of respective gene set
  return(ifelse(!is.integer0(grep(term, ora_results$ID)), 
-               grep(term, ora_results$ID)/nrow(ora_results), 
-               1))
- #note: in the case that a gene set is not reported in the results table of ora_results,
- #ifelse() in combination with !is.integer0() then ensures that a rank of Inf is returned,
- #meaning that each adaption leading to any infinite rank is considered an improvement
+               rank, 
+               1.2))
+ # note: in the case that a gene set is not reported in the results table of ora_results,
+ # ifelse() in combination with !is.integer0() then ensures that a rank of 1.2 is returned,
+ # meaning that each adaption resulting in the gene set appearing in the results leads
+ # to an improvement of the results
   
  } 
  
-}else if(metric == "p_adj"){
+}else if(metric == "p.adjust"){
  
  if(is.null(ora_results)){
   
