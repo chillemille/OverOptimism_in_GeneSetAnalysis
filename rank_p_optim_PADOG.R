@@ -111,10 +111,10 @@ pvalue_rank_padog <- function(term, padog_results, metric){
    # We divide by the maximum rank such that those gene sets with the highest 
    # adjusted p-values are given the (relative) rank 1, which is the worst rank
    
-   padog_results$padog_results_ranks <- rank(padog_results$p_adj) /max(rank(padog_results$p_adj)) 
+   padog_results$ranks <- rank(padog_results$p_adj) /max(rank(padog_results$p_adj)) 
    
    # get the relative rank of the gene set of interest 
-   rank <- padog_results$padog_results_ranks[grep(term, padog_results$ID)]
+   ranks <- padog_results$ranks[grep(term, padog_results$ID)]
    
    
   # if the gene set is not contained in the results, return the rank 1.2
