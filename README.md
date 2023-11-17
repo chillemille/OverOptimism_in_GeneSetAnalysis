@@ -8,6 +8,8 @@ This repository allows you to
 
 @Moritz: Kann man annehmen, dass der Leser weiß, dass das working directory dann genau den Aufbau haben soll wie das Repo auf Github?
 
+**Note** that all of the scripts are based on the working directory you have to specifiy at the beginning
+
  -------------------------------  
 **Preparation of the gene expression data for the optimizations**
 
