@@ -64,8 +64,8 @@ The preparation of the gene expression data sets was carried out in **Excel** an
  - **RNK: Ranked list file format (*.rnk)** for the sample labels
 
 Note that the optimization of GSEA was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimization processes can be found in the screenshots containing the name "Param", namely 
-- in the top left corner for the overall web application
-- in the specified gene set database (tab **Gene Sets database**) for the gene set database
+- in the top left corner for the version of the overall web application
+- in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
 
   In addition to the screenshots, the optimization processes are documented in the respective *R* scripts. 
 
