@@ -570,53 +570,53 @@ GOSeq_joint_optimization <- function(expression_data, phenotype_labels){
 
 
 
-#############
-### Pickrell 
-#############
-
-# true sample conditions
-optim_GOSeq_results_Pickrell_originalphenotype <- GOSeq_joint_optimization(Biobase::exprs(pickrell.eset), 
-                                                                          pickrell.eset$gender)
-
-# save results
-save(optim_GOSeq_results_Pickrell_originalphenotype, 
-     file = "./Results/GOSeq_Results_Pickrell_OriginalPhenotype.RData")
-
-# 10 permutations of sample conditions
-optim_GOSeq_results_Pickrell_phenotypepermutation <- apply(FUN = GOSeq_joint_optimization, 
-                                                           expression_data = Biobase::exprs(pickrell.eset), 
-                                                           X = phen_pickrell, MARGIN = 2)
-
-# save results
-save(optim_GOSeq_results_Pickrell_phenotypepermutation, 
-     file = "./Results/GOSeq_Results_Pickrell_PhenotypePermutations.RData")
-
-#############
-### Bottomly 
-#############
-
-# true sample conditions
-optim_GOSeq_results_Bottomly_originalphenotype <- GOSeq_joint_optimization(Biobase::exprs(bottomly.eset), 
-                                                                           bottomly.eset$strain)
-
-# save results
-save(optim_GOSeq_results_Bottomly_originalphenotype, 
-     file = "./Results/GOSeq_Results_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random permutations of sample conditions
-optim_GOSeq_results_Bottomly_phenotypepermutation <- apply(FUN = GOSeq_joint_optimization, 
-                                                           expression_data = Biobase::exprs(bottomly.eset), 
-                                                           X = phen_bottomly, MARGIN = 2)
-
-
-# save results
-save(optim_GOSeq_results_Bottomly_phenotypepermutation, 
-     file = "./Results/GOSeq_Results_Bottomly_PhenotypePermutations.RData")
-
-
-
-
+# #############
+# ### Pickrell 
+# #############
+# 
+# # true sample conditions
+# optim_GOSeq_results_Pickrell_originalphenotype <- GOSeq_joint_optimization(Biobase::exprs(pickrell.eset), 
+#                                                                           pickrell.eset$gender)
+# 
+# # save results
+# save(optim_GOSeq_results_Pickrell_originalphenotype, 
+#      file = "./Results/GOSeq_Results_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 permutations of sample conditions
+# optim_GOSeq_results_Pickrell_phenotypepermutation <- apply(FUN = GOSeq_joint_optimization, 
+#                                                            expression_data = Biobase::exprs(pickrell.eset), 
+#                                                            X = phen_pickrell, MARGIN = 2)
+# 
+# # save results
+# save(optim_GOSeq_results_Pickrell_phenotypepermutation, 
+#      file = "./Results/GOSeq_Results_Pickrell_PhenotypePermutations.RData")
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# # true sample conditions
+# optim_GOSeq_results_Bottomly_originalphenotype <- GOSeq_joint_optimization(Biobase::exprs(bottomly.eset), 
+#                                                                            bottomly.eset$strain)
+# 
+# # save results
+# save(optim_GOSeq_results_Bottomly_originalphenotype, 
+#      file = "./Results/GOSeq_Results_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random permutations of sample conditions
+# optim_GOSeq_results_Bottomly_phenotypepermutation <- apply(FUN = GOSeq_joint_optimization, 
+#                                                            expression_data = Biobase::exprs(bottomly.eset), 
+#                                                            X = phen_bottomly, MARGIN = 2)
+# 
+# 
+# # save results
+# save(optim_GOSeq_results_Bottomly_phenotypepermutation, 
+#      file = "./Results/GOSeq_Results_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
 
 
 

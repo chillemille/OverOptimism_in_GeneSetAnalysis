@@ -263,70 +263,70 @@ PADOG_optim <- function(expression_data, phenotype_labels){
 
 
 
-# create list of vectors from phen_pickrell 
-# -> for use of function lapply() since apply() returns an error 
-phen_pickrell_list <- list()
-
-for(i in 1:ncol(phen_pickrell)){
-  
-  phen_pickrell_list[[i]] <- phen_pickrell[,i]
-  
-}
-
-
-# create list of vectors from phen_bottomly 
-# -> for use of function lapply() since apply() returns an error 
-phen_bottomly_list <- list()
-
-for(i in 1:ncol(phen_bottomly)){
-  
-  phen_bottomly_list[[i]] <- phen_bottomly[,i]
-  
-}
-
-#############
-### Pickrell 
-#############
-
-# original phenotype assignment 
-optim_PADOG_results_Pickrell_originalphenotype <- PADOG_optim(Biobase::exprs(pickrell.eset),
-                                                                               pickrell.eset$gender)
-
-# save results
-save(optim_PADOG_results_Pickrell_originalphenotype,
-file = "./Results/PADOG_Results_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optim_PADOG_results_Pickrell_phenotypepermutation <- lapply(FUN = PADOG_optim, expression_data = Biobase::exprs(pickrell.eset), 
-                                                             X = phen_pickrell_list)
-
-# save results
-save(optim_PADOG_results_Pickrell_phenotypepermutation,
-file = "./Results/PADOG_Results_Pickrell_PhenotypePermutations.RData")
-
-#############
-### Bottomly 
-#############
-
-# original phenotype assignment 
-optim_PADOG_results_Bottomly_originalphenotype <- PADOG_optim(Biobase::exprs(bottomly.eset),
-                                                                               bottomly.eset$strain)
-
-# save results
-save(optim_PADOG_results_Bottomly_originalphenotype,
-file = "./Results/PADOG_Results_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random permutations of the sample labels 
-optim_PADOG_results_Bottomly_phenotypepermutation <- lapply(FUN = PADOG_optim, expression_data = Biobase::exprs(bottomly.eset), 
-                                                             X = phen_bottomly_list)
-
-
-# save results
-save(optim_PADOG_results_Bottomly_phenotypepermutation,
-file = "./Results/PADOG_Results_Bottomly_PhenotypePermutations.RData")
-
-
-
-
-
+# # create list of vectors from phen_pickrell 
+# # -> for use of function lapply() since apply() returns an error 
+# phen_pickrell_list <- list()
+# 
+# for(i in 1:ncol(phen_pickrell)){
+#   
+#   phen_pickrell_list[[i]] <- phen_pickrell[,i]
+#   
+# }
+# 
+# 
+# # create list of vectors from phen_bottomly 
+# # -> for use of function lapply() since apply() returns an error 
+# phen_bottomly_list <- list()
+# 
+# for(i in 1:ncol(phen_bottomly)){
+#   
+#   phen_bottomly_list[[i]] <- phen_bottomly[,i]
+#   
+# }
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# # original phenotype assignment 
+# optim_PADOG_results_Pickrell_originalphenotype <- PADOG_optim(Biobase::exprs(pickrell.eset),
+#                                                                                pickrell.eset$gender)
+# 
+# # save results
+# save(optim_PADOG_results_Pickrell_originalphenotype,
+# file = "./Results/PADOG_Results_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optim_PADOG_results_Pickrell_phenotypepermutation <- lapply(FUN = PADOG_optim, expression_data = Biobase::exprs(pickrell.eset), 
+#                                                              X = phen_pickrell_list)
+# 
+# # save results
+# save(optim_PADOG_results_Pickrell_phenotypepermutation,
+# file = "./Results/PADOG_Results_Pickrell_PhenotypePermutations.RData")
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# # original phenotype assignment 
+# optim_PADOG_results_Bottomly_originalphenotype <- PADOG_optim(Biobase::exprs(bottomly.eset),
+#                                                                                bottomly.eset$strain)
+# 
+# # save results
+# save(optim_PADOG_results_Bottomly_originalphenotype,
+# file = "./Results/PADOG_Results_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random permutations of the sample labels 
+# optim_PADOG_results_Bottomly_phenotypepermutation <- lapply(FUN = PADOG_optim, expression_data = Biobase::exprs(bottomly.eset), 
+#                                                              X = phen_bottomly_list)
+# 
+# 
+# # save results
+# save(optim_PADOG_results_Bottomly_phenotypepermutation,
+# file = "./Results/PADOG_Results_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# 

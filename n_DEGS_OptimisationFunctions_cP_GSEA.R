@@ -24,7 +24,8 @@ source("./PreProcessing_Functions.R")
 #rankby must be in c("p_value", "lfc") to perform ranking based on 
 #(i) p-value (rank = sign(lfc)*(-1)*log10(unadjusted_pvalue)
 #(ii) log fold changes 
-rankedList_cP <- function(DE_results, rankby, method){
+
+rankedList_cP_GSEA <- function(DE_results, rankby, method){
 
  if(method == "DESeq2"){#create ranking based on DESeq2 results table
  
@@ -200,7 +201,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
                    as.data.frame() 
  
  # create ranked list from DESEq2 results
- ranked_list_DESeq2 <- rankedList_cP(DESeq2_results,
+ ranked_list_DESeq2 <- rankedList_cP_GSEA(DESeq2_results,
                                      rankby = "p_value", 
                                      method = "DESeq2")
  
@@ -237,7 +238,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
  
  
  #perform ranking by p-value
- ranked_list_limma <- rankedList_cP(limma_results, 
+ ranked_list_limma <- rankedList_cP_GSEA(limma_results, 
                                     rankby = "p_value", 
                                     method = "limma")
  #perform default GSEA 
@@ -293,7 +294,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
                             lapply(FUN = as.data.frame)
   
   # generate ranking for each of the DESeq2 results 
-  ranked_lists_DESeq2 <- lapply(FUN = rankedList_cP, 
+  ranked_lists_DESeq2 <- lapply(FUN = rankedList_cP_GSEA, 
                                 X = DESeq2_results_prefilt, 
                                 rankby = "p_value",
                                 method = "DESeq2")
@@ -357,7 +358,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
   
   
   #perform ranking by p-value for each of the limma results 
-  ranked_lists_limma <- lapply(FUN = rankedList_cP, 
+  ranked_lists_limma <- lapply(FUN = rankedList_cP_GSEA, 
                                X = limma_results_prefilt, 
                                rankby = "p_value", 
                                method = "limma")
@@ -410,7 +411,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
                           lapply(FUN = as.data.frame)
  
  # generate ranking for each of the DESeq2 results 
- ranked_lists_convID <- lapply(FUN = rankedList_cP, 
+ ranked_lists_convID <- lapply(FUN = rankedList_cP_GSEA, 
                                X = DESeq2_results_convID, 
                                rankby = "p_value" ,
                                method = "DESeq2")
@@ -437,7 +438,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
                          lapply(FUN = topTable,coef = ncol(mm), number = 100000) 
  
  #perform ranking by p-value for each of the limma results 
- ranked_lists_convID <- lapply(FUN = rankedList_cP, 
+ ranked_lists_convID <- lapply(FUN = rankedList_cP_GSEA, 
                                X = limma_results_convID, 
                                rankby = "p_value",
                                method = "limma")
@@ -485,7 +486,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
 #####GSEA - optimization of internal parameters ##################################
 ##################################################################################
 
-cP_fcs_go_optim <- function(ranking, organism_GO){
+cP_GSEA_go_optim <- function(ranking, organism_GO){
  
  #for documentation of optimization process
  doc <- data.frame(step = c("Gene Set Database", "Exponent"),
@@ -570,7 +571,7 @@ cP_fcs_go_optim <- function(ranking, organism_GO){
 #####GSEA KEGG optimization#######################################################
 ##################################################################################
 
-cP_fcs_kegg_optim <- function(ranking, organism_KEGG){
+cP_GSEA_kegg_optim <- function(ranking, organism_KEGG){
 
  #for documentation of optimization process
  doc <- data.frame(step = c("Gene Set Database", "Exponent"),
@@ -721,12 +722,12 @@ cP_GSEA_internparam_optim <- function(ranking, ind_organism){
  if(geneset_db_opt == "GO"){
  
  #perform GO GSEA optimization
- optim_GSEA_results <- cP_fcs_go_optim(ranking, organism_GO)
+ optim_GSEA_results <- cP_GSEA_go_optim(ranking, organism_GO)
  
  }else if(geneset_db_opt == "KEGG"){
  
  #perform KEGG GSEA optimization
- optim_GSEA_results <- cP_fcs_kegg_optim(ranking, 
+ optim_GSEA_results <- cP_GSEA_kegg_optim(ranking, 
                                          organism_KEGG)
  
  }
@@ -775,67 +776,67 @@ cP_GSEA_joint_optimization <- function(expression_data, phenotype_labels){
 ### Run Optimization Functions #################################################
 ################################################################################
 
-phen_pickrell_list <- list()
-
-for(i in 1:ncol(phen_pickrell)){
- 
- phen_pickrell_list[[i]] <- phen_pickrell[,i]
- 
-}
-
-phen_bottomly_list <- list()
-
-for(i in 1:ncol(phen_bottomly)){
- 
- phen_bottomly_list[[i]] <- phen_bottomly[,i]
- 
-}
-
-
-#############
-### Pickrell 
-#############
-
-# original phenotype assignment 
-optim_cP_GSEA_results_Pickrell_originalphenotype <- cP_GSEA_joint_optimization(Biobase::exprs(pickrell.eset), 
-                   pickrell.eset$gender)
-
-# save results
-save(optim_cP_GSEA_results_Pickrell_originalphenotype, 
-  file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optim_cP_GSEA_results_Pickrell_phenotypepermutation <- lapply(FUN = cP_GSEA_joint_optimization, 
-                                                              expression_data = Biobase::exprs(pickrell.eset), 
-                                                              X = phen_pickrell_list)
-
-# save results
-save(optim_cP_GSEA_results_Pickrell_phenotypepermutation, 
-  file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Pickrell_PhenotypePermutations.RData")
-
-#############
-### Bottomly 
-#############
-
-# original phenotype assignment 
-optim_cP_GSEA_results_Bottomly_originalphenotype <- cP_GSEA_joint_optimization(Biobase::exprs(bottomly.eset), 
-                                                                               bottomly.eset$strain)
-
-# save results
-save(optim_cP_GSEA_results_Bottomly_originalphenotype, 
-  file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optim_cP_GSEA_results_Bottomly_phenotypepermutation <- lapply(FUN = cP_GSEA_joint_optimization, 
-                                                              expression_data = Biobase::exprs(bottomly.eset), 
-                                                              X = phen_bottomly_list)
-
-
-# save results
-save(optim_cP_GSEA_results_Bottomly_phenotypepermutation, 
-  file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Bottomly_PhenotypePermutations.RData")
-
-
-
-
+# phen_pickrell_list <- list()
+# 
+# for(i in 1:ncol(phen_pickrell)){
+#  
+#  phen_pickrell_list[[i]] <- phen_pickrell[,i]
+#  
+# }
+# 
+# phen_bottomly_list <- list()
+# 
+# for(i in 1:ncol(phen_bottomly)){
+#  
+#  phen_bottomly_list[[i]] <- phen_bottomly[,i]
+#  
+# }
+# 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# # original phenotype assignment 
+# optim_cP_GSEA_results_Pickrell_originalphenotype <- cP_GSEA_joint_optimization(Biobase::exprs(pickrell.eset), 
+#                    pickrell.eset$gender)
+# 
+# # save results
+# save(optim_cP_GSEA_results_Pickrell_originalphenotype, 
+#   file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optim_cP_GSEA_results_Pickrell_phenotypepermutation <- lapply(FUN = cP_GSEA_joint_optimization, 
+#                                                               expression_data = Biobase::exprs(pickrell.eset), 
+#                                                               X = phen_pickrell_list)
+# 
+# # save results
+# save(optim_cP_GSEA_results_Pickrell_phenotypepermutation, 
+#   file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Pickrell_PhenotypePermutations.RData")
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# # original phenotype assignment 
+# optim_cP_GSEA_results_Bottomly_originalphenotype <- cP_GSEA_joint_optimization(Biobase::exprs(bottomly.eset), 
+#                                                                                bottomly.eset$strain)
+# 
+# # save results
+# save(optim_cP_GSEA_results_Bottomly_originalphenotype, 
+#   file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optim_cP_GSEA_results_Bottomly_phenotypepermutation <- lapply(FUN = cP_GSEA_joint_optimization, 
+#                                                               expression_data = Biobase::exprs(bottomly.eset), 
+#                                                               X = phen_bottomly_list)
+# 
+# 
+# # save results
+# save(optim_cP_GSEA_results_Bottomly_phenotypepermutation, 
+#   file = "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Komprimiert/Results/cP_GSEA_Results_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 

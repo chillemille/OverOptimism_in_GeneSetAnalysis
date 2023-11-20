@@ -38,7 +38,7 @@ lossfunction_cPORA <- function(gsa_results){
 ###generate necessary input for ORA tool  ###
 #############################################
 
-cP_input_preparation <- function(DE_results){
+cP_ORA_input_preparation <- function(DE_results){
   
   # required input for clusterProfiler function: vector of entrez gene ID
   # that contains all differentially expressed genes 
@@ -107,7 +107,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
                             dplyr::rename(p_adj=padj)
   
   # run ORA tool with DESeq2 result as input and internal parameters in their default configuration 
-  cP_ORA_results_DESeq2 <- cP_input_preparation(deseq2_results_default) %>%
+  cP_ORA_results_DESeq2 <- cP_ORA_input_preparation(deseq2_results_default) %>%
                            enrichGO(OrgDb=organism, ont = "BP") %>% 
                            as.data.frame()
   
@@ -139,7 +139,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
   #run clusterProfiler's ORA tool (with defaut parameters) for each of the resulting lists of differentially
   #expressed gene sets -> default gene set database: GO
   
-  cP_ORA_results_limma<- cP_input_preparation(limma_results) %>%
+  cP_ORA_results_limma<- cP_ORA_input_preparation(limma_results) %>%
                          enrichGO(OrgDb = organism, ont = "BP") %>% 
                          as.data.frame()
   
@@ -197,7 +197,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
                               lapply(as.data.frame) %>% lapply(dplyr::rename, p_adj = padj)
     
     #(ii) run clusterProfiler's ORA tool with default parameters 
-    cP_ORA_results_prefilt <- lapply(X = deseq2_results_prefilt,FUN = cP_input_preparation) %>%
+    cP_ORA_results_prefilt <- lapply(X = deseq2_results_prefilt,FUN = cP_ORA_input_preparation) %>%
                               lapply(FUN = enrichGO, OrgDb=organism, ont = "BP") %>% 
                               lapply(as.data.frame)
     
@@ -263,7 +263,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
       
       
     # perform ORA
-    cP_ORA_results_prefilt <- lapply(FUN=cP_input_preparation, X=limma_results) %>%
+    cP_ORA_results_prefilt <- lapply(FUN=cP_ORA_input_preparation, X=limma_results) %>%
                               lapply(FUN=enrichGO,OrgDb=organism, ont = "BP") %>% 
                               lapply(FUN=as.data.frame)
       
@@ -310,7 +310,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
                               lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = padj)
     
     ### perform ORA for both DE results resulting from duplicate gene ID removal 
-    cP_ORA_results_convID <- lapply(FUN = cP_input_preparation, X = DE_results_convID_list) %>%
+    cP_ORA_results_convID <- lapply(FUN = cP_ORA_input_preparation, X = DE_results_convID_list) %>%
                              lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>% 
                              lapply(FUN = as.data.frame)
     
@@ -325,7 +325,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
                               lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = adj.P.Val)
     
     ### perform ORA for all of the 3 DE results resulting from duplicate gene ID removal 
-    cP_ORA_results_convID <- lapply(FUN = cP_input_preparation, X = DE_results_convID_list) %>%
+    cP_ORA_results_convID <- lapply(FUN = cP_ORA_input_preparation, X = DE_results_convID_list) %>%
                              lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>% 
                              lapply(FUN = as.data.frame)
     
@@ -350,7 +350,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
   
   # get optimal list of differentially expressed genes 
   
-  optim_DEGs <- cP_input_preparation(DE_results_convID_list[[ind_convID]])
+  optim_DEGs <- cP_ORA_input_preparation(DE_results_convID_list[[ind_convID]])
   
   # generate optimal ORA results
   ORA_opt <- enrichGO(optim_DEGs, 
@@ -423,10 +423,10 @@ get_DEGs_default <- function(expression_data, phenotype_labels){
 
 #optimize number of differentially enriched DEG with regular (r) KEGG 
 #input as provided by function global_DE_optim: results table from DE analysis
-cP_rkegg_optim <- function(DE_results, oragnism_kegg){
+cP_ORA_rkegg_optim <- function(DE_results, oragnism_kegg){
   
   # create vector of differentially expressed genes from DE results 
-  DEG_vec <- cP_input_preparation(DE_results)
+  DEG_vec <- cP_ORA_input_preparation(DE_results)
   
   
   # argument "universe" is left out here since "if missing, the all genes listed 
@@ -499,7 +499,7 @@ cP_rkegg_optim <- function(DE_results, oragnism_kegg){
 cPORA_GO_optim <- function(DE_results, organism_go){
 
   #obtain input vector for KEGG analysis with input preparation function
-  DEG_vec <- cP_input_preparation(DE_results)
+  DEG_vec <- cP_ORA_input_preparation(DE_results)
 
   
   # extract adapted universe from DE results
@@ -592,7 +592,7 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
   
   
   #obtain input vector for KEGG analysis with input preparation function
-  DEG_vec <- cP_input_preparation(DE_results)
+  DEG_vec <- cP_ORA_input_preparation(DE_results)
   
   
   
@@ -647,7 +647,7 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
     
   }else if(best_db == "KEGG"){
     #perform KEGG "Stellschraubenanalyse"
-    cP_ora_optim <- cP_rkegg_optim(DE_results, 
+    cP_ora_optim <- cP_ORA_rkegg_optim(DE_results, 
                                    organism_kegg)
     
   }
@@ -701,67 +701,49 @@ cP_ORA_joint_optimization <- function(expression_data, phenotype_labels){
 ################################################################################
 
 
-#############
-### Pickrell 
-#############
-
-# true sample labels
-optim_ORA_results_Pickrell_originalphenotype <- cP_ORA_joint_optimization(Biobase::exprs(pickrell.eset), 
-                                                                          pickrell.eset$gender)
-# save results
-save(optim_ORA_results_Pickrell_originalphenotype, 
-     file = "./Results/ORA_Results_Pickrell_OriginalPhenotype.RData")
-
-
-
-# 10 permuted sample labels
-optim_ORA_results_Pickrell_phenotypepermutation <- apply(FUN = cP_ORA_joint_optimization, 
-                                                         expression_data = Biobase::exprs(pickrell.eset), 
-                                                         X = phen_pickrell, MARGIN = 2)
-
-# save results
-save(optim_ORA_results_Pickrell_phenotypepermutation, 
-     file = "./Results/ORA_Results_Pickrell_PhenotypePermutations.RData")
-
-#############
-### Bottomly 
-#############
-
-# true sample labels
-optim_ORA_results_Bottomly_originalphenotype <- cP_ORA_joint_optimization(Biobase::exprs(bottomly.eset), 
-                                                                          bottomly.eset$strain)
-
-# save results
-save(optim_ORA_results_Bottomly_originalphenotype, 
-     file = "./Results/ORA_Results_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 permuted sample labels
-optim_ORA_results_Bottomly_phenotypepermutation <- apply(FUN = cP_ORA_joint_optimization, 
-                                                         expression_data = Biobase::exprs(bottomly.eset), 
-                                                         X = phen_bottomly, 
-                                                         MARGIN = 2)
-
-
-# save results
-save(optim_ORA_results_Bottomly_phenotypepermutation, 
-     file = "./Results/ORA_Results_Bottomly_PhenotypePermutations.RData")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# #############
+# ### Pickrell 
+# #############
+# 
+# # true sample labels
+# optim_ORA_results_Pickrell_originalphenotype <- cP_ORA_joint_optimization(Biobase::exprs(pickrell.eset), 
+#                                                                           pickrell.eset$gender)
+# # save results
+# save(optim_ORA_results_Pickrell_originalphenotype, 
+#      file = "./Results/ORA_Results_Pickrell_OriginalPhenotype.RData")
+# 
+# 
+# 
+# # 10 permuted sample labels
+# optim_ORA_results_Pickrell_phenotypepermutation <- apply(FUN = cP_ORA_joint_optimization, 
+#                                                          expression_data = Biobase::exprs(pickrell.eset), 
+#                                                          X = phen_pickrell, MARGIN = 2)
+# 
+# # save results
+# save(optim_ORA_results_Pickrell_phenotypepermutation, 
+#      file = "./Results/ORA_Results_Pickrell_PhenotypePermutations.RData")
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# # true sample labels
+# optim_ORA_results_Bottomly_originalphenotype <- cP_ORA_joint_optimization(Biobase::exprs(bottomly.eset), 
+#                                                                           bottomly.eset$strain)
+# 
+# # save results
+# save(optim_ORA_results_Bottomly_originalphenotype, 
+#      file = "./Results/ORA_Results_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 permuted sample labels
+# optim_ORA_results_Bottomly_phenotypepermutation <- apply(FUN = cP_ORA_joint_optimization, 
+#                                                          expression_data = Biobase::exprs(bottomly.eset), 
+#                                                          X = phen_bottomly, 
+#                                                          MARGIN = 2)
+# 
+# 
+# # save results
+# save(optim_ORA_results_Bottomly_phenotypepermutation, 
+#      file = "./Results/ORA_Results_Bottomly_PhenotypePermutations.RData")
+# 
