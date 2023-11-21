@@ -14,7 +14,7 @@ if(!dir.exists("./Results")){dir.create(path = "./Results")}
 ################################################################################
 
 # load optimisation functions 
-source("./n_DEGS_optim_GOSeq.R")
+source("./n_DEGS_OptimisationFunctions_GOSeq.R")
 
 #############
 ### Pickrell
@@ -66,7 +66,7 @@ save(optim_GOSeq_results_Bottomly_phenotypepermutation,
 ################################################################################
 
 # load optimisation functions 
-source("./n_DEGS_optim_PADOG.R")
+source("./n_DEGS_OptimisationFunctions_PADOG.R")
 
 # create list of vectors from phen_pickrell 
 # -> for use of function lapply() since apply() returns an error 
@@ -138,7 +138,7 @@ save(optim_PADOG_results_Bottomly_phenotypepermutation,
 
 
 # load optimisation functions 
-source("./n_DEGS_optim_cP_ORA.R")
+source("./n_DEGS_OptimisationFunctions_cP_ORA.R")
 
 
 #############
@@ -193,7 +193,7 @@ save(optim_ORA_results_Bottomly_phenotypepermutation,
 #################################################################################
 
 # load optimisation functions 
-source("./n_DEGS_optim_cP_GSEA.R")
+source("./n_DEGS_OptimisationFunctions_cP_GSEA.R")
 
 
 

@@ -275,7 +275,7 @@ save(optimRank_GOSeq_CellularProcess_Bottomly_Phenotypepermutations,
 ################################################################################
 
 # load optimisation functions 
-source("rank_p_OptimisationFunctions_PADOG.R")
+source("./rank_p_OptimisationFunctions_PADOG.R")
 
 phen_pickrell_list <- list()
 
@@ -475,7 +475,7 @@ save(optimRank_PADOG_GraftvsHost_Pickrell_phenotypepermutations,
 # We use the same gene sets as for the pickrell data set as the gene sets provided 
 # for human and mouse are almost identical 
 
-### (I) Gene Set Primary Immunodeficiency -> " 	05340"
+### (I) Gene Set Primary Immunodeficiency -> "05340"
 
 # original phenotype assignment 
 optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype <- 
@@ -540,7 +540,7 @@ save(optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations,
 
 
 # load optimisation functions 
-source("rank_p_OptimisationFunctions_cP_ORA.R")
+source("./rank_p_OptimisationFunctions_cP_ORA.R")
 
 
 
@@ -810,7 +810,7 @@ save(optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations,
 #################################################################################
 
 # load optimisation functions 
-source("rank_p_OptimisationFunctions_cP_GSEA.R")
+source("./rank_p_OptimisationFunctions_cP_GSEA.R")
 
 
 phen_pickrell_list <- list()

@@ -13,6 +13,9 @@ library(org.Mm.eg.db)
 #load phenotype permutations and gene expression data sets 
 source("./Random_Phenotype_Permutations.R")
 
+# load the preprocessing functions
+source("./PreProcessing_Functions.R")
+
 
 
 ################################################################################
@@ -25,7 +28,7 @@ source("./Random_Phenotype_Permutations.R")
 #of differentially expressed genes. 
 
 # this specifically means that, if a gene set does not contain any genes from the input list, function 
-#pvalue_rank returns integer(0) which cannot be compared to numerical number. 
+#pvalue_rank_ORA returns integer(0) which cannot be compared to numerical number. 
 #To bypass this issue we set the rank resp. adjusted p-value to 0 if a gene set is not reported in the results.
 #p-value of a given gene set to Inf 
 
@@ -48,7 +51,12 @@ is.integer0 <- function(x){
 #contains relevant information automatically
 #argument term must be in the form of a GO ID resp. KEGG ID 
 
-pvalue_rank <- function(term, ora_results, metric){
+# note that clusterProfiler's ORA only includes those gene sets from the results that 
+# have at least one gene from the input as a member. 
+# This means that when a gene set does not appear in the GSA results, we do not know
+# whether it is not differentially enriched or it does not appear in the gene set database at all
+
+pvalue_rank_ORA <- function(term, ora_results, metric){
  
 if(metric == "rank"){
  # if the ora_result is NULL, this means that no gene set is reported as differentially enriched
@@ -56,18 +64,19 @@ if(metric == "rank"){
  # at least one differentially enriched gene sets from the gene set database 
  # We therefore cannot know whether the gene set was contained by the gene set database or not
  # we then set the rank of the given gene set to the worst possible value, i.e. 1.2
+  
+  # there are also cases when none of the differentially expressed genes (i.e. input)
+  # can be matched to a gene set (in this case, differential enrichment cannot be 
+  # precluded either) -> set rank to 1.2 
  
  if(is.null(ora_results)){
   
  return(1.2)
   
  } else if(nrow(ora_results) == 0){
-  # if no gene sets are reported in the ORA results (which is the case when
-  # the input list of differentially expressed genes is empty), none of the genes
-  # from the geneset database are differentially enriched 
-  # -> return the rank 1 (i.e. worst rank) for the given gene set
 
-  return(1)
+
+  return(1.2)
 
  } else if(nrow(ora_results) != 0){
   # the ORA results are non-empty, i.e. there is at least one differentially 
@@ -100,7 +109,7 @@ if(metric == "rank"){
   
  } 
  
-}else if(metric == "p.adjust"){
+}else if(metric == "p_adj"){
  
  if(is.null(ora_results)){
   
@@ -109,7 +118,7 @@ if(metric == "rank"){
  } else if(nrow(ora_results) == 0){
   
   
-  return(1)
+  return(1.2)
  }
  
  if(nrow(ora_results) != 0){
@@ -140,7 +149,7 @@ if(metric == "rank"){
 ###generate necessary input for ORA tool ##############################################
 #######################################################################################
 
-cP_input_preparation <- function(DE_results){
+cP_ORA_input_preparation <- function(DE_results){
  
  #required input for clusterProfiler function: vector of entrez gene ID
  #-> need to pre-process results table DE_results
@@ -171,7 +180,7 @@ ORA_pipeline_default <- function(DE_results, geneset_database, organism){
  if(geneset_database == "KEGG"){
   
  
- ORA_results <- cP_input_preparation(DE_results) %>%
+ ORA_results <- cP_ORA_input_preparation(DE_results) %>%
                 enrichKEGG(organism = organism, 
                           keyType = "kegg", 
                           pvalueCutoff = 1, 
@@ -186,7 +195,7 @@ ORA_pipeline_default <- function(DE_results, geneset_database, organism){
   
 
    
-   ORA_results <- cP_input_preparation(DE_results) %>%
+   ORA_results <- cP_ORA_input_preparation(DE_results) %>%
                   enrichGO(OrgDb = organism, 
                           ont = "BP", 
                           pvalueCutoff = 1, 
@@ -300,7 +309,7 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
                                             organism = organism)
  
  # (iii) store metric value of geneset 
- metricvalue_detechniques[1] <- pvalue_rank(geneset, 
+ metricvalue_detechniques[1] <- pvalue_rank_ORA(geneset, 
                                             ORA_results_deseq2, 
                                             metric)
  
@@ -335,7 +344,7 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
                         organism)
    
   # (iii) store metricvalue of geneset
-   metricvalue_detechniques[2] <- pvalue_rank(geneset, 
+   metricvalue_detechniques[2] <- pvalue_rank_ORA(geneset, 
                          ORA_results_limma, 
                          metric)
    
@@ -434,7 +443,7 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
  } 
  
  # get metric value for each of the pre-filtering thresholds
- metricvalue_prefilt <- unlist(lapply(FUN = pvalue_rank, 
+ metricvalue_prefilt <- unlist(lapply(FUN = pvalue_rank_ORA, 
                                       X = ORA_results_prefilt, 
                                       term = geneset, 
                                       metric = metric))
@@ -499,7 +508,7 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
  } 
  
  # get metric value for each of the ORA results 
- metricvalue_convID <- unlist(lapply(FUN = pvalue_rank, 
+ metricvalue_convID <- unlist(lapply(FUN = pvalue_rank_ORA, 
                                     X = ORA_results_convID, 
                                     term = geneset, 
                                     metric = metric))
@@ -545,7 +554,7 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
  
  if(geneset_database == "KEGG"){
   
-  ORA_univ <- enrichKEGG(gene = cP_input_preparation(DE_results_convID[[ind_opt_convID]]), 
+  ORA_univ <- enrichKEGG(gene = cP_ORA_input_preparation(DE_results_convID[[ind_opt_convID]]), 
                         organism = organism, keyType = "kegg", 
                         universe = univ_alt , pvalueCutoff = 1, qvalueCutoff = 1) %>%
               as.data.frame()
@@ -553,7 +562,7 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
   
  }else if(geneset_database == "GO"){
   
-  ORA_univ <- enrichGO(gene = cP_input_preparation(DE_results_convID[[ind_opt_convID]]), 
+  ORA_univ <- enrichGO(gene = cP_ORA_input_preparation(DE_results_convID[[ind_opt_convID]]), 
                        OrgDb = organism,ont = "BP", universe = univ_alt, 
                        pvalueCutoff = 1, qvalueCutoff = 1) %>%
               as.data.frame()
@@ -568,17 +577,17 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
  #run final optimal ORA result depending on if the alternative universe leads to
  #an im provement of the metric value 
  
- if(pvalue_rank(geneset, ORA_univ, metric) < metricvalue){
+ if(pvalue_rank_ORA(geneset, ORA_univ, metric) < metricvalue){
   
   #set final optimal ORA run as the one with adapted universe 
   ORA_final<- ORA_univ
   #update documentation frame 
   doc[nrow(doc) + 1, "step"] <- "Universe"
   doc[nrow(doc), "optimal_parameter"] <- "Adapted"
-  doc[nrow(doc), metric] <- pvalue_rank(geneset, ORA_univ, metric)
+  doc[nrow(doc), metric] <- pvalue_rank_ORA(geneset, ORA_univ, metric)
   
   
- }else if(pvalue_rank(geneset, ORA_univ, metric) >= metricvalue){
+ }else if(pvalue_rank_ORA(geneset, ORA_univ, metric) >= metricvalue){
   
   #set final optimal ORA run as the one with the original universe 
   ORA_final <- ORA_results_convID[[ind_opt_convID]]
@@ -601,262 +610,262 @@ ORA_rank_pvalue_optim <- function(geneset, metric, expression_data, phenotype_la
 ### Run Optimization Functions #################################################
 ################################################################################
 
-phen_pickrell_list <- list()
-
-for(i in 1:ncol(phen_pickrell)){
- 
- phen_pickrell_list[[i]] <- phen_pickrell[,i]
- 
-}
-
-phen_bottomly_list <- list()
-
-for(i in 1:ncol(phen_bottomly)){
- 
- phen_bottomly_list[[i]] <- phen_bottomly[,i]
- 
-}
-
-
-###### optimization (i.e. minimization) of adjusted p-values 
-
-
-#############
-### Pickrell 
-#############
-
-
-
-############################################################
-### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
-############################################################
-
-# original phenotype assignment 
-optimP_cP_ORA_tcell_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0002456",
-                                 metric = "p_adj", 
-                                 Biobase::exprs(pickrell.eset), 
-                                 pickrell.eset$gender, 
-                                 "GO")
-
-# save results
-save(optimP_cP_ORA_tcell_Pickrell_originalphenotype, 
-   file = "./Results/optimP_ORA_tCell_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimP_cP_ORA_tcell_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                            geneset =  "GO:0002456", 
-                            metric = "p_adj",
-                            expression_data = Biobase::exprs(pickrell.eset), 
-                            geneset_database = "GO",
-                            X = phen_pickrell_list)
-
-# save results
-save(optimP_cP_ORA_tcell_Pickrell_phenotypepermutations, 
-   file = "./Results/optimP_ORA_tCell_Pickrell_PhenotypePermutations.RData")
-
-
-############################################################
-### (II) Gene Set "Demethylation" -> GO:0070988
-############################################################
-
-# Note: in other GSA tools, demethylation might also be identified by GO:0080111
-
-# original phenotype assignment 
-optimP_cP_ORA_Demethylation_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
-                                     metric = "p_adj", 
-                                     Biobase::exprs(pickrell.eset), 
-                                     pickrell.eset$gender, 
-                                     "GO")
-
-# save results
-save(optimP_cP_ORA_Demethylation_Pickrell_originalphenotype, 
-   file = "./Results/optimP_ORA_Demethylation_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                               geneset =  "GO:0070988", 
-                               metric = "p_adj",
-                               expression_data = Biobase::exprs(pickrell.eset), 
-                               geneset_database = "GO",
-                               X = phen_pickrell_list)
-
-# save results
-save(optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations, 
-   file = "./Results/optimP_ORA_Demethylation_Pickrell_PhenotypePermutations.RData")
-
-
-
-#############
-### Bottomly 
-#############
-
-### (I) Gene set "Metabolic Process: GO:0008152"
-
-# original phenotype assignment 
-optimP_cP_ORA_MetabolicProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0008152","p_adj", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
-
-# save results
-save(optimP_cP_ORA_MetabolicProcess_Bottomly_originalphenotype, 
-   file = "./Results/optimP_ORA_MetabolicProcess_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                 geneset = "GO:0008152", 
-                                 metric = "p_adj",
-                                 expression_data = Biobase::exprs(bottomly.eset), 
-                                 geneset_database = "GO",
-                                 X = phen_bottomly_list)
-
-# save results 
-save(optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations, 
-   file = "./Results/optimP_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
-
-
-
-
-### (II) Gene set "Cellular Process: GO:0009987"
-
-# original phenotype assignment 
-optimP_cP_ORA_CellularProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0009987",metric = "p_adj", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
-
-# save results
-save(optimP_cP_ORA_CellularProcess_Bottomly_originalphenotype, 
-   file = "./Results/optimP_ORA_CellularProcess_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                      geneset = "GO:0009987", 
-                                                                      metric = "p_adj",
-                                                                      expression_data = Biobase::exprs(bottomly.eset), 
-                                                                      geneset_database = "GO",
-                                                                      X = phen_bottomly_list)
-# save results 
-save(optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations, 
-   file = "./Results/optimP_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
-
-
-# optimization (i.e. minimization of the ranks)
-
-
-
-#############
-### Pickrell 
-#############
-
-
-
-############################################################
-### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
-############################################################
-
-# original phenotype assignment 
-optimRank_cP_ORA_tcell_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0002456",
-                                                                        metric = "rank", 
-                                                                        Biobase::exprs(pickrell.eset), 
-                                                                        pickrell.eset$gender, 
-                                                                        "GO")
-
-# save results
-save(optimRank_cP_ORA_tcell_Pickrell_originalphenotype, 
-     file = "./Results/optimRank_ORA_tCell_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimRank_cP_ORA_tcell_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                             geneset =  "GO:0002456", 
-                                                             metric = "rank",
-                                                             expression_data = Biobase::exprs(pickrell.eset), 
-                                                             geneset_database = "GO",
-                                                             X = phen_pickrell_list)
-
-# save results
-save(optimRank_cP_ORA_tcell_Pickrell_phenotypepermutations, 
-     file = "./Results/optimRank_ORA_tCell_Pickrell_PhenotypePermutations.RData")
-
-
-############################################################
-### (II) Gene Set "Demethylation" -> GO:0070988
-############################################################
-
-# Note: in other GSA tools, demethylation might also be identified by GO:0080111
-
-# original phenotype assignment 
-optimRank_cP_ORA_Demethylation_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
-                                                                                metric = "rank", 
-                                                                                Biobase::exprs(pickrell.eset), 
-                                                                                pickrell.eset$gender, 
-                                                                                "GO")
-
-# save results
-save(optimRank_cP_ORA_Demethylation_Pickrell_originalphenotype, 
-     file = "./Results/optimRank_ORA_Demethylation_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimRank_cP_ORA_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                     geneset =  "GO:0070988", 
-                                                                     metric = "rank",
-                                                                     expression_data = Biobase::exprs(pickrell.eset), 
-                                                                     geneset_database = "GO",
-                                                                     X = phen_pickrell_list)
-
-# save results
-save(optimRank_cP_ORA_Demethylation_Pickrell_phenotypepermutations, 
-     file = "./Results/optimRank_ORA_Demethylation_Pickrell_PhenotypePermutations.RData")
-
-
-
-#############
-### Bottomly 
-#############
-
-### (I) Gene set "Metabolic Process: GO:0008152"
-
-# original phenotype assignment 
-optimRank_cP_ORA_MetabolicProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0008152","rank", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
-
-# save results
-save(optimRank_cP_ORA_MetabolicProcess_Bottomly_originalphenotype, 
-     file = "./Results/optimRank_ORA_MetabolicProcess_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimRank_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                        geneset = "GO:0008152", 
-                                                                        metric = "rank",
-                                                                        expression_data = Biobase::exprs(bottomly.eset), 
-                                                                        geneset_database = "GO",
-                                                                        X = phen_bottomly_list)
-
-# save results 
-save(optimRank_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations, 
-     file = "./Results/optimRank_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
-
-
-
-
-### (II) Gene set "Cellular Process: GO:0009987"
-
-# original phenotype assignment 
-optimRank_cP_ORA_CellularProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0009987",metric = "rank", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
-
-# save results
-save(optimRank_cP_ORA_CellularProcess_Bottomly_originalphenotype, 
-     file = "./Results/optimRank_ORA_CellularProcess_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                       geneset = "GO:0009987", 
-                                                                       metric = "rank",
-                                                                       expression_data = Biobase::exprs(bottomly.eset), 
-                                                                       geneset_database = "GO",
-                                                                       X = phen_bottomly_list)
-# save results 
-save(optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations, 
-     file = "./Results/optimRank_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
-
-
-
-
-
+# phen_pickrell_list <- list()
+# 
+# for(i in 1:ncol(phen_pickrell)){
+#  
+#  phen_pickrell_list[[i]] <- phen_pickrell[,i]
+#  
+# }
+# 
+# phen_bottomly_list <- list()
+# 
+# for(i in 1:ncol(phen_bottomly)){
+#  
+#  phen_bottomly_list[[i]] <- phen_bottomly[,i]
+#  
+# }
+# 
+# 
+# ###### optimization (i.e. minimization) of adjusted p-values 
+# 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# 
+# 
+# ############################################################
+# ### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
+# ############################################################
+# 
+# # original phenotype assignment 
+# optimP_cP_ORA_tcell_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0002456",
+#                                  metric = "p_adj", 
+#                                  Biobase::exprs(pickrell.eset), 
+#                                  pickrell.eset$gender, 
+#                                  "GO")
+# 
+# # save results
+# save(optimP_cP_ORA_tcell_Pickrell_originalphenotype, 
+#    file = "./Results/optimP_ORA_tCell_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimP_cP_ORA_tcell_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                             geneset =  "GO:0002456", 
+#                             metric = "p_adj",
+#                             expression_data = Biobase::exprs(pickrell.eset), 
+#                             geneset_database = "GO",
+#                             X = phen_pickrell_list)
+# 
+# # save results
+# save(optimP_cP_ORA_tcell_Pickrell_phenotypepermutations, 
+#    file = "./Results/optimP_ORA_tCell_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# ############################################################
+# ### (II) Gene Set "Demethylation" -> GO:0070988
+# ############################################################
+# 
+# # Note: in other GSA tools, demethylation might also be identified by GO:0080111
+# 
+# # original phenotype assignment 
+# optimP_cP_ORA_Demethylation_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
+#                                      metric = "p_adj", 
+#                                      Biobase::exprs(pickrell.eset), 
+#                                      pickrell.eset$gender, 
+#                                      "GO")
+# 
+# # save results
+# save(optimP_cP_ORA_Demethylation_Pickrell_originalphenotype, 
+#    file = "./Results/optimP_ORA_Demethylation_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                geneset =  "GO:0070988", 
+#                                metric = "p_adj",
+#                                expression_data = Biobase::exprs(pickrell.eset), 
+#                                geneset_database = "GO",
+#                                X = phen_pickrell_list)
+# 
+# # save results
+# save(optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations, 
+#    file = "./Results/optimP_ORA_Demethylation_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# ### (I) Gene set "Metabolic Process: GO:0008152"
+# 
+# # original phenotype assignment 
+# optimP_cP_ORA_MetabolicProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0008152","p_adj", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+# 
+# # save results
+# save(optimP_cP_ORA_MetabolicProcess_Bottomly_originalphenotype, 
+#    file = "./Results/optimP_ORA_MetabolicProcess_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                  geneset = "GO:0008152", 
+#                                  metric = "p_adj",
+#                                  expression_data = Biobase::exprs(bottomly.eset), 
+#                                  geneset_database = "GO",
+#                                  X = phen_bottomly_list)
+# 
+# # save results 
+# save(optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations, 
+#    file = "./Results/optimP_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# ### (II) Gene set "Cellular Process: GO:0009987"
+# 
+# # original phenotype assignment 
+# optimP_cP_ORA_CellularProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0009987",metric = "p_adj", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+# 
+# # save results
+# save(optimP_cP_ORA_CellularProcess_Bottomly_originalphenotype, 
+#    file = "./Results/optimP_ORA_CellularProcess_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                                                       geneset = "GO:0009987", 
+#                                                                       metric = "p_adj",
+#                                                                       expression_data = Biobase::exprs(bottomly.eset), 
+#                                                                       geneset_database = "GO",
+#                                                                       X = phen_bottomly_list)
+# # save results 
+# save(optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations, 
+#    file = "./Results/optimP_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# # optimization (i.e. minimization of the ranks)
+# 
+# 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# 
+# 
+# ############################################################
+# ### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
+# ############################################################
+# 
+# # original phenotype assignment 
+# optimRank_cP_ORA_tcell_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0002456",
+#                                                                         metric = "rank", 
+#                                                                         Biobase::exprs(pickrell.eset), 
+#                                                                         pickrell.eset$gender, 
+#                                                                         "GO")
+# 
+# # save results
+# save(optimRank_cP_ORA_tcell_Pickrell_originalphenotype, 
+#      file = "./Results/optimRank_ORA_tCell_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimRank_cP_ORA_tcell_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                                              geneset =  "GO:0002456", 
+#                                                              metric = "rank",
+#                                                              expression_data = Biobase::exprs(pickrell.eset), 
+#                                                              geneset_database = "GO",
+#                                                              X = phen_pickrell_list)
+# 
+# # save results
+# save(optimRank_cP_ORA_tcell_Pickrell_phenotypepermutations, 
+#      file = "./Results/optimRank_ORA_tCell_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# ############################################################
+# ### (II) Gene Set "Demethylation" -> GO:0070988
+# ############################################################
+# 
+# # Note: in other GSA tools, demethylation might also be identified by GO:0080111
+# 
+# # original phenotype assignment 
+# optimRank_cP_ORA_Demethylation_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
+#                                                                                 metric = "rank", 
+#                                                                                 Biobase::exprs(pickrell.eset), 
+#                                                                                 pickrell.eset$gender, 
+#                                                                                 "GO")
+# 
+# # save results
+# save(optimRank_cP_ORA_Demethylation_Pickrell_originalphenotype, 
+#      file = "./Results/optimRank_ORA_Demethylation_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimRank_cP_ORA_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                                                      geneset =  "GO:0070988", 
+#                                                                      metric = "rank",
+#                                                                      expression_data = Biobase::exprs(pickrell.eset), 
+#                                                                      geneset_database = "GO",
+#                                                                      X = phen_pickrell_list)
+# 
+# # save results
+# save(optimRank_cP_ORA_Demethylation_Pickrell_phenotypepermutations, 
+#      file = "./Results/optimRank_ORA_Demethylation_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# ### (I) Gene set "Metabolic Process: GO:0008152"
+# 
+# # original phenotype assignment 
+# optimRank_cP_ORA_MetabolicProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0008152","rank", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+# 
+# # save results
+# save(optimRank_cP_ORA_MetabolicProcess_Bottomly_originalphenotype, 
+#      file = "./Results/optimRank_ORA_MetabolicProcess_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimRank_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                                                         geneset = "GO:0008152", 
+#                                                                         metric = "rank",
+#                                                                         expression_data = Biobase::exprs(bottomly.eset), 
+#                                                                         geneset_database = "GO",
+#                                                                         X = phen_bottomly_list)
+# 
+# # save results 
+# save(optimRank_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations, 
+#      file = "./Results/optimRank_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# ### (II) Gene set "Cellular Process: GO:0009987"
+# 
+# # original phenotype assignment 
+# optimRank_cP_ORA_CellularProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0009987",metric = "rank", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+# 
+# # save results
+# save(optimRank_cP_ORA_CellularProcess_Bottomly_originalphenotype, 
+#      file = "./Results/optimRank_ORA_CellularProcess_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+#                                                                        geneset = "GO:0009987", 
+#                                                                        metric = "rank",
+#                                                                        expression_data = Biobase::exprs(bottomly.eset), 
+#                                                                        geneset_database = "GO",
+#                                                                        X = phen_bottomly_list)
+# # save results 
+# save(optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations, 
+#      file = "./Results/optimRank_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# 

@@ -111,7 +111,7 @@ pvalue_rank_padog <- function(term, padog_results, metric){
    padog_results$ranks <- rank(padog_results$p_adj) /max(rank(padog_results$p_adj)) 
    
    # get the relative rank of the gene set of interest 
-   ranks <- padog_results$ranks[grep(term, padog_results$ID)]
+   rank <- padog_results$ranks[grep(term, padog_results$ID)]
    
    
   # if the gene set is not contained in the results, return the rank 1.2
@@ -372,257 +372,257 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
 ### Run Optimization Functions #################################################
 ################################################################################
 
-phen_pickrell_list <- list()
-
-for(i in 1:ncol(phen_pickrell)){
- 
- phen_pickrell_list[[i]] <- phen_pickrell[,i]
- 
-}
-
-phen_bottomly_list <- list()
-
-for(i in 1:ncol(phen_bottomly)){
- 
- phen_bottomly_list[[i]] <- phen_bottomly[,i]
- 
-}
-
-# optimize the adjusted p-values 
-
-
-#############
-### Pickrell 
-#############
-
-### (I) Gene Set Primary Immunodeficiency -> "05340"
-
-# original phenotype assignment 
-optimP_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype <- 
-  PADOG_rankp_optim(geneset = "05340",
-                    Biobase::exprs(pickrell.eset), 
-                    pickrell.eset$gender, 
-                    metric = "p_adj")
-
-# save results
-save(optimP_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype, 
-   file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations <- 
-                      lapply(FUN = PADOG_rankp_optim, 
-                            geneset =  "05340", 
-                            expression_data = Biobase::exprs(pickrell.eset), 
-                            metric = "p_adj",
-                            X = phen_pickrell_list)
-
-# save results
-save(optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations, 
-   file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Pickrell_PhenotypePermutations.RData")
-
-
-### (II) Gene Set "Graft vs host disease" -> "05332"
-
-# original phenotype assignment 
-optimP_PADOG_GraftvsHost_Pickrell_originalphenotype <- PADOG_rankp_optim(geneset = "05332",
-                                                                         Biobase::exprs(pickrell.eset), 
-                                                                         pickrell.eset$gender, metric = "p_adj")
-
-# save results
-save(optimP_PADOG_GraftvsHost_Pickrell_originalphenotype, 
-   file = "./Results/optimP_PADOG_GraftvsHost_Pickrell_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations <- lapply(FUN = PADOG_rankp_optim, 
-                                                                 geneset =  "05332", 
-                                                                 expression_data = Biobase::exprs(pickrell.eset), 
-                                                                 metric = "p_adj",
-                                                                 X = phen_pickrell_list)
-
-save(optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations, 
-   file = "./Results/optimP_PADOG_GraftvsHost_Pickrell_PhenotypePermutations.RData")
-
-
-
-
-#############
-### Bottomly 
-#############
-
-# We use the same gene sets as for the pickrell data set as the gene sets provided 
-# for human and mouse are almost identical 
-
-### (I) Gene Set Primary Immunodeficiency -> " 	05340"
-
-# original phenotype assignment 
-optimP_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype <- 
-                        PADOG_rankp_optim(geneset = "05340",
-                                        Biobase::exprs(bottomly.eset), 
-                                        bottomly.eset$strain, 
-                                        metric = "p_adj")
-
-# save results
-save(optimP_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype, 
-   file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Bottomly_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimP_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations <- 
-                              lapply(FUN = PADOG_rankp_optim, 
-                                     geneset =  "05340", 
-                                     expression_data = Biobase::exprs(bottomly.eset), 
-                                     metric = "p_adj",
-                                     X = phen_bottomly_list)
-
-# save results
-save(optimP_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations, 
-   file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Bottomly_PhenotypePermutations.RData")
-
-
-### (II) Gene Set "Graft vs host disease" -> "05332"
-
-# original phenotype assignment 
-optimP_PADOG_GraftvsHost_Bottomly_originalphenotype <- 
-  PADOG_rankp_optim(geneset = "05332",
-                    Biobase::exprs(bottomly.eset), 
-                    bottomly.eset$strain, 
-                    metric = "p_adj")
-
-# save results
-save(optimP_PADOG_GraftvsHost_Bottomly_originalphenotype, 
-   file = "./Results/optimP_PADOG_GraftvsHost_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimP_PADOG_GraftvsHost_Bottomly_phenotypepermutations <- 
-                        lapply(FUN = PADOG_rankp_optim, 
-                               geneset =  "05332", 
-                               expression_data = Biobase::exprs(bottomly.eset), 
-                               metric = "p_adj",
-                               X = phen_bottomly_list)
-
-save(optimP_PADOG_GraftvsHost_Bottomly_phenotypepermutations, 
-   file = "./Results/optimP_PADOG_GraftvsHost_Bottomly_PhenotypePermutations.RData")
-
-
-
-# optimize the ranks 
-
-#############
-### Pickrell 
-#############
-
-### (I) Gene Set Primary Immunodeficiency -> "05340"
-
-# original phenotype assignment 
-optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype <- 
-  PADOG_rankp_optim(geneset = "05340",
-                    Biobase::exprs(pickrell.eset), 
-                    pickrell.eset$gender, 
-                    metric = "rank")
-
-# save results
-save(optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype, 
-     file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations <- 
-  lapply(FUN = PADOG_rankp_optim, 
-         geneset =  "05340", 
-         expression_data = Biobase::exprs(pickrell.eset), 
-         metric = "rank",
-         X = phen_pickrell_list)
-
-# save results
-save(optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations, 
-     file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_PhenotypePermutations.RData")
-
-
-### (II) Gene Set "Graft vs host disease" -> "05332"
-
-# original phenotype assignment 
-optimRank_PADOG_GraftvsHost_Pickrell_originalphenotype <- PADOG_rankp_optim(geneset = "05332",
-                                                                         Biobase::exprs(pickrell.eset), 
-                                                                         pickrell.eset$gender, metric = "rank")
-
-# save results
-save(optimRank_PADOG_GraftvsHost_Pickrell_originalphenotype, 
-     file = "./Results/optimRank_PADOG_GraftvsHost_Pickrell_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimRank_PADOG_GraftvsHost_Pickrell_phenotypepermutations <- lapply(FUN = PADOG_rankp_optim, 
-                                                                  geneset =  "05332", 
-                                                                  expression_data = Biobase::exprs(pickrell.eset), 
-                                                                  metric = "rank",
-                                                                  X = phen_pickrell_list)
-
-save(optimRank_PADOG_GraftvsHost_Pickrell_phenotypepermutations, 
-     file = "./Results/optimRank_PADOG_GraftvsHost_Pickrell_PhenotypePermutations.RData")
-
-
-
-
-#############
-### Bottomly 
-#############
-
-# We use the same gene sets as for the pickrell data set as the gene sets provided 
-# for human and mouse are almost identical 
-
-### (I) Gene Set Primary Immunodeficiency -> " 	05340"
-
-# original phenotype assignment 
-optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype <- 
-  PADOG_rankp_optim(geneset = "05340",
-                    Biobase::exprs(bottomly.eset), 
-                    bottomly.eset$strain, 
-                    metric = "rank")
-
-# save results
-save(optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype, 
-     file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations <- 
-  lapply(FUN = PADOG_rankp_optim, 
-         geneset =  "05340", 
-         expression_data = Biobase::exprs(bottomly.eset), 
-         metric = "rank",
-         X = phen_bottomly_list)
-
-# save results
-save(optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations, 
-     file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_PhenotypePermutations.RData")
-
-
-### (II) Gene Set "Graft vs host disease" -> "05332"
-
-# original phenotype assignment 
-optimRank_PADOG_GraftvsHost_Bottomly_originalphenotype <- 
-  PADOG_rankp_optim(geneset = "05332",
-                    Biobase::exprs(bottomly.eset), 
-                    bottomly.eset$strain, 
-                    metric = "rank")
-
-# save results
-save(optimRank_PADOG_GraftvsHost_Bottomly_originalphenotype, 
-     file = "./Results/optimRank_PADOG_GraftvsHost_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations <- 
-  lapply(FUN = PADOG_rankp_optim, 
-         geneset =  "05332", 
-         expression_data = Biobase::exprs(bottomly.eset), 
-         metric = "rank",
-         X = phen_bottomly_list)
-
-save(optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations, 
-     file = "./Results/optimRank_PADOG_GraftvsHost_Bottomly_PhenotypePermutations.RData")
-
-
-
+# phen_pickrell_list <- list()
+# 
+# for(i in 1:ncol(phen_pickrell)){
+#  
+#  phen_pickrell_list[[i]] <- phen_pickrell[,i]
+#  
+# }
+# 
+# phen_bottomly_list <- list()
+# 
+# for(i in 1:ncol(phen_bottomly)){
+#  
+#  phen_bottomly_list[[i]] <- phen_bottomly[,i]
+#  
+# }
+# 
+# # optimize the adjusted p-values 
+# 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# ### (I) Gene Set Primary Immunodeficiency -> "05340"
+# 
+# # original phenotype assignment 
+# optimP_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype <- 
+#   PADOG_rankp_optim(geneset = "05340",
+#                     Biobase::exprs(pickrell.eset), 
+#                     pickrell.eset$gender, 
+#                     metric = "p_adj")
+# 
+# # save results
+# save(optimP_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype, 
+#    file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations <- 
+#                       lapply(FUN = PADOG_rankp_optim, 
+#                             geneset =  "05340", 
+#                             expression_data = Biobase::exprs(pickrell.eset), 
+#                             metric = "p_adj",
+#                             X = phen_pickrell_list)
+# 
+# # save results
+# save(optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations, 
+#    file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# ### (II) Gene Set "Graft vs host disease" -> "05332"
+# 
+# # original phenotype assignment 
+# optimP_PADOG_GraftvsHost_Pickrell_originalphenotype <- PADOG_rankp_optim(geneset = "05332",
+#                                                                          Biobase::exprs(pickrell.eset), 
+#                                                                          pickrell.eset$gender, metric = "p_adj")
+# 
+# # save results
+# save(optimP_PADOG_GraftvsHost_Pickrell_originalphenotype, 
+#    file = "./Results/optimP_PADOG_GraftvsHost_Pickrell_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations <- lapply(FUN = PADOG_rankp_optim, 
+#                                                                  geneset =  "05332", 
+#                                                                  expression_data = Biobase::exprs(pickrell.eset), 
+#                                                                  metric = "p_adj",
+#                                                                  X = phen_pickrell_list)
+# 
+# save(optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations, 
+#    file = "./Results/optimP_PADOG_GraftvsHost_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# # We use the same gene sets as for the pickrell data set as the gene sets provided 
+# # for human and mouse are almost identical 
+# 
+# ### (I) Gene Set Primary Immunodeficiency -> " 	05340"
+# 
+# # original phenotype assignment 
+# optimP_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype <- 
+#                         PADOG_rankp_optim(geneset = "05340",
+#                                         Biobase::exprs(bottomly.eset), 
+#                                         bottomly.eset$strain, 
+#                                         metric = "p_adj")
+# 
+# # save results
+# save(optimP_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype, 
+#    file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Bottomly_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimP_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations <- 
+#                               lapply(FUN = PADOG_rankp_optim, 
+#                                      geneset =  "05340", 
+#                                      expression_data = Biobase::exprs(bottomly.eset), 
+#                                      metric = "p_adj",
+#                                      X = phen_bottomly_list)
+# 
+# # save results
+# save(optimP_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations, 
+#    file = "./Results/optimP_PADOG_PrimaryImmunodeficiency_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# ### (II) Gene Set "Graft vs host disease" -> "05332"
+# 
+# # original phenotype assignment 
+# optimP_PADOG_GraftvsHost_Bottomly_originalphenotype <- 
+#   PADOG_rankp_optim(geneset = "05332",
+#                     Biobase::exprs(bottomly.eset), 
+#                     bottomly.eset$strain, 
+#                     metric = "p_adj")
+# 
+# # save results
+# save(optimP_PADOG_GraftvsHost_Bottomly_originalphenotype, 
+#    file = "./Results/optimP_PADOG_GraftvsHost_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimP_PADOG_GraftvsHost_Bottomly_phenotypepermutations <- 
+#                         lapply(FUN = PADOG_rankp_optim, 
+#                                geneset =  "05332", 
+#                                expression_data = Biobase::exprs(bottomly.eset), 
+#                                metric = "p_adj",
+#                                X = phen_bottomly_list)
+# 
+# save(optimP_PADOG_GraftvsHost_Bottomly_phenotypepermutations, 
+#    file = "./Results/optimP_PADOG_GraftvsHost_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# # optimize the ranks 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# ### (I) Gene Set Primary Immunodeficiency -> "05340"
+# 
+# # original phenotype assignment 
+# optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype <- 
+#   PADOG_rankp_optim(geneset = "05340",
+#                     Biobase::exprs(pickrell.eset), 
+#                     pickrell.eset$gender, 
+#                     metric = "rank")
+# 
+# # save results
+# save(optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_originalphenotype, 
+#      file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations <- 
+#   lapply(FUN = PADOG_rankp_optim, 
+#          geneset =  "05340", 
+#          expression_data = Biobase::exprs(pickrell.eset), 
+#          metric = "rank",
+#          X = phen_pickrell_list)
+# 
+# # save results
+# save(optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations, 
+#      file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# ### (II) Gene Set "Graft vs host disease" -> "05332"
+# 
+# # original phenotype assignment 
+# optimRank_PADOG_GraftvsHost_Pickrell_originalphenotype <- PADOG_rankp_optim(geneset = "05332",
+#                                                                          Biobase::exprs(pickrell.eset), 
+#                                                                          pickrell.eset$gender, metric = "rank")
+# 
+# # save results
+# save(optimRank_PADOG_GraftvsHost_Pickrell_originalphenotype, 
+#      file = "./Results/optimRank_PADOG_GraftvsHost_Pickrell_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimRank_PADOG_GraftvsHost_Pickrell_phenotypepermutations <- lapply(FUN = PADOG_rankp_optim, 
+#                                                                   geneset =  "05332", 
+#                                                                   expression_data = Biobase::exprs(pickrell.eset), 
+#                                                                   metric = "rank",
+#                                                                   X = phen_pickrell_list)
+# 
+# save(optimRank_PADOG_GraftvsHost_Pickrell_phenotypepermutations, 
+#      file = "./Results/optimRank_PADOG_GraftvsHost_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# # We use the same gene sets as for the pickrell data set as the gene sets provided 
+# # for human and mouse are almost identical 
+# 
+# ### (I) Gene Set Primary Immunodeficiency -> " 	05340"
+# 
+# # original phenotype assignment 
+# optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype <- 
+#   PADOG_rankp_optim(geneset = "05340",
+#                     Biobase::exprs(bottomly.eset), 
+#                     bottomly.eset$strain, 
+#                     metric = "rank")
+# 
+# # save results
+# save(optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_originalphenotype, 
+#      file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations <- 
+#   lapply(FUN = PADOG_rankp_optim, 
+#          geneset =  "05340", 
+#          expression_data = Biobase::exprs(bottomly.eset), 
+#          metric = "rank",
+#          X = phen_bottomly_list)
+# 
+# # save results
+# save(optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations, 
+#      file = "./Results/optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# ### (II) Gene Set "Graft vs host disease" -> "05332"
+# 
+# # original phenotype assignment 
+# optimRank_PADOG_GraftvsHost_Bottomly_originalphenotype <- 
+#   PADOG_rankp_optim(geneset = "05332",
+#                     Biobase::exprs(bottomly.eset), 
+#                     bottomly.eset$strain, 
+#                     metric = "rank")
+# 
+# # save results
+# save(optimRank_PADOG_GraftvsHost_Bottomly_originalphenotype, 
+#      file = "./Results/optimRank_PADOG_GraftvsHost_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations <- 
+#   lapply(FUN = PADOG_rankp_optim, 
+#          geneset =  "05332", 
+#          expression_data = Biobase::exprs(bottomly.eset), 
+#          metric = "rank",
+#          X = phen_bottomly_list)
+# 
+# save(optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations, 
+#      file = "./Results/optimRank_PADOG_GraftvsHost_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
 
 
 

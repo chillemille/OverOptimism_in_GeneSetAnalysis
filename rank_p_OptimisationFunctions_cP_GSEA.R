@@ -87,7 +87,7 @@ rankedList_cP <- function(DE_results, rankby, method){
 #of differentially expressed genes. 
 
 # this specifically means that, if a gene set does not contain any genes from the input list, function 
-#pvalue_rank returns integer(0) which cannot be compared to numerical number. 
+#pvalue_rank_GSEA returns integer(0) which cannot be compared to numerical number. 
 #To bypass this issue we set the rank resp. adjusted p-value to 0 if a gene set is not reported in the results.
 #p-value of a given gene set to Inf 
 
@@ -109,7 +109,7 @@ is.integer0 <- function(x){
 #note: function works for GO as well as KEGG as results table "GSEA_results" 
 #contains relevant information automatically
 #argument term must be in the form of a GO ID resp. KEGG ID 
-pvalue_rank <- function(term, GSEA_results, metric){
+pvalue_rank_GSEA <- function(term, GSEA_results, metric){
  
  if(metric == "rank"){
    
@@ -294,7 +294,7 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
                                                      organism = organism)
  
  # (iv) get metric value of given gene set 
- metricvalue_rankingmetrics[1] <- pvalue_rank(geneset, 
+ metricvalue_rankingmetrics[1] <- pvalue_rank_GSEA(geneset, 
                                               GSEA_results_DESeq2ranking, 
                                               metric)
  
@@ -329,7 +329,7 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
                                              organism = organism)
  
  # (iv) store metric value of given geneset 
- metricvalue_rankingmetrics[2] <- pvalue_rank(geneset, 
+ metricvalue_rankingmetrics[2] <- pvalue_rank_GSEA(geneset, 
                                               GSEA_results_limma, 
                                               metric)
  
@@ -388,7 +388,7 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
  
  
  # count number of differentially enriched gene sets resulting from each pre-filtering threshold
- metricvalue_prefilt <- unlist(lapply(FUN = pvalue_rank, 
+ metricvalue_prefilt <- unlist(lapply(FUN = pvalue_rank_GSEA, 
                                       X = GSEA_results_prefilt_list, 
                                       term = geneset, metric = metric))
  
@@ -446,7 +446,7 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
                                      organism = organism)
  
  # get metric value resulting from each pre-filtering threshold
- metricvalue_prefilt <- unlist(lapply(FUN = pvalue_rank, 
+ metricvalue_prefilt <- unlist(lapply(FUN = pvalue_rank_GSEA, 
                                       X = GSEA_results_prefilt_list, 
                                       term = geneset, 
                                       metric = metric))
@@ -525,7 +525,7 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
  }
  
  # get metric value for each of the ORA results 
- metricvalue_convID <- unlist(lapply(FUN = pvalue_rank, 
+ metricvalue_convID <- unlist(lapply(FUN = pvalue_rank_GSEA, 
                                      X = GSEA_results_convID_list, 
                                      term = geneset, 
                                      metric = metric))
@@ -560,7 +560,7 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
 
  #store metric_value in vector to compare to all exponents
  metricvalue_exp <- unlist(lapply(X = GSEA_results_exp_list, 
-                                  FUN = pvalue_rank, 
+                                  FUN = pvalue_rank_GSEA, 
                                   term = geneset, 
                                   metric = metric))
  
@@ -590,277 +590,277 @@ cP_GSEA_rankp_optim <- function(geneset,geneset_database, expression_data, pheno
 ################################################################################
 
 
-phen_pickrell_list <- list()
-
-for(i in 1:ncol(phen_pickrell)){
- 
- phen_pickrell_list[[i]] <- phen_pickrell[,i]
- 
-}
-
-phen_bottomly_list <- list()
-
-for(i in 1:ncol(phen_bottomly)){
- 
- phen_bottomly_list[[i]] <- phen_bottomly[,i]
- 
-}
-
-
-##############################################################################################
-### Optimization of the adjusted p-values ####################################################
-##############################################################################################
-
-
-#############
-### Pickrell 
-#############
-
-### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
-
-# original phenotype assignment 
-optimP_cP_GSEA_tcell_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
-                                                                       "GO", 
-                                                                       Biobase::exprs(pickrell.eset), 
-                                                                       pickrell.eset$gender, 
-                                                                       metric = "p_adj")
-
-# save results
-save(optimP_cP_GSEA_tcell_Pickrell_originalphenotype, 
- file = "./Results/optimP_cP_GSEA_tCell_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                              geneset = "GO:0002456", 
-                                                              geneset_database = "GO",
-                                                              expression_data = Biobase::exprs(pickrell.eset), 
-                                                              metric = "p_adj",
-                                                              X = phen_pickrell_list)
-# save results
-save(optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations, 
- file = "./Results/optimP_cP_GSEA_tCell_Pickrell_PhenotypePermutations.RData")
-
-
-
-### (II) Gene Set "Demethylation" -> GO:0070988
-
-# original phenotype assignment 
-optimP_cP_GSEA_Demethylation_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
-                                                                               "GO", 
-                                                                               Biobase::exprs(pickrell.eset), 
-                                                                               pickrell.eset$gender, 
-                                                                               metric = "p_adj")
-
-# save results
-save(optimP_cP_GSEA_Demethylation_Pickrell_originalphenotype, 
- file = "./Results/optimP_cP_GSEA_Demethylation_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                                      geneset = "GO:0070988", 
-                                                                      geneset_database = "GO",
-                                                                      expression_data = Biobase::exprs(pickrell.eset), 
-                                                                      metric = "p_adj",
-                                                                      X = phen_pickrell_list)
-# save results
-save(optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations, 
- file = "./Results/optimP_cP_GSEA_Demethylation_Pickrell_PhenotypePermutations.RData")
-
-
-
-
-
-
-#############
-### Bottomly 
-#############
-
-
-### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
-
-# original phenotype assignment 
-optimP_cP_GSEA_tCell_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
-                                                                       "GO", 
-                                                                        Biobase::exprs(bottomly.eset), 
-                                                                        bottomly.eset$strain, 
-                                                                        metric = "p_adj")
-
- # save results
-save(optimP_cP_GSEA_tCell_Bottomly_originalphenotype, 
-     file = "./Results/optimP_cP_GSEA_tCell_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimP_cP_GSEA_tCell_Bottomly_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                              geneset = "GO:0002456", 
-                                                              geneset_database = "GO",
-                                                              expression_data = Biobase::exprs(bottomly.eset), 
-                                                              metric = "p_adj",
-                                                              X = phen_bottomly_list)
-# save results 
-save(optimP_cP_GSEA_tCell_Bottomly_phenotypepermutations, 
- file = "./Results/optimP_cP_GSEA_tCell_Bottomly_PhenotypePermutations.RData")
-
-
-
-# vorher: 
-### (II) Gene set "Cellular Process: GO:0009987"
-# nachher: 
-### (II) Gene Set "Demethylation" -> GO:0070988
-
-# original phenotype assignment 
-optimP_cP_GSEA_Demethylation_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
-                                                                               "GO", 
-                                                                               Biobase::exprs(bottomly.eset), 
-                                                                               bottomly.eset$strain, 
-                                                                               metric = "p_adj")
-
-# save results
- save(optimP_cP_GSEA_Demethylation_Bottomly_originalphenotype, 
- file = "./Results/optimP_cP_GSEA_Demethylation_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimP_cP_GSEA_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                                      geneset = "GO:0070988", 
-                                                                      geneset_database = "GO",
-                                                                      expression_data = Biobase::exprs(bottomly.eset), 
-                                                                      metric = "p_adj",
-                                                                      X = phen_bottomly_list)
-# save results 
-save(optimP_cP_GSEA_Demethylation_Bottomly_Phenotypepermutations, 
- file = "./Results/optimP_cP_GSEA_Demethylation_Bottomly_PhenotypePermutations.RData")
-
-
-
-
-
-##############################################################################################
-### Optimization of the ranks ################################################################
-##############################################################################################
-
-
-
-#############
-### Pickrell 
-#############
-
-### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
-
-# original phenotype assignment 
-optimRank_tcell_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
-                                                                  "GO", 
-                                                                  Biobase::exprs(pickrell.eset), 
-                                                                  pickrell.eset$gender, metric = "rank")
-
-# save results
-save(optimRank_tcell_Pickrell_originalphenotype, 
- file = "./Results/optimRank_cP_GSEA_tCell_Pickrell_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimRank_tcell_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                         geneset = "GO:0002456", 
-                                                         geneset_database = "GO",
-                                                         expression_data = Biobase::exprs(pickrell.eset), 
-                                                         metric = "rank",
-                                                         X = phen_pickrell_list)
-# save results
-save(optimRank_tcell_Pickrell_phenotypepermutations, 
- file = "./Results/optimRank_cP_GSEA_tCell_Pickrell_PhenotypePermutations.RData")
-
-
-
-### (II) Gene Set "Demethylation" -> GO:0070988
-
-# original phenotype assignment 
-optimRank_Demethylation_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
-                                                                          "GO", 
-                                                                          Biobase::exprs(pickrell.eset), 
-                                                                          pickrell.eset$gender, 
-                                                                          metric = "rank")
-
-# save results
-save(optimRank_Demethylation_Pickrell_originalphenotype, 
- file = "./Results/optimRank_cP_GSEA_Demethylation_OriginalPhenotype.RData")
-
-# 10 random phenotype permutations
-optimRank_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                                 geneset = "GO:0070988", 
-                                                                 geneset_database = "GO",
-                                                                 expression_data = Biobase::exprs(pickrell.eset), 
-                                                                 metric = "rank",
-                                                                 X = phen_pickrell_list)
-# save results
-save(optimRank_Demethylation_Pickrell_phenotypepermutations, 
- file = "./Results/optimRank_cP_GSEA_Demethylation_Pickrell_PhenotypePermutations.RData")
-
-
-
-
-
-
-#############
-### Bottomly 
-#############
-
-### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
-
-# original phenotype assignment 
-optimRank_tCell_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
-                                                                  "GO", 
-                                                                  Biobase::exprs(bottomly.eset), 
-                                                                  bottomly.eset$strain, 
-                                                                  metric = "rank")
-
-# save results
-save(optimRank_tCell_Bottomly_originalphenotype, 
- file = "./Results/optimRank_cP_GSEA_tCell_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimRank_tCell_Bottomly_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                         geneset = "GO:0002456", 
-                                                         geneset_database = "GO",
-                                                         expression_data = Biobase::exprs(bottomly.eset), 
-                                                         metric = "rank",
-                                                         X = phen_bottomly_list)
-# save results 
-save(optimRank_tCell_Bottomly_phenotypepermutations, 
- file = "./Results/optimRank_cP_GSEA_tCell_Bottomly_PhenotypePermutations.RData")
-
-
-
-### (II) Gene Set "Demethylation" -> GO:0070988
-
-
-# original phenotype assignment 
-optimRank_Demethylation_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
-                                                                          "GO", 
-                                                                          Biobase::exprs(bottomly.eset), 
-                                                                          bottomly.eset$strain, 
-                                                                          metric = "rank")
-
-# save results
-save(optimRank_Demethylation_Bottomly_originalphenotype, 
- file = "./Results/optimRank_cP_GSEA_Demethylation_Bottomly_OriginalPhenotype.RData")
-
-
-# 10 random phenotype permutations
-optimRank_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
-                                                                 geneset = "GO:0070988", 
-                                                                 geneset_database = "GO",
-                                                                 expression_data = Biobase::exprs(bottomly.eset), 
-                                                                 metric = "rank",
-                                                                 X = phen_bottomly_list)
-# save results 
-save(optimRank_Demethylation_Bottomly_Phenotypepermutations, 
- file = "./Results/optimRank_cP_GSEA_Demethylation_Bottomly_PhenotypePermutations.RData")
-
-
-
-###
-
-
-
-
-
+# phen_pickrell_list <- list()
+# 
+# for(i in 1:ncol(phen_pickrell)){
+#  
+#  phen_pickrell_list[[i]] <- phen_pickrell[,i]
+#  
+# }
+# 
+# phen_bottomly_list <- list()
+# 
+# for(i in 1:ncol(phen_bottomly)){
+#  
+#  phen_bottomly_list[[i]] <- phen_bottomly[,i]
+#  
+# }
+# 
+# 
+# ##############################################################################################
+# ### Optimization of the adjusted p-values ####################################################
+# ##############################################################################################
+# 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# ### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
+# 
+# # original phenotype assignment 
+# optimP_cP_GSEA_tcell_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
+#                                                                        "GO", 
+#                                                                        Biobase::exprs(pickrell.eset), 
+#                                                                        pickrell.eset$gender, 
+#                                                                        metric = "p_adj")
+# 
+# # save results
+# save(optimP_cP_GSEA_tcell_Pickrell_originalphenotype, 
+#  file = "./Results/optimP_cP_GSEA_tCell_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                               geneset = "GO:0002456", 
+#                                                               geneset_database = "GO",
+#                                                               expression_data = Biobase::exprs(pickrell.eset), 
+#                                                               metric = "p_adj",
+#                                                               X = phen_pickrell_list)
+# # save results
+# save(optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations, 
+#  file = "./Results/optimP_cP_GSEA_tCell_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# ### (II) Gene Set "Demethylation" -> GO:0070988
+# 
+# # original phenotype assignment 
+# optimP_cP_GSEA_Demethylation_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
+#                                                                                "GO", 
+#                                                                                Biobase::exprs(pickrell.eset), 
+#                                                                                pickrell.eset$gender, 
+#                                                                                metric = "p_adj")
+# 
+# # save results
+# save(optimP_cP_GSEA_Demethylation_Pickrell_originalphenotype, 
+#  file = "./Results/optimP_cP_GSEA_Demethylation_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                                       geneset = "GO:0070988", 
+#                                                                       geneset_database = "GO",
+#                                                                       expression_data = Biobase::exprs(pickrell.eset), 
+#                                                                       metric = "p_adj",
+#                                                                       X = phen_pickrell_list)
+# # save results
+# save(optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations, 
+#  file = "./Results/optimP_cP_GSEA_Demethylation_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# 
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# 
+# ### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
+# 
+# # original phenotype assignment 
+# optimP_cP_GSEA_tCell_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
+#                                                                        "GO", 
+#                                                                         Biobase::exprs(bottomly.eset), 
+#                                                                         bottomly.eset$strain, 
+#                                                                         metric = "p_adj")
+# 
+#  # save results
+# save(optimP_cP_GSEA_tCell_Bottomly_originalphenotype, 
+#      file = "./Results/optimP_cP_GSEA_tCell_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimP_cP_GSEA_tCell_Bottomly_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                               geneset = "GO:0002456", 
+#                                                               geneset_database = "GO",
+#                                                               expression_data = Biobase::exprs(bottomly.eset), 
+#                                                               metric = "p_adj",
+#                                                               X = phen_bottomly_list)
+# # save results 
+# save(optimP_cP_GSEA_tCell_Bottomly_phenotypepermutations, 
+#  file = "./Results/optimP_cP_GSEA_tCell_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# # vorher: 
+# ### (II) Gene set "Cellular Process: GO:0009987"
+# # nachher: 
+# ### (II) Gene Set "Demethylation" -> GO:0070988
+# 
+# # original phenotype assignment 
+# optimP_cP_GSEA_Demethylation_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
+#                                                                                "GO", 
+#                                                                                Biobase::exprs(bottomly.eset), 
+#                                                                                bottomly.eset$strain, 
+#                                                                                metric = "p_adj")
+# 
+# # save results
+#  save(optimP_cP_GSEA_Demethylation_Bottomly_originalphenotype, 
+#  file = "./Results/optimP_cP_GSEA_Demethylation_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimP_cP_GSEA_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                                       geneset = "GO:0070988", 
+#                                                                       geneset_database = "GO",
+#                                                                       expression_data = Biobase::exprs(bottomly.eset), 
+#                                                                       metric = "p_adj",
+#                                                                       X = phen_bottomly_list)
+# # save results 
+# save(optimP_cP_GSEA_Demethylation_Bottomly_Phenotypepermutations, 
+#  file = "./Results/optimP_cP_GSEA_Demethylation_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# 
+# ##############################################################################################
+# ### Optimization of the ranks ################################################################
+# ##############################################################################################
+# 
+# 
+# 
+# #############
+# ### Pickrell 
+# #############
+# 
+# ### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
+# 
+# # original phenotype assignment 
+# optimRank_tcell_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
+#                                                                   "GO", 
+#                                                                   Biobase::exprs(pickrell.eset), 
+#                                                                   pickrell.eset$gender, metric = "rank")
+# 
+# # save results
+# save(optimRank_tcell_Pickrell_originalphenotype, 
+#  file = "./Results/optimRank_cP_GSEA_tCell_Pickrell_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimRank_tcell_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                          geneset = "GO:0002456", 
+#                                                          geneset_database = "GO",
+#                                                          expression_data = Biobase::exprs(pickrell.eset), 
+#                                                          metric = "rank",
+#                                                          X = phen_pickrell_list)
+# # save results
+# save(optimRank_tcell_Pickrell_phenotypepermutations, 
+#  file = "./Results/optimRank_cP_GSEA_tCell_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# ### (II) Gene Set "Demethylation" -> GO:0070988
+# 
+# # original phenotype assignment 
+# optimRank_Demethylation_Pickrell_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
+#                                                                           "GO", 
+#                                                                           Biobase::exprs(pickrell.eset), 
+#                                                                           pickrell.eset$gender, 
+#                                                                           metric = "rank")
+# 
+# # save results
+# save(optimRank_Demethylation_Pickrell_originalphenotype, 
+#  file = "./Results/optimRank_cP_GSEA_Demethylation_OriginalPhenotype.RData")
+# 
+# # 10 random phenotype permutations
+# optimRank_Demethylation_Pickrell_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                                  geneset = "GO:0070988", 
+#                                                                  geneset_database = "GO",
+#                                                                  expression_data = Biobase::exprs(pickrell.eset), 
+#                                                                  metric = "rank",
+#                                                                  X = phen_pickrell_list)
+# # save results
+# save(optimRank_Demethylation_Pickrell_phenotypepermutations, 
+#  file = "./Results/optimRank_cP_GSEA_Demethylation_Pickrell_PhenotypePermutations.RData")
+# 
+# 
+# 
+# 
+# 
+# 
+# #############
+# ### Bottomly 
+# #############
+# 
+# ### (I) Gene Set "t-cell mediated immunity" -> GO:0002456
+# 
+# # original phenotype assignment 
+# optimRank_tCell_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0002456",
+#                                                                   "GO", 
+#                                                                   Biobase::exprs(bottomly.eset), 
+#                                                                   bottomly.eset$strain, 
+#                                                                   metric = "rank")
+# 
+# # save results
+# save(optimRank_tCell_Bottomly_originalphenotype, 
+#  file = "./Results/optimRank_cP_GSEA_tCell_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimRank_tCell_Bottomly_phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                          geneset = "GO:0002456", 
+#                                                          geneset_database = "GO",
+#                                                          expression_data = Biobase::exprs(bottomly.eset), 
+#                                                          metric = "rank",
+#                                                          X = phen_bottomly_list)
+# # save results 
+# save(optimRank_tCell_Bottomly_phenotypepermutations, 
+#  file = "./Results/optimRank_cP_GSEA_tCell_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# ### (II) Gene Set "Demethylation" -> GO:0070988
+# 
+# 
+# # original phenotype assignment 
+# optimRank_Demethylation_Bottomly_originalphenotype <- cP_GSEA_rankp_optim(geneset = "GO:0070988",
+#                                                                           "GO", 
+#                                                                           Biobase::exprs(bottomly.eset), 
+#                                                                           bottomly.eset$strain, 
+#                                                                           metric = "rank")
+# 
+# # save results
+# save(optimRank_Demethylation_Bottomly_originalphenotype, 
+#  file = "./Results/optimRank_cP_GSEA_Demethylation_Bottomly_OriginalPhenotype.RData")
+# 
+# 
+# # 10 random phenotype permutations
+# optimRank_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = cP_GSEA_rankp_optim, 
+#                                                                  geneset = "GO:0070988", 
+#                                                                  geneset_database = "GO",
+#                                                                  expression_data = Biobase::exprs(bottomly.eset), 
+#                                                                  metric = "rank",
+#                                                                  X = phen_bottomly_list)
+# # save results 
+# save(optimRank_Demethylation_Bottomly_Phenotypepermutations, 
+#  file = "./Results/optimRank_cP_GSEA_Demethylation_Bottomly_PhenotypePermutations.RData")
+# 
+# 
+# 
+# ###
+# 
+# 
+# 
+# 
+# 
