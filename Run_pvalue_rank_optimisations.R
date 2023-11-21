@@ -941,9 +941,6 @@ save(optimP_cP_GSEA_tCell_Bottomly_phenotypepermutations,
 
 
 
-# vorher: 
-### (II) Gene set "Cellular Process: GO:0009987"
-# nachher: 
 ### (II) Gene Set "Demethylation" -> GO:0070988
 
 # original phenotype assignment 
