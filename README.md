@@ -10,7 +10,7 @@ This repository allows you to
 
 **Note** that all of the scripts are based on the working directory you have to specifiy at the beginning.
 
-## **Preparation of the gene expression data for the optimizations**
+## Preparation of the gene expression data for the optimizations
 
 This is the first script to run when reproducing the results.
 
@@ -20,12 +20,12 @@ This is the first script to run when reproducing the results.
   
   The generated random phenotype permutations and the gene expression data set "bottomly" are additionally provided in the folder **GeneExpression_data** in this repository. These are then sourced in the subsequent functions. 
  
-## **Preparation of the gene expression data for the GSA methods**
+## Preparation of the gene expression data for the GSA methods
 
  - **PreProcessing_Functions.R**: contains functions provided in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
  - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the methods.
  
-## **Define functions required to run the optimisations **
+## Define optimisation functions
 The following scripts were generated for all methods implemented in *R*, i.e. *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA. These contain all functions required to perform the optimization for the respective computational GSA method. The scripts are then sourced when running the optimisations in the next step. 
   
 - **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1).
@@ -33,17 +33,19 @@ The following scripts were generated for all methods implemented in *R*, i.e. *G
 
 For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, we have prepared separate folders (of the same name as the respective method). For their structures see below. 
 
-# **Run the optimisations **
-Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA based on the defined functions: 
+# Run the optimisations
+Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
-- **Run_n_DEGS_optimisations.R**: Run optimisations of the number of differentially enriched gene sets
-- **Run_pvalue_rank_optimisations.R**: Run optimisations of the adjusted p-value and rank of the specific gene sets
+- **Run_n_DEGS_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
+- **Run_pvalue_rank_optimisations.R**: script to run optimisations of the adjusted p-value and rank of the specific gene sets
+
+Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally. 
 
 
-## **DAVID**
+## DAVID
 
 
-## **GSEA (web-based application)**
+## GSEA (web-based application)
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
@@ -70,10 +72,10 @@ Note that the optimization of GSEA was carried out over several months and by ha
   In addition to the screenshots, the optimization processes are documented in the respective *R* scripts. 
 
 
-## **GSEAPreranked**
+## GSEAPreranked
 
 
-## **Generate the results illustrations as shown in the paper**
+## Generate the results illustrations as shown in the paper
 - folder **Results_illustrations**: contains the *R* codes to generate the results images from the paper (and entails the images themselves)
     - **Struktur muss noch beschrieben werden, wenn alles steht**
  
