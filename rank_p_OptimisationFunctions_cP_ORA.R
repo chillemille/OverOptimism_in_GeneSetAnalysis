@@ -59,22 +59,17 @@ is.integer0 <- function(x){
 pvalue_rank_ORA <- function(term, ora_results, metric){
  
 if(metric == "rank"){
- # if the ora_result is NULL, this means that no gene set is reported as differentially enriched
- # note that ORA only reports those gene sets from the geneset database that have 
- # at least one differentially enriched gene sets from the gene set database 
- # We therefore cannot know whether the gene set was contained by the gene set database or not
- # we then set the rank of the given gene set to the worst possible value, i.e. 1.2
-  
-  # there are also cases when none of the differentially expressed genes (i.e. input)
-  # can be matched to a gene set (in this case, differential enrichment cannot be 
-  # precluded either) -> set rank to 1.2 
+ # if the ora_result is NULL, this means that either the input vector for ORA was empty or
+  # that none of the genes from the input could be mapped to a gene set from the gene set 
+  # database. Consequently, NO gene set can be detected as differentially enriched 
  
  if(is.null(ora_results)){
   
- return(1.2)
+ return(1)
   
  } else if(nrow(ora_results) == 0){
-
+   # No gene set was detected as differentially enriched. From this output, we do not know 
+   # whether the gene set is even contained by the gene set database 
 
   return(1.2)
 
