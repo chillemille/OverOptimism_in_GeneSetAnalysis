@@ -129,7 +129,7 @@ pvalue_rank_GSEA <- function(term, GSEA_results, metric){
    # was not contained in the results 
     return(ifelse(!is.integer0(grep(term, GSEA_results$ID)), 
                rank,
-               1.2))
+               1))
  
  }else if(metric == "p_adj"){
  
@@ -139,7 +139,7 @@ pvalue_rank_GSEA <- function(term, GSEA_results, metric){
  #return respective adjusted p-value
  return(ifelse(!is.integer0(ind_row),
                GSEA_results$p.adjust[ind_row], 
-               1.2))
+               1))
  #note: in the case that a gene set is not reported in the results table of GSEA_results, 
  #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
  #meaning that each adaption leading to a an adjusted p-value in (0,1] is considered an improvement

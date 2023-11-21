@@ -119,7 +119,7 @@ pvalue_rank_padog <- function(term, padog_results, metric){
   # was not contained in the results 
   return(ifelse(!is.integer0(grep(term, padog_results$ID)), 
          rank, 
-         1.2))
+         1))
    
   #note: in the case that a gene set is not reported in the results table of padog_results,
   #ifelse() in combination with !is.integer0() then ensures that a rank of Inf is returned,
@@ -133,7 +133,7 @@ pvalue_rank_padog <- function(term, padog_results, metric){
   #return respective adjusted p-value
   return(ifelse(!is.integer0(ind_row), 
          padog_results$p_adj[ind_row], 
-         1.2))
+         1))
   
   #note: in the case that a gene set is not reported in the results table of padog_results, 
   #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,

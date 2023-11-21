@@ -95,7 +95,7 @@ if(metric == "rank"){
  #return row number of respective gene set
  return(ifelse(!is.integer0(grep(term, ora_results$ID)), 
                rank, 
-               1.2))
+               1))
  # note: in the case that a gene set is not reported in the results table of ora_results,
  # ifelse() in combination with !is.integer0() then ensures that a rank of 1.2 is returned,
  # meaning that each adaption resulting in the gene set appearing in the results leads
@@ -126,7 +126,7 @@ if(metric == "rank"){
  #return respective adjusted p-value
  return(ifelse(!is.integer0(ind_row), 
                ora_results$p.adjust[ind_row], 
-               1.2))
+               1))
  #note: in the case that a gene set is not reported in the results table of ora_results, 
  #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
  #meaning that each adaption leading to a an adjusted p-value in (0,1] is considered an improvement
