@@ -97,7 +97,9 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
     ind_row <- grep(term, goseq_results$category)
     
     #return respective adjusted p-value
-    return(ifelse(!is.integer0(ind_row),goseq_results$p_adj_overrep[ind_row], 1))
+    return(ifelse(!is.integer0(ind_row),
+                  goseq_results$p_adj_overrep[ind_row], 
+                  1.2))
     #note: in the case that a gene set is not reported in the results table of goseq_results, 
     #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value/rank of 1 is returned,
     #meaning that each adaption leading to a an adjusted p-value/rank in (0,1) is considered an improvement
