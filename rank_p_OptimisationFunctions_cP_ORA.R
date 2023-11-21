@@ -68,10 +68,9 @@ if(metric == "rank"){
  return(1)
   
  } else if(nrow(ora_results) == 0){
-   # No gene set was detected as differentially enriched. From this output, we do not know 
-   # whether the gene set is even contained by the gene set database 
+   # No gene set was detected as differentially enriched.  
 
-  return(1.2)
+  return(1)
 
  } else if(nrow(ora_results) != 0){
   # the ORA results are non-empty, i.e. there is at least one differentially 
