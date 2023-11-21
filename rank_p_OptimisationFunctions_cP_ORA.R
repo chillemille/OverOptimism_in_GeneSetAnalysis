@@ -112,7 +112,7 @@ if(metric == "rank"){
  } else if(nrow(ora_results) == 0){
   
   
-  return(1.2)
+  return(1)
  }
  
  if(nrow(ora_results) != 0){
