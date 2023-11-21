@@ -602,7 +602,6 @@ save(optimP_cP_ORA_tcell_Pickrell_phenotypepermutations,
 ### (II) Gene Set "Demethylation" -> GO:0070988
 ############################################################
 
-# Note: in other GSA tools, demethylation might also be identified by GO:0080111
 
 # original phenotype assignment 
 optimP_cP_ORA_Demethylation_Pickrell_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
@@ -633,51 +632,59 @@ save(optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations,
 ### Bottomly 
 #############
 
-### (I) Gene set "Metabolic Process: GO:0008152"
+### (I) Gene set "t Cell mediated immunity: GO:0002456"
 
 # original phenotype assignment 
-optimP_cP_ORA_MetabolicProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0008152","p_adj", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+optimP_cP_ORA_tCell_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0002456",
+                                                                        "p_adj", 
+                                                                        Biobase::exprs(bottomly.eset), 
+                                                                        bottomly.eset$strain, 
+                                                                        "GO")
 
 # save results
-save(optimP_cP_ORA_MetabolicProcess_Bottomly_originalphenotype, 
-     file = "./Results/optimP_ORA_MetabolicProcess_Bottomly_OriginalPhenotype.RData")
+save(optimP_cP_ORA_tCell_Bottomly_originalphenotype, 
+     file = "./Results/optimP_ORA_tCell_Bottomly_OriginalPhenotype.RData")
 
 
 # 10 random phenotype permutations
-optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                        geneset = "GO:0008152", 
+optimP_cP_ORA_tCell_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+                                                                        geneset = "GO:0002456", 
                                                                         metric = "p_adj",
                                                                         expression_data = Biobase::exprs(bottomly.eset), 
                                                                         geneset_database = "GO",
                                                                         X = phen_bottomly_list)
 
 # save results 
-save(optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations, 
-     file = "./Results/optimP_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
+save(optimP_cP_ORA_tCell_Bottomly_phenotypepermutations, 
+     file = "./Results/optimP_ORA_tCell_Bottomly_PhenotypePermutations.RData")
 
 
 
 
-### (II) Gene set "Cellular Process: GO:0009987"
+### (II) Gene set "Demethylation: "GO:0070988"
 
 # original phenotype assignment 
-optimP_cP_ORA_CellularProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0009987",metric = "p_adj", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+optimP_cP_ORA_Demethylation_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
+                                                                                metric = "p_adj", 
+                                                                                Biobase::exprs(bottomly.eset), 
+                                                                                bottomly.eset$strain, 
+                                                                                "GO")
 
 # save results
-save(optimP_cP_ORA_CellularProcess_Bottomly_originalphenotype, 
-     file = "./Results/optimP_ORA_CellularProcess_Bottomly_OriginalPhenotype.RData")
+save(optimP_cP_ORA_Demethylation_Bottomly_originalphenotype, 
+     file = "./Results/optimP_ORA_Demethylation_Bottomly_OriginalPhenotype.RData")
 
 
 # 10 random phenotype permutations
-optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                       geneset = "GO:0009987", 
+optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+                                                                       geneset = "GO:0070988", 
                                                                        metric = "p_adj",
                                                                        expression_data = Biobase::exprs(bottomly.eset), 
                                                                        geneset_database = "GO",
                                                                        X = phen_bottomly_list)
 # save results 
-save(optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations, 
-     file = "./Results/optimP_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
+save(optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations, 
+     file = "./Results/optimP_ORA_Demethylation_Bottomly_PhenotypePermutations.RData")
 
 
 # optimization (i.e. minimization of the ranks)
@@ -753,51 +760,59 @@ save(optimRank_cP_ORA_Demethylation_Pickrell_phenotypepermutations,
 ### Bottomly 
 #############
 
-### (I) Gene set "Metabolic Process: GO:0008152"
+### (I) Gene set "t Cell mediated immunity: "GO:0002456"
 
 # original phenotype assignment 
-optimRank_cP_ORA_MetabolicProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0008152","rank", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+optimRank_cP_ORA_tCell_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0002456",
+                                                                           "rank", 
+                                                                           Biobase::exprs(bottomly.eset), 
+                                                                           bottomly.eset$strain, 
+                                                                           "GO")
 
 # save results
-save(optimRank_cP_ORA_MetabolicProcess_Bottomly_originalphenotype, 
-     file = "./Results/optimRank_ORA_MetabolicProcess_Bottomly_OriginalPhenotype.RData")
+save(optimRank_cP_ORA_tCell_Bottomly_originalphenotype, 
+     file = "./Results/optimRank_ORA_tCell_Bottomly_OriginalPhenotype.RData")
 
 
 # 10 random phenotype permutations
-optimRank_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                           geneset = "GO:0008152", 
+optimRank_cP_ORA_tCell_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+                                                                           geneset = "GO:0002456", 
                                                                            metric = "rank",
                                                                            expression_data = Biobase::exprs(bottomly.eset), 
                                                                            geneset_database = "GO",
                                                                            X = phen_bottomly_list)
 
 # save results 
-save(optimRank_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations, 
-     file = "./Results/optimRank_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
+save(optimRank_cP_ORA_tCell_Bottomly_phenotypepermutations, 
+     file = "./Results/optimRank_ORA_tCell_Bottomly_PhenotypePermutations.RData")
 
 
 
 
-### (II) Gene set "Cellular Process: GO:0009987"
+### (II) Gene set "Demethylation: "GO:0070988"
 
 # original phenotype assignment 
-optimRank_cP_ORA_CellularProcess_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0009987",metric = "rank", Biobase::exprs(bottomly.eset), bottomly.eset$strain, "GO")
+optimRank_cP_ORA_Demethylation_Bottomly_originalphenotype <- ORA_rank_pvalue_optim(geneset = "GO:0070988",
+                                                                                   metric = "rank", 
+                                                                                   Biobase::exprs(bottomly.eset), 
+                                                                                   bottomly.eset$strain, 
+                                                                                   "GO")
 
 # save results
-save(optimRank_cP_ORA_CellularProcess_Bottomly_originalphenotype, 
-     file = "./Results/optimRank_ORA_CellularProcess_Bottomly_OriginalPhenotype.RData")
+save(optimRank_cP_ORA_Demethylation_Bottomly_originalphenotype, 
+     file = "./Results/optimRank_ORA_Demethylation_Bottomly_OriginalPhenotype.RData")
 
 
 # 10 random phenotype permutations
-optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
-                                                                          geneset = "GO:0009987", 
+optimRank_cP_ORA_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim, 
+                                                                          geneset = "GO:0070988", 
                                                                           metric = "rank",
                                                                           expression_data = Biobase::exprs(bottomly.eset), 
                                                                           geneset_database = "GO",
                                                                           X = phen_bottomly_list)
 # save results 
-save(optimRank_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations, 
-     file = "./Results/optimRank_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
+save(optimRank_cP_ORA_Demethylation_Bottomly_Phenotypepermutations, 
+     file = "./Results/optimRank_ORA_Demethylation_Bottomly_PhenotypePermutations.RData")
 
 
 
