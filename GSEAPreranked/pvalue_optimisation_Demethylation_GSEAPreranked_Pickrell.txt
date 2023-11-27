@@ -1,0 +1,1576 @@
+################################################################################
+### (I) Full Optimization Process (Pre-Processing and Internal Parameters) #####
+################################################################################
+
+
+################################################################################
+### Original Phenotypes ########################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative : limma -> adj. p-value = 0.7741705
+# ->> proceed with alternative ranking generated with limma 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.5797117
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.833569
+
+
+### -> final results: adj. p-value = 0.5797117
+# achieved with 
+# ALTERNATIVE DE method limma
+# ALTERNATIVE exponent 0
+
+
+
+################################################################################
+### Random Phenotype Permutations ##############################################
+################################################################################
+
+
+
+################################################################################
+### Phenotype Permutation 1  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.9515698
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# return to default ranking generated with DESeq2
+
+
+
+#########
+# 4. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.7741079
+# alternative 2: exponent 1.5 -> adj. p-value = 0.9991246
+# alternative 3: exponent 2 -> adj. p-value = 0.93343735
+
+
+
+### -> final results: adj. p-value = 0.7741079
+# achieved with ALTERNATIVE exponent 0
+
+
+
+################################################################################
+### Phenotype Permutation 2  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> ad. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# return to default ranking generated with DESeq2 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.79784477
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.9145065
+
+
+# ->> final results: adj. p-value = 0.79784477
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 3  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p.value = 0.8563729
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.7663056
+# -> proceed with alternative ranking generated using limma
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.82038635
+# alternative 2: exponent 1.5 -> adj. p-value = 0.57265633
+# alternative 3: exponent 2 -> adj. p-value = 0.9501285
+
+### final results: adj. p-value = 0.57265633
+# alternative ranking limma 
+# alternative exponent 1.5  
+
+
+
+################################################################################
+### Phenotype Permutation 4  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj p-value = 0.7072792
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.40634802
+# proceed with alternative ranking generated using limma 
+
+
+#########
+# 4. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.41356856
+# alternative 2: exponent 1.5 -> adj. p-value = 0.21785524
+# alternative 3: exponent 2 -> adj. p-value = 0.5714616
+
+# final results: adj. p-value = 0.21785524
+# achieved with 
+# ALTERNATIVE ranking using limma 
+# ALTERNATIVE exponent 1.5
+
+
+
+################################################################################
+### Phenotype Permutation 5  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# -> return to default ranking generated using DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.8207579
+# alternative 2: exponent 1.5 -> adj. p-value = 0.898171
+# alternative 3: exponent 2 -> adj. p-value = 0.9855435
+
+
+### final results: adj. p-value = 0.8207579
+# -> achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 6  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.98473054
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.925139
+#-> proceed with alternative ranking generated using limma 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.9058178
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.96148
+
+# final results: adj. p-value = 0.9058178
+# achieved with 
+# ALTERNATIVE DE method limma 
+# ALTERNATIVE exponent 0
+
+
+################################################################################
+### Phenotype Permutation 7  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.7614166
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.9976935
+# return to default ranking generated with DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.44686085
+# alternative 2: exponent 1.5 -> adj. p-value = 0.67056024
+# alternative 3: exponent 2 -> adj. p-value = 0.8624121
+
+
+# final results: adj. p-value = 0.44686085
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 8  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.9899683
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# -> return to default ranking generated with DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.914528
+# alternative 2: exponent 1.5 -> adj. p-value = 0.99306244
+# alternative 3: exponent 2 -> adj. p-value = 0.9867912
+
+
+### final results: adj. p-value = 0.914528
+# achieved with ALTERNATIVE exponent 0
+
+
+
+################################################################################
+### Phenotype Permutation 9  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.9928293
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# -> return to default ranking generated with DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.9904498
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 1
+
+### ->> final results: final results: adj. p-value = 0.9904498
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 10  ##################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# ->  adj. p-value = 0.99997205
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.6236835
+#-> proceed with alternative ranking generated using limma
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 ->  adj. p-value = 0.18632615
+# alternative 2: exponent 1.5 -> adj. p-value = 0.45285654
+# alternative 3: exponent 2 -> adj. p-value = 0.9555865
+
+
+### -> final results: adj. p-value = 0.18632615
+# achieved with 
+# ALTERNATIVE DE method limma 
+# ALTERNATIVE exponent 0
+
+
+
+
+
+################################################################################
+### (II) Optimization of Internal Parameters ###################################
+################################################################################
+
+
+
+################################################################################
+### Original Phenotypes ########################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 194 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 12 DEGS 
+# ->> return to default geneset database GO (BP) 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 67 + 400 = 467 DEGS 
+# alternative 2: exponent 1.5 -> 0 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+### -> final results: 467 DEGS 
+### -> achieved with ALTERNATIVE exponent 0         
+
+
+################################################################################
+### Phenotype Permutation 1 ####################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 18 + 30 = 48 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 1 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 33 + 37 = 70 DEGS 
+# alternative 2: exponent 1.5 -> 6 + 6 = 12 DEGS 
+# alternative 3: exponent 2 -> 11 DEGS 
+
+# ->> final results: 48 DEGS 
+# optimal parameter configuration coincides with default configuration 
+# number of differentially enriched gene sets cannot be increased 
+
+
+
+################################################################################
+### Phenotype Permutation 2 ####################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 79 + 172 = 251 DEGS 
+
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 18 + 13 = 31 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 471 + 204 = 675 DEGS
+# alternative 2: exponent 1.5 -> 0 + 57 DEGS 
+# alternative 3: exponent 2 -> 45 + 70 = 115 DEGS 
+
+# ->> final results: 675 DEGS 
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 3 ####################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 1+ 37 = 38 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 10 DEGS 
+# ->> return to default gene set database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 21 + 264 = 285 DEGS 
+# alternative 2: exponent 1.5 -> 16 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+################################################################################
+### Phenotype Permutation 4 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 31 + 17 = 48 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 14 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 98 + 622 = 720 DEGS 
+# alternative 2: exponent 1.5 -> 58 DEGS 
+# alternative 3: exponent 2 -> 7 DEGS 
+
+
+### -> final results: 720 DEGS 
+### achieved with ALERNATIVE exponent 0 
+
+
+################################################################################
+### Phenotype Permutation 5 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 12 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 7 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 65 + 72 = 137 DEGS
+# alternative 2: exponent 1.5 -> 0 DEGS 
+# alternative 3: exponent 2 -> 1 DEGS 
+
+
+### -> final results: 137 DEGS 
+# achieved with ALTERNATIVE exponent 0 
+
+
+################################################################################
+### Phenotype Permutation 6 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 1 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 3 DEGS 
+# ->> proceed with geneset database KEGG 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 5 DEGS
+# alternative 2: exponent 1.5 -> 10 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+
+### -> final results: 10 DEGS 
+# achieved with 
+# ALTERNATIVE geneset database KEGG 
+# ALTERNATIVE exponent 1.5 
+
+
+
+
+################################################################################
+### Phenotype Permutation 7 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 33 + 77 = 110 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 10 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 5 + 243 = 248 DEGS
+# alternative 2: exponent 1.5 -> 2 + 57 = 59 DEGS 
+# alternative 3: exponent 2 -> 63 + 22 = 85 DEGS
+
+# ->> final results: 248 DEGS
+# achieved with ALTERNATIVE exponent 0 
+
+
+################################################################################
+### Phenotype Permutation 8 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 1 DEGS
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 13 DEGS
+# ->> proceed with geneset database KEGG 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 4 DEGS
+# alternative 2: exponent 1.5 -> 9 DEGS 
+# alternative 3: exponent 2 -> 11 DEGS
+
+# -> final results: 13 DEGS
+# achieved with ALTERNATIVE geneset database KEGG 
+
+
+################################################################################
+### Phenotype Permutation 9 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 27 + 2 = 27 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 4 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 140 + 33 = 173 DEGS
+# alternative 2: exponent 1.5 -> 8 DEGS 
+# alternative 3: exponent 2 -> 1 DEGS 
+
+
+################################################################################
+### Phenotype Permutation 10 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 19 + 6 = 25 DEGS 
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 9 + 3 = 12 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 39 + 19 = 58 DEGS
+# alternative 2: exponent 1.5 -> 3 + 6 = 9 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+### -> final results: 58 DEGS 
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################
+### (I) Full Optimization Process (Pre-Processing and Internal Parameters) #####
+################################################################################
+
+
+################################################################################
+### Original Phenotypes ########################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative : limma -> adj. p-value = 0.7741705
+# ->> proceed with alternative ranking generated with limma 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.5797117
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.833569
+
+
+### -> final results: adj. p-value = 0.5797117
+# achieved with 
+# ALTERNATIVE DE method limma
+# ALTERNATIVE exponent 0
+
+
+
+################################################################################
+### Random Phenotype Permutations ##############################################
+################################################################################
+
+
+
+################################################################################
+### Phenotype Permutation 1  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.9515698
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# return to default ranking generated with DESeq2
+
+
+
+#########
+# 4. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.7741079
+# alternative 2: exponent 1.5 -> adj. p-value = 0.9991246
+# alternative 3: exponent 2 -> adj. p-value = 0.93343735
+
+
+
+### -> final results: adj. p-value = 0.7741079
+# achieved with ALTERNATIVE exponent 0
+
+
+
+################################################################################
+### Phenotype Permutation 2  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> ad. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# return to default ranking generated with DESeq2 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.79784477
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.9145065
+
+
+# ->> final results: adj. p-value = 0.79784477
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 3  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p.value = 0.8563729
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.7663056
+# -> proceed with alternative ranking generated using limma
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.82038635
+# alternative 2: exponent 1.5 -> adj. p-value = 0.57265633
+# alternative 3: exponent 2 -> adj. p-value = 0.9501285
+
+### final results: adj. p-value = 0.57265633
+# alternative ranking limma 
+# alternative exponent 1.5  
+
+
+
+################################################################################
+### Phenotype Permutation 4  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj p-value = 0.7072792
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.40634802
+# proceed with alternative ranking generated using limma 
+
+
+#########
+# 4. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.41356856
+# alternative 2: exponent 1.5 -> adj. p-value = 0.21785524
+# alternative 3: exponent 2 -> adj. p-value = 0.5714616
+
+# final results: adj. p-value = 0.21785524
+# achieved with 
+# ALTERNATIVE ranking using limma 
+# ALTERNATIVE exponent 1.5
+
+
+
+################################################################################
+### Phenotype Permutation 5  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# -> return to default ranking generated using DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.8207579
+# alternative 2: exponent 1.5 -> adj. p-value = 0.898171
+# alternative 3: exponent 2 -> adj. p-value = 0.9855435
+
+
+### final results: adj. p-value = 0.8207579
+# -> achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 6  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.98473054
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.925139
+#-> proceed with alternative ranking generated using limma 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.9058178
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.96148
+
+# final results: adj. p-value = 0.9058178
+# achieved with 
+# ALTERNATIVE DE method limma 
+# ALTERNATIVE exponent 0
+
+
+################################################################################
+### Phenotype Permutation 7  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.7614166
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.9976935
+# return to default ranking generated with DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.44686085
+# alternative 2: exponent 1.5 -> adj. p-value = 0.67056024
+# alternative 3: exponent 2 -> adj. p-value = 0.8624121
+
+
+# final results: adj. p-value = 0.44686085
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 8  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.9899683
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# -> return to default ranking generated with DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.914528
+# alternative 2: exponent 1.5 -> adj. p-value = 0.99306244
+# alternative 3: exponent 2 -> adj. p-value = 0.9867912
+
+
+### final results: adj. p-value = 0.914528
+# achieved with ALTERNATIVE exponent 0
+
+
+
+################################################################################
+### Phenotype Permutation 9  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.9928293
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+# -> return to default ranking generated with DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.9904498
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 1
+
+### ->> final results: final results: adj. p-value = 0.9904498
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 10  ##################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# ->  adj. p-value = 0.99997205
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.6236835
+#-> proceed with alternative ranking generated using limma
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 ->  adj. p-value = 0.18632615
+# alternative 2: exponent 1.5 -> adj. p-value = 0.45285654
+# alternative 3: exponent 2 -> adj. p-value = 0.9555865
+
+
+### -> final results: adj. p-value = 0.18632615
+# achieved with 
+# ALTERNATIVE DE method limma 
+# ALTERNATIVE exponent 0
+
+
+
+
+
+################################################################################
+### (II) Optimization of Internal Parameters ###################################
+################################################################################
+
+
+
+################################################################################
+### Original Phenotypes ########################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 194 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 12 DEGS 
+# ->> return to default geneset database GO (BP) 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 67 + 400 = 467 DEGS 
+# alternative 2: exponent 1.5 -> 0 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+### -> final results: 467 DEGS 
+### -> achieved with ALTERNATIVE exponent 0         
+
+
+################################################################################
+### Phenotype Permutation 1 ####################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 18 + 30 = 48 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 1 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 33 + 37 = 70 DEGS 
+# alternative 2: exponent 1.5 -> 6 + 6 = 12 DEGS 
+# alternative 3: exponent 2 -> 11 DEGS 
+
+# ->> final results: 48 DEGS 
+# optimal parameter configuration coincides with default configuration 
+# number of differentially enriched gene sets cannot be increased 
+
+
+
+################################################################################
+### Phenotype Permutation 2 ####################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 79 + 172 = 251 DEGS 
+
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 18 + 13 = 31 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 471 + 204 = 675 DEGS
+# alternative 2: exponent 1.5 -> 0 + 57 DEGS 
+# alternative 3: exponent 2 -> 45 + 70 = 115 DEGS 
+
+# ->> final results: 675 DEGS 
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 3 ####################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 1+ 37 = 38 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 10 DEGS 
+# ->> return to default gene set database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 21 + 264 = 285 DEGS 
+# alternative 2: exponent 1.5 -> 16 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+################################################################################
+### Phenotype Permutation 4 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 31 + 17 = 48 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 14 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 98 + 622 = 720 DEGS 
+# alternative 2: exponent 1.5 -> 58 DEGS 
+# alternative 3: exponent 2 -> 7 DEGS 
+
+
+### -> final results: 720 DEGS 
+### achieved with ALERNATIVE exponent 0 
+
+
+################################################################################
+### Phenotype Permutation 5 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 12 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 7 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 65 + 72 = 137 DEGS
+# alternative 2: exponent 1.5 -> 0 DEGS 
+# alternative 3: exponent 2 -> 1 DEGS 
+
+
+### -> final results: 137 DEGS 
+# achieved with ALTERNATIVE exponent 0 
+
+
+################################################################################
+### Phenotype Permutation 6 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 1 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 3 DEGS 
+# ->> proceed with geneset database KEGG 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 5 DEGS
+# alternative 2: exponent 1.5 -> 10 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+
+### -> final results: 10 DEGS 
+# achieved with 
+# ALTERNATIVE geneset database KEGG 
+# ALTERNATIVE exponent 1.5 
+
+
+
+
+################################################################################
+### Phenotype Permutation 7 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 33 + 77 = 110 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 10 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 5 + 243 = 248 DEGS
+# alternative 2: exponent 1.5 -> 2 + 57 = 59 DEGS 
+# alternative 3: exponent 2 -> 63 + 22 = 85 DEGS
+
+# ->> final results: 248 DEGS
+# achieved with ALTERNATIVE exponent 0 
+
+
+################################################################################
+### Phenotype Permutation 8 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 1 DEGS
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 13 DEGS
+# ->> proceed with geneset database KEGG 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 4 DEGS
+# alternative 2: exponent 1.5 -> 9 DEGS 
+# alternative 3: exponent 2 -> 11 DEGS
+
+# -> final results: 13 DEGS
+# achieved with ALTERNATIVE geneset database KEGG 
+
+
+################################################################################
+### Phenotype Permutation 9 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 27 + 2 = 27 DEGS 
+
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 4 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 140 + 33 = 173 DEGS
+# alternative 2: exponent 1.5 -> 8 DEGS 
+# alternative 3: exponent 2 -> 1 DEGS 
+
+
+################################################################################
+### Phenotype Permutation 10 ####################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> 19 + 6 = 25 DEGS 
+
+#########
+# 2. step: change geneset database to KEGG 
+#########
+
+# -> 9 + 3 = 12 DEGS 
+# ->> return to default geneset database GO (BP)
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> 39 + 19 = 58 DEGS
+# alternative 2: exponent 1.5 -> 3 + 6 = 9 DEGS 
+# alternative 3: exponent 2 -> 0 DEGS 
+
+### -> final results: 58 DEGS 
+# achieved with ALTERNATIVE exponent 0 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

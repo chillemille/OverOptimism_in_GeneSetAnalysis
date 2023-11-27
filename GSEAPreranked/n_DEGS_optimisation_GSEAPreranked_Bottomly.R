@@ -14,9 +14,14 @@ library(ggplot2)
 library(tidyverse)
 
 ##### run script to convert mouse ensembl IDs to human gene Symbols 
-source("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Mapping_MouseID_to_HumanID.R")
+source("./GSEAPreranked/Mapping_MouseID_to_HumanID.R")
+
 ### run script to obtain gene expression data sets, true and randomly permuted phenotype assignments 
-source("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Random_Phenotype_Permutations.R")
+source("./Random_Phenotype_Permutations.R")
+
+# load preprocessing functions
+source("./PreProcessing_Functions.R")
+
 
 
 ##################################################################################
@@ -27,6 +32,7 @@ source("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/Random_Phenoty
 #rankby must be in c("p_value", "lfc") to perform ranking based on 
 #(i) p-value (rank=sign(lfc)*(-1)*log10(unadjusted_pvalue)
 #(ii) log fold changes 
+
 rankedList_cP <- function(DE_results, rankby, method){
   
   if(method == "DESeq2"){#create ranking based on DESeq2 results table
@@ -39,15 +45,15 @@ rankedList_cP <- function(DE_results, rankby, method){
     #DE_results <- edgeR_results
     if(rankby == "lfc"){ #ranking by log2 fold change
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec <- as.vector(DE_results[!is.na(DE_results$pvalue),]$log2FoldChange)
-      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue),])
-      rankvec <- sort(rankvec, decreasing=TRUE)
+      rankvec <- as.vector(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)
+      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
+      rankvec <- sort(rankvec, decreasing = TRUE)
       
     }else if (rankby == "p_value"){#ranking by p-value
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec <- as.vector(sign(DE_results[!is.na(DE_results$pvalue),]$log2FoldChange)*(-1)*log10(DE_results[!is.na(DE_results$pvalue),]$pvalue))
-      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue),])
-      rankvec <- sort(rankvec, decreasing=TRUE)
+      rankvec <- as.vector(sign(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)*(-1)*log10(DE_results[!is.na(DE_results$pvalue), ]$pvalue))
+      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
   }
   
@@ -62,13 +68,13 @@ rankedList_cP <- function(DE_results, rankby, method){
     if(rankby == "lfc"){#ranking based on log2 fold change
       rankvec <- as.vector(DE_results$table$logFC)
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing=TRUE)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
     
     else if(rankby == "p_value"){#ranking based on p-value
       rankvec <- as.vector(sign(DE_results$table$logFC)*(-1)*log10(DE_results$table$PValue))
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing=TRUE)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
   }
   
@@ -82,13 +88,13 @@ rankedList_cP <- function(DE_results, rankby, method){
     if(rankby == "lfc"){#ranking based on log2 fold change
       rankvec <- as.vector(DE_results$logFC)
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing=TRUE)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
     
     else if(rankby == "p_value"){#ranking based on p-value
       rankvec <- as.vector(sign(DE_results$logFC)*(-1)*log10(DE_results$P.Value))
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing=TRUE)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
   }
   return(rankvec)
@@ -116,7 +122,7 @@ DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 1
                            rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
-path_DESeq2_phenorig <- "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Bottomly/Data/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
+path_DESeq2_phenorig <- "./GSEAPreranked/Bottomly/Data/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export 
 write.table(DESeq2_ranking_phenorig, 
@@ -138,7 +144,7 @@ keep_phenorig <- DGEList(Biobase::exprs(bottomly.eset), group = bottomly.eset$st
 mm_phenorig <- model.matrix( ~ bottomly.eset$strain)
 
 # create limma results and rank by p-value 
-limma_ranking_phenorig <- conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenorig,], dupl_removal_method = 1) %>% 
+limma_ranking_phenorig <- conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenorig, ], dupl_removal_method = 1) %>% 
                           DGEList(group = bottomly.eset$strain) %>% 
                           calcNormFactors() %>%
                           voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>% 
@@ -146,7 +152,7 @@ limma_ranking_phenorig <- conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bot
                           rankedList_cP(rankby= "p_value", method="limma")
                  
 # Create path for storage of limma ranking            
-path_limma_phenorig <- "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Bottomly/Data/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
+path_limma_phenorig <- "./GSEAPreranked/Bottomly/Data/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
 
 
 # export 
@@ -175,7 +181,7 @@ DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 1
                            rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
-path_DESeq2_phenperm <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Bottomly/Data/Raw/Phenotype_Permutation",
+path_DESeq2_phenperm <- paste0("./GSEAPreranked/Bottomly/Data/Raw/Phenotype_Permutation",
                                i,
                                "/DESeq2_ranking_permutation",i,".txt")
 
@@ -199,14 +205,14 @@ keep_phenperm <- DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,i
 mm_phenperm <- model.matrix( ~ phen_bottomly[,i])
 
 # create limma results and rank by p-value 
-limma_ranking_phenperm <-  conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenperm,], dupl_removal_method = 1) %>% 
+limma_ranking_phenperm <-  conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenperm, ], dupl_removal_method = 1) %>% 
                             DGEList(group = phen_bottomly[,i]) %>% calcNormFactors() %>%
                             voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>% 
                             eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
                             rankedList_cP(rankby= "p_value", method="limma")
 
 # Create path for storage of limma ranking            
-path_limma_phenperm <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Bottomly/Data/Raw/Phenotype_Permutation",
+path_limma_phenperm <- paste0("./GSEAPreranked/Bottomly/Data/Raw/Phenotype_Permutation",
                               i,
                               "/limma_ranking_permutation",
                               i,

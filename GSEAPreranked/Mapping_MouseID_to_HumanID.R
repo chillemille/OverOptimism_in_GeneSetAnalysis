@@ -12,7 +12,7 @@ library(org.Mm.eg.db)
 # upload mapping obtained by HCOP tool 
 # https://www.genenames.org/tools/hcop/
 # more precisely: http://ftp.ebi.ac.uk/pub/databases/genenames/hcop/
-mapping_human_mouse <- read.csv("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Mapping_ENSEMBL_Human_Mouse.csv", 
+mapping_human_mouse <- read.csv("./GSEAPreranked/Mapping_ENSEMBL_Human_Mouse.csv", 
                                 sep = ";")
 
 
@@ -23,7 +23,7 @@ mapping_human_mouse <- read.csv("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimi
 
 # remove irrelevant columns from data set such that only those containing the human gene IDs, 
 # the mouse ENSEMBL gene IDs as well as the tools by which the respective mapping is supported 
-# the least will be used as majority vote in the case of ambiguous mappings #
+# the least will be used as majority vote in the case of ambiguous mappings 
 
 ind_colnames <- which(colnames(mapping_human_mouse) %in% c("human_ensembl_gene", "mouse_ensembl_gene", "support"))
 mapping_human_mouse <- mapping_human_mouse[, ind_colnames]
@@ -110,7 +110,7 @@ dupl_gene_list_mouseID <- unique(mapping_unique_humanID$mouse_ensembl_gene[dupli
 # to human ensembl IDs 
 mapping_unique_mouseID <- mapping_unique_humanID[!  mapping_unique_humanID$mouse_ensembl_gene %in% dupl_gene_list_mouseID ,]
 
-
+# empty data frame to be filled successively
 disambig_mapping_mouseID <- data.frame(matrix(NA, nrow = 0, ncol = 3))
 
 for(i in 1:length(dupl_gene_list_mouseID)){
@@ -151,7 +151,7 @@ all(!duplicated(final_mapping_human_mouse$mouse_ensembl_gene))
 ### Final unique mapping from humen ensembl IDs to mouse ensembl IDs ###########
 ################################################################################
 
-final_mapping_human_mouse <- final_mapping_human_mouse[,colnames(final_mapping_human_mouse) != "support" ]
+final_mapping_human_mouse <- final_mapping_human_mouse[, colnames(final_mapping_human_mouse) != "support" ]
 
 
 
@@ -186,15 +186,14 @@ rm(disambig_mapping_humanID, final_mapping, mapping_dupl_gene, mapping_dupl_huma
 
 geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
   
-  # expression_data <- exprdat_prefilt_opt
-  # dupl_removal_method <- 2
-  
   # identify organism for which gene expression is measured from the format of the gene IDs (all are Ensembl)
   # ENSEMBL gene ID ENSMUSGXXXXXXXXXXX corresponds to mouse; identifiable by substring "ENSMUSG"
   # ENSEMBL gene ID ENSGXXXXXXXXXXX corresponds to homo sapiens; identifiable by string "ENSG"
   
   # indicate which of the two strings can be found in the gene IDs of the expression data at hand
-  ind_organism <- sapply(FUN = grepl, X = c("ENSG", "ENSMUSG"), x = rownames(expression_data)[1])
+  ind_organism <- sapply(FUN = grepl, 
+                         X = c("ENSG", "ENSMUSG"), 
+                         x = rownames(expression_data)[1])
   # choose suitable organism (required for function bitr)
   organism <- unlist(c(org.Hs.eg.db , org.Mm.eg.db)[ind_organism])[[1]]
   
@@ -202,7 +201,10 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
   
   
   #Gene ID conversion via clusterProfiler::bitr()
-  bitr_enstoentr <- bitr(rownames(expression_data) ,fromType = "ENSEMBL", toType = "SYMBOL", OrgDb = organism)
+  bitr_enstoentr <- bitr(rownames(expression_data) ,
+                         fromType = "ENSEMBL", 
+                         toType = "SYMBOL", 
+                         OrgDb = organism)
   #note: not all ENSEMBL IDs could be converted to a corresponding ENTREZ Gene ID
   dim(bitr_enstoentr)
   
@@ -215,7 +217,12 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
   
   #this step is independent of sample IDs
   #merge by row names of expression data set and ENSEMBL ID of conversion data set
-  expression_data <- merge(expression_data, bitr_enstoentr, by.x=0, by.y="ENSEMBL", all.y=TRUE, sort=TRUE)
+  expression_data <- merge(expression_data, 
+                           bitr_enstoentr, 
+                           by.x=0, 
+                           by.y="ENSEMBL", 
+                           all.y=TRUE, 
+                           sort=TRUE)
   dim(expression_data)
   
   ###take closer look at duplicates 
@@ -224,22 +231,22 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
   #View(bitr_toKEGG[(duplicated(bitr_toKEGG$ENSEMBL)),])
   sum(duplicated(bitr_enstoentr$ENSEMBL)) #number of times an ENSEMBL gene ID was converted to several ENTREZ IDs
   #determine all duplicated ENSEMBL gene IDS
-  dupl_ensembl<-unique(bitr_enstoentr$ENSEMBL[duplicated(bitr_enstoentr$ENSEMBL)])
+  dupl_ensembl <- unique(bitr_enstoentr$ENSEMBL[duplicated(bitr_enstoentr$ENSEMBL)])
   #number of ENSEMBL IDs that have at least one duplicate
   length(dupl_ensembl)
   #display of conversion scheme of duplicated ENSEMBL IDs
-  duplicated_conversion_ens<-bitr_enstoentr[bitr_enstoentr$ENSEMBL %in% dupl_ensembl,]
+  duplicated_conversion_ens <- bitr_enstoentr[bitr_enstoentr$ENSEMBL %in% dupl_ensembl,]
   dim(duplicated_conversion_ens)
   
   
   #CASE 2: multiple ENSEMBL IDs are mapped to single entrez ID
   sum(duplicated(bitr_enstoentr$ENTREZ)) #number of times several ENSEMBL gene IDs were converted to a single ENTREZ ID
   #determine all duplicated ENTREZ IDs
-  dupl_entrez<-unique(bitr_enstoentr$SYMBOL[duplicated(bitr_enstoentr$SYMBOL)])
+  dupl_entrez <- unique(bitr_enstoentr$SYMBOL[duplicated(bitr_enstoentr$SYMBOL)])
   #number of ENTREZ IDs that have at least one duplicate
   length(dupl_entrez)
   #display of conversion scheme of duplicated ENTREZ IDs
-  duplicated_conversion_entrez<-bitr_enstoentr[bitr_enstoentr$SYMBOL %in% dupl_entrez,]
+  duplicated_conversion_entrez <- bitr_enstoentr[bitr_enstoentr$SYMBOL %in% dupl_entrez,]
   dim(duplicated_conversion_entrez)
   
   
@@ -255,17 +262,18 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     ### 1. option: keep first subscript among duplicates #########################
     
     #1. remove duplicated ENTREZ gene IDs
-    exprdat_dupl<-expression_data[!duplicated(expression_data$SYMBOL),]
+    exprdat_dupl <- expression_data[!duplicated(expression_data$SYMBOL), ]
     dim(expression_data)
     
     #2. remove duplicated ENSEMBL gene IDs
-    exprdat_dupl<-exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl <- exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
     dim(exprdat_dupl)
     
     #3. ENTREZ IDs as row names and 
-    rownames(exprdat_dupl)<-exprdat_dupl$SYMBOL
+    rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #Remove columns containing ENSEMBL and ENTREZ IDs
-    exprdat_dupl<-subset(exprdat_dupl, select=-c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, 
+                           select=-c(Row.names,SYMBOL))
     dim(exprdat_dupl)
     
   } else if(dupl_removal_method == 2){
@@ -277,7 +285,7 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #generate matrix to contain (rounded) mean expression values of all rows that 
     #have same ENTREZ gene ID
     #ncol=ncol(expression_data)-2 since data set contains 2 columns with IDs at this point
-    mean_entrez<-matrix(, nrow=0, ncol=ncol(expression_data)-2)
+    mean_entrez <- matrix(, nrow=0, ncol = ncol(expression_data)-2)
     
     
     # -> There are cases where no ENSEMBL gene IDs are mapped to an identical Entrez gene ID
@@ -296,28 +304,28 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
       
       for(i in 1:length(dupl_entrez)){#go through each ENTREZ IDs which occurs multiple times
         #determine all rows whose ENTREZ IDs correspond to current ENTREZ ID 
-        counts_dupl<-expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i],]
+        counts_dupl <- expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i], ]
         #for rows duplicated ENTREZ ID compute (rounded) mean expression value 
-        dupl_id<-round(colMeans(counts_dupl[,c(2:(ncol(expression_data)-1))]))
+        dupl_id <- round(colMeans(counts_dupl[,c(2:(ncol(expression_data)-1))]))
         #store rounded mean expression value in matrix 
-        mean_entrez<-rbind(mean_entrez,dupl_id)
+        mean_entrez <- rbind(mean_entrez,dupl_id)
       }
     }
     
     
     #test whether the number of rows in mean_entrez corresponds to the number ENTREZ IDs
     #that occur more than once
-    nrow(mean_entrez)==length(dupl_entrez)
+    nrow(mean_entrez) == length(dupl_entrez)
     
     #remove all rows from the expression data whose ENTREZ ID has at least one duplicate
-    exprdat_dupl<-expression_data[!expression_data$SYMBOL %in% dupl_entrez,]
+    exprdat_dupl <- expression_data[!expression_data$SYMBOL %in% dupl_entrez,]
     #test whether number of rows in resulting data set equals nrow of inital data set 
     #minus number of genes with at least one duplicate
-    nrow(exprdat_dupl)==nrow(expression_data)-nrow(duplicated_conversion_entrez)
+    nrow(exprdat_dupl) == nrow(expression_data)-nrow(duplicated_conversion_entrez)
     dim(exprdat_dupl)
     
     #set corresponding ENTREZ gene IDs as rownames
-    rownames(mean_entrez)<-unique(dupl_entrez)
+    rownames(mean_entrez) <- unique(dupl_entrez)
     
     
     
@@ -332,18 +340,18 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #View(test_dupl_ensembl)
     
     #therefore: proceed as in option 1 and use ENTREZ ID that occurs first, remove the rest
-    exprdat_dupl<-exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl <- exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
     dim(exprdat_dupl)
     #set ENTREZ ID as rownames
-    rownames(exprdat_dupl)<-exprdat_dupl$SYMBOL
+    rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #remove any columns containing IDs
-    exprdat_dupl<-subset(exprdat_dupl,select= -c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, select= -c(Row.names,SYMBOL))
     #add rows to data set that contain mean expression values of duplicate ENTREZ IDs
-    exprdat_dupl<-rbind(exprdat_dupl,mean_entrez)
+    exprdat_dupl <- rbind(exprdat_dupl, mean_entrez)
     #dimension of remaining expression data set:
     #dim(exprdat_dupl)
     
-  }else if(dupl_removal_method ==3){
+  }else if(dupl_removal_method == 3){
     
     ###option 3: among duplicates, keep row with highest overall expression values (i.e highest counts across all samples)
     
@@ -356,38 +364,38 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #case 2: (case 1 below) multiple ENSEMBL IDs that are converted to the same single ENTREZ ID
     
     #generate matrix to later contain row with highest count values among ID duplicates
-    highest_count_entrez<-matrix(, nrow=0, ncol=ncol(expression_data))
+    highest_count_entrez<-matrix(, nrow=0, ncol = ncol(expression_data))
     #go through each ENTREZ ID that occurs multiple times
     for(i in 1:length(dupl_entrez)){
       #determine all rows with specific ENTREZ ID which occurs multiple times
-      counts_dupl<-expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i],]
+      counts_dupl <- expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i], ]
       #detect row with highest count values and order in decreasing manner
-      order_rowsums<-order(rowSums(counts_dupl[,2:(ncol(counts_dupl)-1)]),decreasing=TRUE)
+      order_rowsums <- order(rowSums(counts_dupl[, 2:(ncol(counts_dupl)-1)]), decreasing=TRUE)
       dupl_id<-counts_dupl[order_rowsums==1,]
       #store rounded mean expression value in matrix 
-      highest_count_entrez<-rbind(highest_count_entrez,dupl_id)
+      highest_count_entrez <- rbind(highest_count_entrez, dupl_id)
       #View(highest_count_entrez)
       #remove rows in counts_dupl from count data set successively
     }
     
     #Remove all initial values with ENTREZ duplicates from the dataset
-    exprdat_dupl<-expression_data[! expression_data$SYMBOL %in% unique(dupl_entrez),]
+    exprdat_dupl <- expression_data[ !expression_data$SYMBOL %in% unique(dupl_entrez),]
     
     
     #case 1: single ENSEMBL ID that is mapped to multiple ENTREZ gene IDs 
     #as in option 2, pointless to detect row with highest count values as all rows
     #corresponding to the same ENSEMBL ID naturally contain identical count data
     #therefore: remove duplicate ENSEMBL ID that occurs first 
-    exprdat_dupl<-exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl <- exprdat_dupl[!duplicated(exprdat_dupl$Row.names), ]
     
     #Add all rows contain initially duplicate ENTREZ IDs but contain highest
     #count values among those 
-    exprdat_dupl<-rbind(exprdat_dupl,highest_count_entrez )
+    exprdat_dupl <- rbind(exprdat_dupl, highest_count_entrez)
     
     #Set ENTREZ IDs as rownames remove all columns containing any ID info and
-    rownames(exprdat_dupl)<-exprdat_dupl$SYMBOL
+    rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #Remove any column that contains gene IDs
-    exprdat_dupl<-subset(exprdat_dupl, select=-c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, select=-c(Row.names, SYMBOL))
     #dim(exprdat_dupl)
   }
   
@@ -410,15 +418,15 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
 conversion_mouseEnsembl_HumanSymbol <- function(expression_data, dupl_removal_method = 1){
   
-  # expression_data <- Biobase::exprs(bottomly.eset)
-  
+
   ##########
   # 1. step: convert mouse Ensembl to human Ensembl gene IDs 
   ##########
   
   # merge expression data with data set that contains the mapping 
   exprdat_humanEnsembl <- merge(expression_data, final_mapping_human_mouse, 
-                        by.x = 0 , by.y = "mouse_ensembl_gene")
+                                by.x = 0 , 
+                                by.y = "mouse_ensembl_gene")
   
   # set human ensembl gene IDs as rownames 
   rownames(exprdat_humanEnsembl) <- exprdat_humanEnsembl$human_ensembl_gene
