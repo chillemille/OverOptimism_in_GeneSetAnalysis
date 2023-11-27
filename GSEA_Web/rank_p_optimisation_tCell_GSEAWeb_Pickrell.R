@@ -10,28 +10,42 @@ library(dplyr)
 # for this script, the following additional script RNASeq_Transformation.R is required
 
 
-# load data set 
-data(pickrell)
-# load phenotype assignments (original one as well as random permutations generated in Random_Phenotype_Permutations.R)
-load("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/Data/Phenotype_Permutations_Pickrell.Rdata")
+# load Pickrell data set along with the true and permuted sample conditions
+source("./Random_Phenotype_Permutations.R")
+
+# load the required pre-processing functions
+source("./Random_Phenotype_Permutations.R")
 
 # load functions that perform a transformation of the RNA-Seq data 
-source("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/RNASeq_Transformation.R")
+source("./RNASeq_Transformation.R")
+
+
+################################################################################
+### Generate required ordner structure #########################################
+################################################################################
+
+dir.create("./Pickrell")
+dir.create("./Pickrell/p_adj")
+dir.create("./Pickrell/p_adj/Data_TCell")
+dir.create("./Pickrell/p_adj/Data_TCell/Prep")
+dir.create("./Pickrell/p_adj/Data_TCell/Prep/Phen_Original")
+dir.create("./Pickrell/p_adj/Data_TCell/Prep/Phenotypes")
+dir.create("./Pickrell/p_adj/Data_TCell/Raw")
+dir.create("./Pickrell/p_adj/Data_TCell/Raw/Phen_Original")
+dir.create("./Pickrell/p_adj/Data_TCell/Raw/Phenotypes")
 
 
 
-#######################################################################################
-###pre-filtering function #############################################################
-#######################################################################################
-
-pre_filt<-function(expression_data, threshold){
+for(i in 1:10){
   
-  expression_data_filt<-expression_data[rowSums(expression_data)>=threshold,]
+  dir.create(paste0("./Pickrell/p_adj/Data_TCell/Prep/Phen_Permutation", i))
   
-  return(expression_data_filt)
+  dir.create(paste0("./Pickrell/p_adj/Data_TCell/Raw/Phen_Permutation", i))
+  
   
   
 }
+
 
 
 

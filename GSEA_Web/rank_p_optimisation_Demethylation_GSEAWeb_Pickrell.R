@@ -7,34 +7,41 @@ library(edgeR) # for builtin pre-filtering
 library(dplyr)
 
 
-# for this script, the following additional script RNASeq_Transformation.R is required
+# load Pickrell data set along with the true and permuted sample conditions
+source("./Random_Phenotype_Permutations.R")
 
-
-# load data set 
-data(pickrell)
-# load phenotype assignments (original one as well as random permutations generated in Random_Phenotype_Permutations.R)
-load("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/Data/Phenotype_Permutations_Pickrell.Rdata")
+# load the required pre-processing functions
+source("./Random_Phenotype_Permutations.R")
 
 # load functions that perform a transformation of the RNA-Seq data 
-source("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/RNASeq_Transformation.R")
+source("./RNASeq_Transformation.R")
+
+
+################################################################################
+### Generate required ordner structure #########################################
+################################################################################
+
+dir.create("./Pickrell")
+dir.create("./Pickrell/p_adj")
+dir.create("./Pickrell/p_adj/Data_Demethylation")
+dir.create("./Pickrell/p_adj/Data_Demethylation/Prep")
+dir.create("./Pickrell/p_adj/Data_Demethylation/Prep/Phen_Original")
+dir.create("./Pickrell/p_adj/Data_Demethylation/Prep/Phenotypes")
+dir.create("./Pickrell/p_adj/Data_Demethylation/Raw")
+dir.create("./Pickrell/p_adj/Data_Demethylation/Raw/Phen_Original")
+dir.create("./Pickrell/p_adj/Data_Demethylation/Raw/Phenotypes")
 
 
 
-#######################################################################################
-###pre-filtering function #############################################################
-#######################################################################################
-
-pre_filt<-function(expression_data, threshold){
+for(i in 1:10){
   
-  expression_data_filt<-expression_data[rowSums(expression_data)>=threshold,]
+  dir.create(paste0("./Pickrell/p_adj/Data_Demethylation/Prep/Phen_Permutation", i))
   
-  return(expression_data_filt)
+  dir.create(paste0("./Pickrell/p_adj/Data_Demethylation/Raw/Phen_Permutation", i))
+  
   
   
 }
-
-
-
 
 ################################################################################
 ### (I) Complete Optimization Process (pre-processing and internal parameters) #
@@ -74,7 +81,7 @@ pre_filt<-function(expression_data, threshold){
   
   # default pre-process pickrell data 
   dat_default_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    voom_trans(phenotype_labels = pickrell.eset$gender)
+                          voom_trans(phenotype_labels = pickrell.eset$gender)
   
   # generate path 
   path_dat_phenorig <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Original/exprdat_default_phen_original.txt")
@@ -93,7 +100,7 @@ pre_filt<-function(expression_data, threshold){
   
   # default pre-process pickrell data 
   dat_vst_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    variancetransform(phenotype_labels = pickrell.eset$gender )
+                      variancetransform(phenotype_labels = pickrell.eset$gender )
   
   # generate path 
   path_dat_vst_phenorig <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Original/exprdat_vst_phen_original.txt")
@@ -190,7 +197,9 @@ for(i in 1:ncol(phen_pickrell)){
   phen[phen_pickrell[,i] == "female"] <- 0
   phen[phen_pickrell[,i] == "male"] <- 1
   
-  path_phen <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phenotypes/Phenotype_Permutation",i, ".txt")
+  path_phen <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phenotypes/Phenotype_Permutation",
+                      i, 
+                      ".txt")
   
   write.table(phen,
               file = path_phen,
@@ -205,10 +214,14 @@ for(i in 1:ncol(phen_pickrell)){
   
   # default pre-process pickrell data 
   dat_default <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    voom_trans(phenotype_labels = phen_pickrell[,i])
+                 voom_trans(phenotype_labels = phen_pickrell[,i])
   
   # generate path 
-  path_dat <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_default_phen_permutation", i, ".txt")
+  path_dat <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                     i,
+                     "/exprdat_default_phen_permutation", 
+                     i, 
+                     ".txt")
   
   ### export 
   write.table(dat_default,
@@ -224,10 +237,14 @@ for(i in 1:ncol(phen_pickrell)){
   
   # default pre-process pickrell data 
   dat_vst <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    variancetransform(phenotype_labels = phen_pickrell[,i])
+             variancetransform(phenotype_labels = phen_pickrell[,i])
   
   # generate path 
-  path_dat_vst <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_vst_phen_permutation", i, ".txt")
+  path_dat_vst <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                         i,
+                         "/exprdat_vst_phen_permutation", 
+                         i, 
+                         ".txt")
   
   
   #export
@@ -269,12 +286,18 @@ i <- 1
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen1 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,1]) %>% filterByExpr()
+prefilt_ind_phen1 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,1]) %>% 
+                      filterByExpr()
 # perform vst-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen1 <- variancetransform(Biobase::exprs(pickrell.eset)[prefilt_ind_phen1,], phenotype_labels = phen_pickrell[,1])
+exprdat_prefilt_phen1 <- variancetransform(Biobase::exprs(pickrell.eset)[prefilt_ind_phen1,], 
+                                           phenotype_labels = phen_pickrell[,1])
 
 ### export 
-path_filterByExpr_phen1 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen1 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen1, 
             file = path_filterByExpr_phen1, 
@@ -341,12 +364,18 @@ i <- 2
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen2 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,2]) %>% filterByExpr()
+prefilt_ind_phen2 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,2]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen2 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen2,], phenotype_labels = phen_pickrell[,2])
+exprdat_prefilt_phen2 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen2,], 
+                                    phenotype_labels = phen_pickrell[,2])
 
 ### export 
-path_filterByExpr_phen2 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen2 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen2, 
             file = path_filterByExpr_phen2, 
@@ -412,12 +441,18 @@ i <- 3
 
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen3 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,3]) %>% filterByExpr()
+prefilt_ind_phen3 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,3]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen3 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen3,], phenotype_labels = phen_pickrell[,3])
+exprdat_prefilt_phen3 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen3,], 
+                                    phenotype_labels = phen_pickrell[,3])
 
 ### export 
-path_filterByExpr_phen3 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen3 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen3, 
             file = path_filterByExpr_phen3, 
@@ -481,12 +516,18 @@ i <- 4
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen4 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,4]) %>% filterByExpr()
+prefilt_ind_phen4 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,4]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen4 <- variancetransform(Biobase::exprs(pickrell.eset)[prefilt_ind_phen4,], phenotype_labels = phen_pickrell[,4])
+exprdat_prefilt_phen4 <- variancetransform(Biobase::exprs(pickrell.eset)[prefilt_ind_phen4,], 
+                                           phenotype_labels = phen_pickrell[,4])
 
 ### export 
-path_filterByExpr_phen4 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen4 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen4, 
             file = path_filterByExpr_phen4, 
@@ -555,12 +596,18 @@ i <- 5
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen5 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,5]) %>% filterByExpr()
+prefilt_ind_phen5 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,5]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen5 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen5,], phenotype_labels = phen_pickrell[,5])
+exprdat_prefilt_phen5 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen5,], 
+                                    phenotype_labels = phen_pickrell[,5])
 
 ### export 
-path_filterByExpr_phen5 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen5 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen5, 
             file = path_filterByExpr_phen5, 
@@ -623,12 +670,18 @@ i <- 6
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen6 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,6]) %>% filterByExpr()
+prefilt_ind_phen6 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,6]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen6 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen6,], phenotype_labels = phen_pickrell[,6])
+exprdat_prefilt_phen6 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen6,], 
+                                    phenotype_labels = phen_pickrell[,6])
 
 ### export 
-path_filterByExpr_phen6 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen6 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen6, 
             file = path_filterByExpr_phen6, 
@@ -696,12 +749,18 @@ i <- 7
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen7 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,7]) %>% filterByExpr()
+prefilt_ind_phen7 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,7]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen7 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen7,], phenotype_labels = phen_pickrell[,7])
+exprdat_prefilt_phen7 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen7,], 
+                                    phenotype_labels = phen_pickrell[,7])
 
 ### export 
-path_filterByExpr_phen7 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen7 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, 
+                                  ".txt")
 
 write.table(exprdat_prefilt_phen7, 
             file = path_filterByExpr_phen7, 
@@ -762,12 +821,18 @@ i <- 8
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen8 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,8]) %>% filterByExpr()
+prefilt_ind_phen8 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,8]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen8 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen8,], phenotype_labels = phen_pickrell[,8])
+exprdat_prefilt_phen8 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen8,], 
+                                    phenotype_labels = phen_pickrell[,8])
 
 ### export 
-path_filterByExpr_phen8 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen8 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation", 
+                                  i, "
+                                  .txt")
 
 write.table(exprdat_prefilt_phen8, 
             file = path_filterByExpr_phen8, 
@@ -828,9 +893,11 @@ i <- 9
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen9 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,9]) %>% filterByExpr()
+prefilt_ind_phen9 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,9]) %>% 
+                      filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen9 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen9,], phenotype_labels = phen_pickrell[,9])
+exprdat_prefilt_phen9 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen9,], 
+                                    phenotype_labels = phen_pickrell[,9])
 
 ### export 
 path_filterByExpr_phen9 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
@@ -900,12 +967,18 @@ i <- 10
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen10 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,10]) %>% filterByExpr()
+prefilt_ind_phen10 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,10]) %>% 
+                       filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen10 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen10,], phenotype_labels = phen_pickrell[,10])
+exprdat_prefilt_phen10 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen10,], 
+                                     phenotype_labels = phen_pickrell[,10])
 
 ### export 
-path_filterByExpr_phen10 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",i,"/exprdat_filterByExpr_phen_permutation", i, ".txt")
+path_filterByExpr_phen10 <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEA_Web/Pickrell/p_value/Data_Demethylation/Raw/Phen_Permutation",
+                                   i,
+                                   "/exprdat_filterByExpr_phen_permutation", 
+                                   i, 
+                                   ".txt")
 
 write.table(exprdat_prefilt_phen10, 
             file = path_filterByExpr_phen10, 
