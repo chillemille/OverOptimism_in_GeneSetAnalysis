@@ -34,7 +34,7 @@ source("./RNASeq_Transformation.R")
 
 pre_filt <- function(expression_data, threshold){
   
-  expression_data_filt <- expression_data[rowSums(expression_data)> = threshold, ]
+  expression_data_filt <- expression_data[rowSums(expression_data)>= threshold, ]
   
   return(expression_data_filt)
   
@@ -174,7 +174,7 @@ geneID_conversion_SYMBOL <-  function(expression_data, dupl_removal_method){
     # -> if no distinct mouse ENSEMBL IDs are mapped to an identical human HGNC symbol then mean_entrez remains an empty data frame
     
     
-    if(length(dupl_entrez) ! = 0){
+    if(length(dupl_entrez) != 0){
       
       
       #1.remove duplicated human HGNC symbols (case 2)

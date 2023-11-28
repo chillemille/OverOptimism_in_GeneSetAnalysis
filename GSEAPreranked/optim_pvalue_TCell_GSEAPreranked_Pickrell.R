@@ -13,8 +13,6 @@ library(ashr)
 library(ggplot2)
 library(tidyverse)
 
-# set working directory 
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
 
 # load gene expression data set with true phenotype randomly permuted phenotype assignments 
 source("./Random_Phenotype_Permutations.R")
@@ -40,24 +38,24 @@ source("./PreProcessing_Functions.R")
 # select parameter "NO_Collapse"
 
 geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
-
-  # expression_data <- exprdat_prefilt_opt
-  # dupl_removal_method <- 2
-
+  
   # identify organism for which gene expression is measured from the format of the gene IDs (all are Ensembl)
   # ENSEMBL gene ID ENSMUSGXXXXXXXXXXX corresponds to mouse; identifiable by substring "ENSMUSG"
   # ENSEMBL gene ID ENSGXXXXXXXXXXX corresponds to homo sapiens; identifiable by string "ENSG"
 
   # indicate which of the two strings can be found in the gene IDs of the expression data at hand
-  ind_organism <- sapply(FUN = grepl, X = c("ENSG", "ENSMUSG"), x = rownames(expression_data)[1])
+  ind_organism <- sapply(FUN = grepl, 
+                         X = c("ENSG", "ENSMUSG"), 
+                         x = rownames(expression_data)[1])
   # choose suitable organism (required for function bitr)
   organism <- unlist(c(org.Hs.eg.db , org.Mm.eg.db)[ind_organism])[[1]]
 
 
-
-
   #Gene ID conversion via clusterProfiler::bitr()
-  bitr_enstoentr <- bitr(rownames(expression_data) ,fromType = "ENSEMBL", toType = "SYMBOL", OrgDb = organism)
+  bitr_enstoentr <- bitr(rownames(expression_data) , 
+                         fromType = "ENSEMBL", 
+                         toType = "SYMBOL", 
+                         OrgDb = organism)
   #note: not all ENSEMBL IDs could be converted to a corresponding ENTREZ Gene ID
   dim(bitr_enstoentr)
 
@@ -70,31 +68,36 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
   #this step is independent of sample IDs
   #merge by row names of expression data set and ENSEMBL ID of conversion data set
-  expression_data <- merge(expression_data, bitr_enstoentr, by.x=0, by.y="ENSEMBL", all.y=TRUE, sort=TRUE)
+  expression_data <- merge(expression_data, 
+                           bitr_enstoentr, 
+                           by.x = 0, 
+                           by.y = "ENSEMBL", 
+                           all.y = TRUE, 
+                           sort = TRUE)
   dim(expression_data)
 
   ###take closer look at duplicates
 
   #CASE 1: single ENSEMBL IDs are mapped to multiple ENTREZ IDs
-  #View(bitr_toKEGG[(duplicated(bitr_toKEGG$ENSEMBL)),])
+  #View(bitr_toKEGG[(duplicated(bitr_toKEGG$ENSEMBL)), ])
   sum(duplicated(bitr_enstoentr$ENSEMBL)) #number of times an ENSEMBL gene ID was converted to several ENTREZ IDs
   #determine all duplicated ENSEMBL gene IDS
-  dupl_ensembl<-unique(bitr_enstoentr$ENSEMBL[duplicated(bitr_enstoentr$ENSEMBL)])
+  dupl_ensembl <- unique(bitr_enstoentr$ENSEMBL[duplicated(bitr_enstoentr$ENSEMBL)])
   #number of ENSEMBL IDs that have at least one duplicate
   length(dupl_ensembl)
   #display of conversion scheme of duplicated ENSEMBL IDs
-  duplicated_conversion_ens<-bitr_enstoentr[bitr_enstoentr$ENSEMBL %in% dupl_ensembl,]
+  duplicated_conversion_ens <- bitr_enstoentr[bitr_enstoentr$ENSEMBL %in% dupl_ensembl, ]
   dim(duplicated_conversion_ens)
 
 
   #CASE 2: multiple ENSEMBL IDs are mapped to single entrez ID
   sum(duplicated(bitr_enstoentr$ENTREZ)) #number of times several ENSEMBL gene IDs were converted to a single ENTREZ ID
   #determine all duplicated ENTREZ IDs
-  dupl_entrez<-unique(bitr_enstoentr$SYMBOL[duplicated(bitr_enstoentr$SYMBOL)])
+  dupl_entrez <- unique(bitr_enstoentr$SYMBOL[duplicated(bitr_enstoentr$SYMBOL)])
   #number of ENTREZ IDs that have at least one duplicate
   length(dupl_entrez)
   #display of conversion scheme of duplicated ENTREZ IDs
-  duplicated_conversion_entrez<-bitr_enstoentr[bitr_enstoentr$SYMBOL %in% dupl_entrez,]
+  duplicated_conversion_entrez <- bitr_enstoentr[bitr_enstoentr$SYMBOL %in% dupl_entrez, ]
   dim(duplicated_conversion_entrez)
 
 
@@ -105,25 +108,26 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
   #######
 
 
-  if(dupl_removal_method == 1){
+  if(dupl_removal_method ==  1){
 
     ### 1. option: keep first subscript among duplicates #########################
 
     #1. remove duplicated ENTREZ gene IDs
-    exprdat_dupl<-expression_data[!duplicated(expression_data$SYMBOL),]
+    exprdat_dupl <- expression_data[!duplicated(expression_data$SYMBOL), ]
     dim(expression_data)
 
     #2. remove duplicated ENSEMBL gene IDs
-    exprdat_dupl<-exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl <- exprdat_dupl[!duplicated(exprdat_dupl$Row.names), ]
     dim(exprdat_dupl)
 
     #3. ENTREZ IDs as row names and
-    rownames(exprdat_dupl)<-exprdat_dupl$SYMBOL
+    rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #Remove columns containing ENSEMBL and ENTREZ IDs
-    exprdat_dupl<-subset(exprdat_dupl, select=-c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, 
+                           select = -c(Row.names, SYMBOL))
     dim(exprdat_dupl)
 
-  } else if(dupl_removal_method == 2){
+  } else if(dupl_removal_method ==  2){
 
     ### 2. option: keep mean expression value of all duplicated gene IDs  #########################
 
@@ -131,8 +135,8 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
     #generate matrix to contain (rounded) mean expression values of all rows that
     #have same ENTREZ gene ID
-    #ncol=ncol(expression_data)-2 since data set contains 2 columns with IDs at this point
-    mean_entrez<-matrix(, nrow=0, ncol=ncol(expression_data)-2)
+    #ncol = ncol(expression_data)-2 since data set contains 2 columns with IDs at this point
+    mean_entrez <- matrix(, nrow = 0, ncol = ncol(expression_data)-2)
 
 
     # -> There are cases where no ENSEMBL gene IDs are mapped to an identical Entrez gene ID
@@ -143,7 +147,7 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     # -> if no distinct ENSEMBL IDs are mapped to an identical Entrez gene ID then mean_entrez remains an empty data frame
 
 
-    if(length(dupl_entrez) !=0){
+    if(length(dupl_entrez) != 0){
 
 
       #1.remove duplicated ENTREZ gene IDs (case 2)
@@ -151,28 +155,28 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
       for(i in 1:length(dupl_entrez)){#go through each ENTREZ IDs which occurs multiple times
         #determine all rows whose ENTREZ IDs correspond to current ENTREZ ID
-        counts_dupl<-expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i],]
+        counts_dupl <- expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i], ]
         #for rows duplicated ENTREZ ID compute (rounded) mean expression value
-        dupl_id<-round(colMeans(counts_dupl[,c(2:(ncol(expression_data)-1))]))
+        dupl_id <- round(colMeans(counts_dupl[, c(2:(ncol(expression_data)-1))]))
         #store rounded mean expression value in matrix
-        mean_entrez<-rbind(mean_entrez,dupl_id)
+        mean_entrez <- rbind(mean_entrez, dupl_id)
       }
     }
 
 
     #test whether the number of rows in mean_entrez corresponds to the number ENTREZ IDs
     #that occur more than once
-    nrow(mean_entrez)==length(dupl_entrez)
+    nrow(mean_entrez) == length(dupl_entrez)
 
     #remove all rows from the expression data whose ENTREZ ID has at least one duplicate
-    exprdat_dupl<-expression_data[!expression_data$SYMBOL %in% dupl_entrez,]
+    exprdat_dupl <- expression_data[!expression_data$SYMBOL %in% dupl_entrez, ]
     #test whether number of rows in resulting data set equals nrow of inital data set
     #minus number of genes with at least one duplicate
-    nrow(exprdat_dupl)==nrow(expression_data)-nrow(duplicated_conversion_entrez)
+    nrow(exprdat_dupl) == nrow(expression_data)-nrow(duplicated_conversion_entrez)
     dim(exprdat_dupl)
 
     #set corresponding ENTREZ gene IDs as rownames
-    rownames(mean_entrez)<-unique(dupl_entrez)
+    rownames(mean_entrez) <- unique(dupl_entrez)
 
 
 
@@ -183,22 +187,22 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #->pointless to compute mean expression values
     #verifiable by looking at data set only containing those ENSEMBL IDs that are
     #mapped by multiple ENTREZ IDs:
-    #test_dupl_ensembl<-expression_data[expression_data$Row.names %in% dupl_ensembl,]
+    #test_dupl_ensembl <- expression_data[expression_data$Row.names %in% dupl_ensembl, ]
     #View(test_dupl_ensembl)
 
     #therefore: proceed as in option 1 and use ENTREZ ID that occurs first, remove the rest
-    exprdat_dupl<-exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl <- exprdat_dupl[!duplicated(exprdat_dupl$Row.names), ]
     dim(exprdat_dupl)
     #set ENTREZ ID as rownames
-    rownames(exprdat_dupl)<-exprdat_dupl$SYMBOL
+    rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #remove any columns containing IDs
-    exprdat_dupl<-subset(exprdat_dupl,select= -c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, select =  -c(Row.names, SYMBOL))
     #add rows to data set that contain mean expression values of duplicate ENTREZ IDs
-    exprdat_dupl<-rbind(exprdat_dupl,mean_entrez)
+    exprdat_dupl <- rbind(exprdat_dupl, mean_entrez)
     #dimension of remaining expression data set:
     #dim(exprdat_dupl)
 
-  }else if(dupl_removal_method ==3){
+  }else if(dupl_removal_method == 3){
 
     ###option 3: among duplicates, keep row with highest overall expression values (i.e highest counts across all samples)
 
@@ -211,38 +215,38 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #case 2: (case 1 below) multiple ENSEMBL IDs that are converted to the same single ENTREZ ID
 
     #generate matrix to later contain row with highest count values among ID duplicates
-    highest_count_entrez<-matrix(, nrow=0, ncol=ncol(expression_data))
+    highest_count_entrez <- matrix(, nrow = 0, ncol = ncol(expression_data))
     #go through each ENTREZ ID that occurs multiple times
     for(i in 1:length(dupl_entrez)){
       #determine all rows with specific ENTREZ ID which occurs multiple times
-      counts_dupl<-expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i],]
+      counts_dupl <- expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i], ]
       #detect row with highest count values and order in decreasing manner
-      order_rowsums<-order(rowSums(counts_dupl[,2:(ncol(counts_dupl)-1)]),decreasing=TRUE)
-      dupl_id<-counts_dupl[order_rowsums==1,]
+      order_rowsums <- order(rowSums(counts_dupl[, 2:(ncol(counts_dupl)-1)]), decreasing = TRUE)
+      dupl_id <- counts_dupl[order_rowsums == 1, ]
       #store rounded mean expression value in matrix
-      highest_count_entrez<-rbind(highest_count_entrez,dupl_id)
+      highest_count_entrez <- rbind(highest_count_entrez, dupl_id)
       #View(highest_count_entrez)
       #remove rows in counts_dupl from count data set successively
     }
 
     #Remove all initial values with ENTREZ duplicates from the dataset
-    exprdat_dupl<-expression_data[! expression_data$SYMBOL %in% unique(dupl_entrez),]
+    exprdat_dupl <- expression_data[! expression_data$SYMBOL %in% unique(dupl_entrez), ]
 
 
     #case 1: single ENSEMBL ID that is mapped to multiple ENTREZ gene IDs
     #as in option 2, pointless to detect row with highest count values as all rows
     #corresponding to the same ENSEMBL ID naturally contain identical count data
     #therefore: remove duplicate ENSEMBL ID that occurs first
-    exprdat_dupl<-exprdat_dupl[!duplicated(exprdat_dupl$Row.names),]
+    exprdat_dupl <- exprdat_dupl[!duplicated(exprdat_dupl$Row.names), ]
 
     #Add all rows contain initially duplicate ENTREZ IDs but contain highest
     #count values among those
-    exprdat_dupl<-rbind(exprdat_dupl,highest_count_entrez )
+    exprdat_dupl <- rbind(exprdat_dupl, highest_count_entrez )
 
     #Set ENTREZ IDs as rownames remove all columns containing any ID info and
-    rownames(exprdat_dupl)<-exprdat_dupl$SYMBOL
+    rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #Remove any column that contains gene IDs
-    exprdat_dupl<-subset(exprdat_dupl, select=-c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, select = -c(Row.names, SYMBOL))
     #dim(exprdat_dupl)
   }
 
@@ -257,76 +261,72 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 ##create ranked list from DE results##############################################
 ##################################################################################
 
-#for DESeq2 (method="DESeq2") and edgeR (method="edgeR")
+#for DESeq2 (method = "DESeq2") and edgeR (method = "edgeR")
 #rankby must be in c("p_value", "lfc") to perform ranking based on
-#(i) p-value (rank=sign(lfc)*(-1)*log10(unadjusted_pvalue)
+#(i) p-value (rank = sign(lfc)*(-1)*log10(unadjusted_pvalue)
 #(ii) log fold changes
-rankedList_cP<-function(DE_results, rankby, method){
+rankedList_cP <- function(DE_results, rankby, method){
 
-  #DE_results <-  edgeR_results
-  #rankby <- "p_value"
-  #method <- "edgeR"
-
-  if(method=="DESeq2"){#create ranking based on DESeq2 results table
+  if(method == "DESeq2"){#create ranking based on DESeq2 results table
 
     # first step: replace p-values of 0 with the smallest representable positive number
     # in R (necessary since one term of ranking metric is equal to log10(p-value))
 
-    DE_results$pvalue[ DE_results$pvalue == 0 ] <- min(DE_results$pvalue[ DE_results$pvalue > 0 ]) / 10
+    DE_results$pvalue[ DE_results$pvalue ==  0 ] <- min(DE_results$pvalue[ DE_results$pvalue > 0 ]) / 10
 
-    #DE_results<-edgeR_results
-    if(rankby=="lfc"){ #ranking by log2 fold change
+    #DE_results <- edgeR_results
+    if(rankby == "lfc"){ #ranking by log2 fold change
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec<-as.vector(DE_results[!is.na(DE_results$pvalue),]$log2FoldChange)
-      names(rankvec)<-rownames(DE_results[!is.na(DE_results$pvalue),])
-      rankvec<-sort(rankvec, decreasing=TRUE)
+      rankvec <- as.vector(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)
+      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
+      rankvec <- sort(rankvec, decreasing = TRUE)
 
-    }else if (rankby=="p_value"){#ranking by p-value
+    }else if (rankby == "p_value"){#ranking by p-value
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec<-as.vector(sign(DE_results[!is.na(DE_results$pvalue),]$log2FoldChange)*(-1)*log10(DE_results[!is.na(DE_results$pvalue),]$pvalue))
-      names(rankvec)<-rownames(DE_results[!is.na(DE_results$pvalue),])
-      rankvec<-sort(rankvec, decreasing=TRUE)
+      rankvec <- as.vector(sign(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)*(-1)*log10(DE_results[!is.na(DE_results$pvalue), ]$pvalue))
+      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
   }
 
 
-  else if(method=="edgeR"){#create ranking based on edgeR results table
+  else if(method == "edgeR"){#create ranking based on edgeR results table
 
     # first step: replace p-values of 0 with the smallest representable positive number
     # in R (necessary since one term of ranking metric is equal to log10(p-value))
 
-    DE_results$table$PValue[ DE_results$table$PValue == 0 ] <- min(DE_results$table$PValue[ DE_results$table$PValue > 0 ]) /10
+    DE_results$table$PValue[ DE_results$table$PValue ==  0 ] <- min(DE_results$table$PValue[ DE_results$table$PValue > 0 ]) /10
 
-    if(rankby=="lfc"){#ranking based on log2 fold change
-      rankvec<-as.vector(DE_results$table$logFC)
-      names(rankvec)<-rownames(DE_results)
-      rankvec<-sort(rankvec, decreasing=TRUE)
+    if(rankby == "lfc"){#ranking based on log2 fold change
+      rankvec <- as.vector(DE_results$table$logFC)
+      names(rankvec) <- rownames(DE_results)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
 
-    else if(rankby=="p_value"){#ranking based on p-value
-      rankvec<-as.vector(sign(DE_results$table$logFC)*(-1)*log10(DE_results$table$PValue))
-      names(rankvec)<-rownames(DE_results)
-      rankvec<-sort(rankvec, decreasing=TRUE)
+    else if(rankby == "p_value"){#ranking based on p-value
+      rankvec <- as.vector(sign(DE_results$table$logFC)*(-1)*log10(DE_results$table$PValue))
+      names(rankvec) <- rownames(DE_results)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
   }
 
-  else if(method=="limma"){#create ranking based on edgeR results table
+  else if(method == "limma"){#create ranking based on edgeR results table
 
     # first step: replace p-values of 0 with the smallest representable positive number
     # in R (necessary since one term of ranking metric is equal to log10(p-value))
 
-    DE_results$P.Value[ DE_results$P.Value == 0 ] <- min(DE_results$P.Value[ DE_results$P.Value > 0 ]) / 10
+    DE_results$P.Value[ DE_results$P.Value ==  0 ] <- min(DE_results$P.Value[ DE_results$P.Value > 0 ]) / 10
 
-    if(rankby=="lfc"){#ranking based on log2 fold change
-      rankvec<-as.vector(DE_results$logFC)
-      names(rankvec)<-rownames(DE_results)
-      rankvec<-sort(rankvec, decreasing=TRUE)
+    if(rankby == "lfc"){#ranking based on log2 fold change
+      rankvec <- as.vector(DE_results$logFC)
+      names(rankvec) <- rownames(DE_results)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
 
-    else if(rankby=="p_value"){#ranking based on p-value
-      rankvec<-as.vector(sign(DE_results$logFC)*(-1)*log10(DE_results$P.Value))
-      names(rankvec)<-rownames(DE_results)
-      rankvec<-sort(rankvec, decreasing=TRUE)
+    else if(rankby == "p_value"){#ranking based on p-value
+      rankvec <- as.vector(sign(DE_results$logFC)*(-1)*log10(DE_results$P.Value))
+      names(rankvec) <- rownames(DE_results)
+      rankvec <- sort(rankvec, decreasing = TRUE)
     }
   }
   return(rankvec)
@@ -345,19 +345,22 @@ rankedList_cP<-function(DE_results, rankby, method){
 ################
 
 # create DESeq2 results and rank by p-value
-DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-  deseq_preprocess(phenotype_labels = pickrell.eset$gender ) %>% DESeq() %>%
-  lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>% as.data.frame() %>%
-  rankedList_cP(rankby = "p_value", method = "DESeq2")
+DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% 
+                            geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
+                            deseq_preprocess(phenotype_labels = pickrell.eset$gender ) %>% 
+                            DESeq() %>%
+                            lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>% 
+                            as.data.frame() %>%
+                            rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
-path_DESeq2_phenorig <- "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
+path_DESeq2_phenorig <- "./GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
-write.table(DESeq2_ranking_phenorig,
-            file = path_DESeq2_phenorig,
-            quote = FALSE,
-            row.names = TRUE,
+write.table(DESeq2_ranking_phenorig, 
+            file = path_DESeq2_phenorig, 
+            quote = FALSE, 
+            row.names = TRUE, 
             col.names = FALSE)
 
 
@@ -366,26 +369,31 @@ write.table(DESeq2_ranking_phenorig,
 ##############
 
 # filtering indicator
-keep_phenorig <- DGEList(Biobase::exprs(pickrell.eset), group = pickrell.eset$gender) %>% filterByExpr()
+keep_phenorig <- DGEList(Biobase::exprs(pickrell.eset), group = pickrell.eset$gender) %>% 
+                  filterByExpr()
 
 # design matrix
 mm_phenorig <- model.matrix( ~ pickrell.eset$gender)
 
 # create limma results and rank by p-value
-limma_ranking_phenorig <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenorig,], dupl_removal_method = 1) %>%
-  DGEList(group = pickrell.eset$gender) %>% calcNormFactors() %>%
-  voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>% eBayes() %>% topTable(coef=ncol(mm_phenorig), number=100000) %>%
-  rankedList_cP(rankby= "p_value", method="limma")
+limma_ranking_phenorig <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenorig, ], dupl_removal_method = 1) %>%
+                          DGEList(group = pickrell.eset$gender) %>% 
+                          calcNormFactors() %>%
+                          voom(design = mm_phenorig) %>% 
+                          lmFit(design = mm_phenorig) %>% 
+                          eBayes() %>% 
+                          topTable(coef = ncol(mm_phenorig), number = 100000) %>%
+                          rankedList_cP(rankby =  "p_value", method = "limma")
 
 # Create path for storage of limma ranking
-path_limma_phenorig <- "/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
+path_limma_phenorig <- "./GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
 
 
 # export
-write.table(limma_ranking_phenorig,
-            file = path_limma_phenorig,
-            quote = FALSE,
-            row.names = TRUE,
+write.table(limma_ranking_phenorig, 
+            file = path_limma_phenorig, 
+            quote = FALSE, 
+            row.names = TRUE, 
             col.names = FALSE)
 
 
@@ -398,19 +406,26 @@ for(i in 1:ncol(phen_pickrell)){
   ################
 
   # create DESeq2 results and rank by p-value
-  DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-    deseq_preprocess(phenotype_labels = phen_pickrell[,i] ) %>% DESeq() %>%
-    lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>% as.data.frame() %>%
-    rankedList_cP(rankby = "p_value", method = "DESeq2")
+  DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% 
+                              geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
+                              deseq_preprocess(phenotype_labels = phen_pickrell[, i] ) %>% 
+                              DESeq() %>%
+                              lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>% 
+                              as.data.frame() %>%
+                              rankedList_cP(rankby = "p_value", method = "DESeq2")
 
   # create path for storage of DESeq2 ranking
-  path_DESeq2_phenperm <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Phenotype_Permutation",i,"/DESeq2_ranking_permutation",i,".txt")
+  path_DESeq2_phenperm <- paste0("./GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Phenotype_Permutation", 
+                                 i, 
+                                 "/DESeq2_ranking_permutation", 
+                                 i, 
+                                 ".txt")
 
   # export
-  write.table(DESeq2_ranking_phenperm,
-              file = path_DESeq2_phenperm,
-              quote = FALSE,
-              row.names = TRUE,
+  write.table(DESeq2_ranking_phenperm, 
+              file = path_DESeq2_phenperm, 
+              quote = FALSE, 
+              row.names = TRUE, 
               col.names = FALSE)
 
 
@@ -419,26 +434,34 @@ for(i in 1:ncol(phen_pickrell)){
   ##############
 
   # filtering indicator
-  keep_phenperm <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,i]) %>% filterByExpr()
+  keep_phenperm <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[, i]) %>% 
+                    filterByExpr()
 
   # design matrix
-  mm_phenperm <- model.matrix( ~ phen_pickrell[,i])
+  mm_phenperm <- model.matrix( ~ phen_pickrell[, i])
 
   # create limma results and rank by p-value
-  limma_ranking_phenperm <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenperm,], dupl_removal_method = 1) %>%
-    DGEList(group = phen_pickrell[,i]) %>% calcNormFactors() %>%
-    voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>% eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
-    rankedList_cP(rankby= "p_value", method="limma")
+  limma_ranking_phenperm <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
+                            DGEList(group = phen_pickrell[, i]) %>% calcNormFactors() %>%
+                            voom(design = mm_phenperm) %>% 
+                            lmFit(design = mm_phenperm) %>% 
+                            eBayes() %>% 
+                            topTable(coef = ncol(mm_phenperm), number = 100000) %>%
+                            rankedList_cP(rankby =  "p_value", method = "limma")
 
   # Create path for storage of limma ranking
-  path_limma_phenperm <- paste0("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Phenotype_Permutation",i,"/limma_ranking_permutation",i,".txt")
+  path_limma_phenperm <- paste0("./GSEAPreranked/Pickrell/p_value/TCell/Data/Raw/Phenotype_Permutation", 
+                                i, 
+                                "/limma_ranking_permutation", 
+                                i, 
+                                ".txt")
 
 
   # export
-  write.table(limma_ranking_phenperm,
-              file = path_limma_phenperm,
-              quote = FALSE,
-              row.names = TRUE,
+  write.table(limma_ranking_phenperm, 
+              file = path_limma_phenperm, 
+              quote = FALSE, 
+              row.names = TRUE, 
               col.names = FALSE)
 
 }
