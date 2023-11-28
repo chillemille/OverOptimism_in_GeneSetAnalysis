@@ -296,7 +296,7 @@ ggplot(data = dat_overview_n_DEGS_bottomly_truephen_long,
              col = "#F8766D") + 
   # add labels "Default" and "Maximum" for each GSA tool on the x-axis 
   scale_x_discrete(labels= rep(c("Default", "Maximum"), 
-                               times = 6)) + 
+                               times = 7)) + 
   # rotate labels on the x-axis, remove x-axis title and add space below the plot 
   theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9), 
         axis.title.x = element_text(vjust = -13), # move x-axis label downwards to add space for the individual GSA tools 
@@ -336,7 +336,7 @@ dat_overview_n_DEGS_bottomly_phenpermutation_long <- pivot_longer(dat_overview_n
 # transform GSA tools to factors
 # -> this way we can fix the order of the tools in the graphic
 dat_overview_n_DEGS_bottomly_phenpermutation_long$GSA_tool <- factor(dat_overview_n_DEGS_bottomly_phenpermutation_long$GSA_tool, 
-                                                                    levels = c("cP_ORA", "GOSeq", "PADOG", "GSEA", "GSEAPreranked", "cP_GSEA"))
+                                                                    levels = c("cP_ORA", "DAVID", "GOSeq", "PADOG", "GSEA", "GSEAPreranked", "cP_GSEA"))
 
 
 # add the combination of the GSA tool and the permutation ID 
@@ -361,14 +361,13 @@ dat_overview_n_DEGS_bottomly_phenpermutation_long$unique_ID <- paste0(dat_overvi
 
 
 # ggplot 
-plot_n_DEGS_bottommly <- 
 ggplot(data =dat_overview_n_DEGS_bottomly_phenpermutation_long, 
        aes(x = interaction(GSA_tool, state, lex.order = TRUE), 
            y = n_DEGS, group = 1)) + 
   geom_line(aes(group=unique_ID), size=0.5, alpha=0.7, col = "#F8766D") + 
   geom_point(size = 1, alpha = 1.2, col = "#F8766D") + 
   scale_x_discrete(labels= rep(c("Default", "Maximum"), 
-                               times = 6)) + 
+                               times = 7)) + 
   theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9), 
         axis.title.x = element_text(vjust = -2), 
         plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm")) + ## add space below the actual plot (needed for the GSA tool names)
