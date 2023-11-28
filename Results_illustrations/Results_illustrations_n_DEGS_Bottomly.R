@@ -29,8 +29,8 @@ load("./Results/ORA_Results_Bottomly_PhenotypePermutations.RData")
 
 # Load clusterProfiler's GSEA results
 
-load("./Results/cP_GSEA/cP_GSEA_Results_Bottomly_OriginalPhenotype.RData")
-load("./Results/cP_GSEA/cP_GSEA_Results_Bottomly_PhenotypePermutations.RData")
+load("./Results/cP_GSEA_Results_Bottomly_OriginalPhenotype.RData")
+load("./Results/cP_GSEA_Results_Bottomly_PhenotypePermutations.RData")
 
 
 # Load PADOG results 

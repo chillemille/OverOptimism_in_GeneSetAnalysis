@@ -32,8 +32,8 @@ load("./Results/ORA_Results_Pickrell_PhenotypePermutations.RData")
 
 # Load clusterProfiler's GSEA results
 
-load("./Results/cP_GSEA/cP_GSEA_Results_Pickrell_OriginalPhenotype.RData")
-load("./Results/cP_GSEA/cP_GSEA_Results_Pickrell_PhenotypePermutations.RData")
+load("./Results/cP_GSEA_Results_Pickrell_OriginalPhenotype.RData")
+load("./Results/cP_GSEA_Results_Pickrell_PhenotypePermutations.RData")
 
 # Load PADOG results 
 
