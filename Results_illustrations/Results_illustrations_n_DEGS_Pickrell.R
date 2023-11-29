@@ -267,7 +267,7 @@ add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
 ggplot(data = dat_overview_n_DEGS_pickrell_truephen_long,
        aes(x = interaction(GSA_tool, state, lex.order = TRUE),
            y = n_DEGS, group = 1)) +
-geom_line(aes(group=GSA_tool), size=0.7, alpha=0.7, col = "#F8766D") +
+geom_line(aes(group=GSA_tool), size=0.3, alpha=0.7, col = "#F8766D") +
 # add scatter for each default and optimal value
 geom_point(size = 1.2, alpha = 0.7, col = "#F8766D") +
 # add labels "Default" and "Maximum" for each GSA tool on the x-axis
@@ -337,7 +337,7 @@ dat_overview_n_DEGS_pickrell_phenpermutation_long$unique_ID <- paste0(dat_overvi
 ggplot(data =dat_overview_n_DEGS_pickrell_phenpermutation_long,
        aes(x = interaction(GSA_tool, state, lex.order = TRUE),
            y = n_DEGS, group = 1)) +
-geom_line(aes(group=unique_ID), size=0.5, alpha=0.7, col ="#F8766D") +
+geom_line(aes(group=unique_ID), size=0.3, alpha=0.7, col ="#F8766D") +
 geom_point(size = 1.2, alpha = 0.7, col = "#F8766D") +
 scale_x_discrete(labels= rep(c("Default", "Maximum"),
                              times = 7)) +
