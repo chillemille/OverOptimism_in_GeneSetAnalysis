@@ -5,8 +5,7 @@
 library(ggplot2)
 library(tidyr)
 
-# set working directory 
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
+
 
 ################################################################################
 # Load optimization results ####################################################
@@ -28,17 +27,6 @@ load("./Results/optimP_ORA_Demethylation_Pickrell_PhenotypePermutations.RData")
 
 # t Cell mediated immunity 
 load("./Results/optimP_ORA_tCell_Pickrell_PhenotypePermutations.RData")
-
-
-# Load DAVID results : Achtung DAVID fehlt bis jetzt noch 
-
-# Load clusterProfiler's GSEA results
-
-# Demethylation 
-load("./Results/optimP_cP_GSEA_Demethylation_Pickrell_PhenotypePermutations.RData")
-
-# t-Cell mediated immunity 
-load("./Results/optimP_cP_GSEA_tCell_Pickrell_PhenotypePermutations.RData")
 
 
 # Load PADOG results 
@@ -96,17 +84,21 @@ for(i in 1:10){
   # t Cell mediated immunity 
   
   # store the default number of differentially enriched gene sets 
-  padj_GOSeq_tCell_phenpermutation_default[i] <- optimP_GOSeq_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_GOSeq_tCell_phenpermutation_default[i] <- 
+    optimP_GOSeq_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_GOSeq_tCell_phenpermutation_optim[i] <- optimP_GOSeq_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_GOSeq_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_GOSeq_tCell_phenpermutation_optim[i] <- 
+    optimP_GOSeq_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_GOSeq_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
   
   # Demethylation 
   
   # store the default number of differentially enriched gene sets 
-  padj_GOSeq_Demethylation_phenpermutation_default[i] <- optimP_GOSeq_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_GOSeq_Demethylation_phenpermutation_default[i] <- 
+    optimP_GOSeq_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_GOSeq_Demethylation_phenpermutation_optim[i] <- optimP_GOSeq_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_GOSeq_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_GOSeq_Demethylation_phenpermutation_optim[i] <- 
+    optimP_GOSeq_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_GOSeq_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
 }
 
@@ -163,17 +155,21 @@ for(i in 1:10){
   # t Cell mediated immunity 
   
   # store the default number of differentially enriched gene sets 
-  padj_cP_ORA_tCell_phenpermutation_default[i] <- optimP_cP_ORA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_cP_ORA_tCell_phenpermutation_default[i] <- 
+    optimP_cP_ORA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_cP_ORA_tCell_phenpermutation_optim[i] <- optimP_cP_ORA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_cP_ORA_tCell_phenpermutation_optim[i] <- 
+    optimP_cP_ORA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
   
   # Demethylation 
   
   # store the default number of differentially enriched gene sets 
-  padj_cP_ORA_Demethylation_phenpermutation_default[i] <- optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_cP_ORA_Demethylation_phenpermutation_default[i] <- 
+    optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_cP_ORA_Demethylation_phenpermutation_optim[i] <- optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_cP_ORA_Demethylation_phenpermutation_optim[i] <- 
+    optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
 }
 
@@ -201,17 +197,21 @@ for(i in 1:10){
   # t Cell mediated immunity 
   
   # store the default number of differentially enriched gene sets 
-  padj_PADOG_PrimImmun_phenpermutation_default[i] <- optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_PADOG_PrimImmun_phenpermutation_default[i] <- 
+    optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_PADOG_PrimImmun_phenpermutation_optim[i] <- optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_PADOG_PrimImmun_phenpermutation_optim[i] <- 
+    optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_PADOG_PrimaryImmunodeficiency_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
   
   # Demethylation 
   
   # store the default number of differentially enriched gene sets 
-  padj_PADOG_GraftvsHost_phenpermutation_default[i] <- optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_PADOG_GraftvsHost_phenpermutation_default[i] <- 
+    optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_PADOG_GraftvsHost_phenpermutation_optim[i] <- optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_PADOG_GraftvsHost_phenpermutation_optim[i] <- 
+    optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_PADOG_GraftvsHost_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
 }
 
@@ -239,17 +239,21 @@ for(i in 1:10){
   # t Cell mediated immunity 
   
   # store the default number of differentially enriched gene sets 
-  padj_cP_GSEA_tCell_phenpermutation_default[i] <- optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_cP_GSEA_tCell_phenpermutation_default[i] <- 
+    optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_cP_GSEA_tCell_phenpermutation_optim[i] <- optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_cP_GSEA_tCell_phenpermutation_optim[i] <- 
+    optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_GSEA_tcell_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
   
   # Demethylation 
   
   # store the default number of differentially enriched gene sets 
-  padj_cP_GSEA_Demethylation_phenpermutation_default[i] <- optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_cP_GSEA_Demethylation_phenpermutation_default[i] <- 
+    optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_cP_GSEA_Demethylation_phenpermutation_optim[i] <- optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_cP_GSEA_Demethylation_phenpermutation_optim[i] <- 
+    optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_GSEA_Demethylation_Pickrell_phenotypepermutations[[i]]$documentation$p_adj)] 
   
 }
 
@@ -423,12 +427,6 @@ padj_GeneSet1_phenpermutation_long$unique_ID <- paste0(padj_GeneSet1_phenpermuta
                                                        padj_GeneSet1_phenpermutation_long$ID)
 
 
-# Indicate name of the gene set whose adjusted p-value was optimized 
-
-padj_GeneSet1_phenpermutation_long$gene_set <- ifelse(padj_GeneSet1_phenpermutation_long$GSA_tool == "PADOG", 
-                                                      "PrimImmun", 
-                                                      "tCell") 
-
 
 # (ii) Random permutations of the random permutations of the sample conditions, second data set 
 padj_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(padj_cP_ORA_Demethylation_phenpermutation_default, padj_cP_ORA_Demethylation_phenpermutation_optim),
@@ -464,16 +462,15 @@ padj_GeneSet2_phenpermutation_long$unique_ID <- paste0(padj_GeneSet2_phenpermuta
 
 
 
-padj_GeneSet2_phenpermutation_long$gene_set <- ifelse(padj_GeneSet1_phenpermutation_long$GSA_tool == "PADOG", 
-                                                      "GraftvsHost", 
-                                                      "Demethylation")
-
-
-
 
 # Combine both data sets into one big data set 
 padj_allgenesets_phenpermutation_long <- rbind(padj_GeneSet1_phenpermutation_long, 
                                                padj_GeneSet2_phenpermutation_long)
+
+# transform column indicating gene set (gene set 1 vs. gene set 2) to factor
+padj_allgenesets_phenpermutation_long$GS <- factor(padj_allgenesets_phenpermutation_long$GS)
+
+
 
 
 # transform GSA tools to factors
@@ -481,11 +478,6 @@ padj_allgenesets_phenpermutation_long <- rbind(padj_GeneSet1_phenpermutation_lon
 padj_allgenesets_phenpermutation_long$GSA_tool <- factor(padj_allgenesets_phenpermutation_long$GSA_tool, 
                                                          levels = c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "cP_GSEA", "GSEA", "GSEAPreranked"))
 
-
-# transform gene sets to factors 
-# -> this way we can fix the order of the gene sets in the legend 
-padj_allgenesets_phenpermutation_long$gene_set <- factor(padj_allgenesets_phenpermutation_long$gene_set, 
-                                                         levels = c("tCell", "Demethylation","PrimImmun", "GraftvsHost"))
 
 
 # Replace "GSEAPreranked" by "GSEA- \n Preranked" (line break makes plot easier to understand)
@@ -518,27 +510,25 @@ plot_adj_pickrell_phenpermutations <-
 ggplot(data =padj_allgenesets_phenpermutation_long, 
        aes(x = interaction(GSA_tool, state, lex.order = TRUE), 
            y = padj, group = 1)) + 
-geom_line( aes(group=unique_ID, color = gene_set), size=0.5, alpha=0.7) + 
-geom_point(aes(color = gene_set),size = 1.5, alpha = 0.7) + 
+geom_line( aes(group=unique_ID, color = GS), size=0.5, alpha=0.7) + 
+geom_point(aes(color = GS),size = 1.5, alpha = 0.7) + 
 scale_x_discrete(labels= rep(c("Default", "Minimum"), 
-                               times = 6)) + 
-theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9), 
-      axis.title.x = element_text(vjust = -2), 
-      plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm")) + ## add space below the actual plot (needed for the GSA tool names)
-annotate(geom = "text", 
+                            times = 7)) + 
+ theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9), 
+       axis.title.x = element_text(vjust = -2), 
+       plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm")) + ## add space below the actual plot (needed for the GSA tool names)
+ annotate(geom = "text", 
           x = 1.5 + 2*(0:6), 
-          y = -0.2, 
-          label = add_labels_xaxis, size =3 )+ 
-coord_cartesian(ylim = c(0,1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
-xlab("Computational GSA method") +
-ylab("Adjusted p-value") + 
-geom_step(data = padj_allgenesets_phenpermutation_long, aes(interaction(GSA_tool, state, lex.order = TRUE), y= sig_threshold), 
-          col="gray", linetype = "dashed") + 
-  labs(color = "Gene set") +
-  scale_color_discrete(labels=c("T cell mediated immunity", 
-                                "Demethylation", 
-                                "Primary immunodeficiency", 
-                                "Graft versus host disease")) 
+           y = -0.2, 
+           label = add_labels_xaxis, size =3 )+ 
+ coord_cartesian(ylim = c(0,1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
+ xlab("Computational GSA method") +
+ ylab("Adjusted p-value") + 
+ geom_step(data = padj_allgenesets_phenpermutation_long, aes(interaction(GSA_tool, state, lex.order = TRUE), y= sig_threshold), 
+           col="gray", linetype = "dashed") + 
+   labs(color = "Gene set") +
+   scale_color_discrete(labels=c("1", 
+                                 "2")) 
 
 
 
