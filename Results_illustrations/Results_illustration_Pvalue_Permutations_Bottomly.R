@@ -6,9 +6,6 @@
 library(ggplot2)
 library(tidyr)
 
-# set working directory 
-setwd("/nfsmb/koll/milena.wuensch/Dokumente/Overoptimism_NEU/NEU/OverOptimism_GSA/Assessment_OverOptimism")
-
 ################################################################################
 ### Load corresponding results for Bottomly data set ###########################
 ################################################################################
@@ -27,21 +24,13 @@ load("./Results/optimP_GOSeq_CellularProcess_Bottomly_PhenotypePermutations.RDat
 # Load clusterProfiler's ORA results
 
 # Demethylation
-load("./Results/optimP_ORA_MetabolicProcess_Bottomly_PhenotypePermutations.RData")
+load("./Results/optimP_ORA_tCell_Bottomly_PhenotypePermutations.RData")
 
 # t Cell mediated immunity 
-load("./Results/optimP_ORA_CellularProcess_Bottomly_PhenotypePermutations.RData")
+load("./Results/optimP_ORA_Demethylation_Bottomly_PhenotypePermutations.RData")
 
 
 # Load DAVID results : Achtung DAVID fehlt bis jetzt noch 
-
-# Load clusterProfiler's GSEA results
-
-# Demethylation 
-load("./Results/optimP_cP_GSEA_Demethylation_Bottomly_PhenotypePermutations.RData")
-
-# t-Cell mediated immunity 
-load("./Results/optimP_cP_GSEA_tCell_Bottomly_PhenotypePermutations.RData")
 
 
 # Load PADOG results 
@@ -155,19 +144,19 @@ padj_DAVID_MetabolicProcess_phenpermutation_optim <- rep(1, times = 10)
 ################################################################################
 
 
-# Cellular Process
+# Demethylation
 
 # store default p_adj for the 10 permutations of the true sample labels  
-padj_cP_ORA_CellularProcess_phenpermutation_default <- c()
+padj_cP_ORA_Demethylation_phenpermutation_default <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels 
-padj_cP_ORA_CellularProcess_phenpermutation_optim <- c()
+padj_cP_ORA_Demethylation_phenpermutation_optim <- c()
 
 
-# Metabolic Process
+# t Cell mediated immunity 
 # store default p_adj for the 10 permutations of the true sample labels  
-padj_cP_ORA_MetabolicProcess_phenpermutation_default <- c()
+padj_cP_ORA_tCell_phenpermutation_default <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels 
-padj_cP_ORA_MetabolicProcess_phenpermutation_optim <- c()
+padj_cP_ORA_tCell_phenpermutation_optim <- c()
 
 
 for(i in 1:10){
@@ -175,21 +164,21 @@ for(i in 1:10){
   # Cellular Process
   
   # store the default number of differentially enriched gene sets 
-  padj_cP_ORA_CellularProcess_phenpermutation_default[i] <- 
-    optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_cP_ORA_Demethylation_phenpermutation_default[i] <- 
+    optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_cP_ORA_CellularProcess_phenpermutation_optim[i] <- 
-    optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_CellularProcess_Bottomly_Phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_cP_ORA_Demethylation_phenpermutation_optim[i] <- 
+    optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$p_adj)] 
   
   
   # Metabolic Process 
   
   # store the default number of differentially enriched gene sets 
-  padj_cP_ORA_MetabolicProcess_phenpermutation_default[i] <- 
-    optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations[[i]]$documentation$p_adj[1]
+  padj_cP_ORA_tCell_phenpermutation_default[i] <- 
+    optimP_cP_ORA_tCell_Bottomly_phenotypepermutations[[i]]$documentation$p_adj[1]
   # store the optimal number of differentially enriched gene sets 
-  padj_cP_ORA_MetabolicProcess_phenpermutation_optim[i] <- 
-    optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_MetabolicProcess_Bottomly_phenotypepermutations[[i]]$documentation$p_adj)] 
+  padj_cP_ORA_tCell_phenpermutation_optim[i] <- 
+    optimP_cP_ORA_tCell_Bottomly_phenotypepermutations[[i]]$documentation$p_adj[length(optimP_cP_ORA_tCell_Bottomly_phenotypepermutations[[i]]$documentation$p_adj)] 
   
 }
 
@@ -420,7 +409,7 @@ padj_GSEAPreranked_Demethylation_phenpermutation_optim <- c(0.8012,
 
 
 # (i) Random permutations of the random permutations of the sample conditions, first data set
-padj_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(padj_cP_ORA_MetabolicProcess_phenpermutation_default, padj_cP_ORA_MetabolicProcess_phenpermutation_optim),
+padj_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(padj_cP_ORA_tCell_phenpermutation_default, padj_cP_ORA_tCell_phenpermutation_optim),
                                             GOSeq = c(padj_GOSeq_MetabolicProcess_phenpermutation_default, padj_GOSeq_MetabolicProcess_phenpermutation_optim), 
                                             DAVID = c(padj_DAVID_CellularProcess_phenpermutation_default, padj_DAVID_CellularProcess_phenpermutation_optim),
                                             PADOG = c(padj_PADOG_PrimImmun_phenpermutation_default, padj_PADOG_PrimImmun_phenpermutation_optim),
@@ -451,36 +440,8 @@ padj_GeneSet1_phenpermutation_long$unique_ID <- paste0(padj_GeneSet1_phenpermuta
                                                        padj_GeneSet1_phenpermutation_long$ID)
 
 
-# Indicate name of the gene set whose adjusted p-value was optimized 
-
-padj_GeneSet1_phenpermutation_long$gene_set <- NA
-
-for(i in 1:nrow(padj_GeneSet1_phenpermutation_long)){
-  
-  # for GSEA, GSEAPreranked and clusterProfiler's GSEA: the considered gene set 
-  # is t Cell mediated immunity 
-  if(grepl("GSEA",padj_GeneSet1_phenpermutation_long$GSA_tool[[i]])){
-    
-    padj_GeneSet1_phenpermutation_long$gene_set[i] <- "tCell"
-    
-    # for PADOG, the considered gene set is "Primary Immunodeficiency"
-  }else if(padj_GeneSet1_phenpermutation_long$GSA_tool[[i]] == "PADOG"){
-    
-    padj_GeneSet1_phenpermutation_long$gene_set[i] <- "PrimImmun"
-    
-    # for clusterProfiler's ORA and GOSeq, the considered gene set is 
-    # "Metabolic Process"
-    }else 
-  
-      padj_GeneSet1_phenpermutation_long$gene_set[i] <- "MetabolicProcess"
-  
-  
-}
-
-
-
 # (ii) Random permutations of the random permutations of the sample conditions, second data set 
-padj_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(padj_cP_ORA_CellularProcess_phenpermutation_default, padj_cP_ORA_CellularProcess_phenpermutation_optim),
+padj_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(padj_cP_ORA_Demethylation_phenpermutation_default, padj_cP_ORA_Demethylation_phenpermutation_optim),
                                             GOSeq = c(padj_GOSeq_CellularProcess_phenpermutation_default, padj_GOSeq_CellularProcess_phenpermutation_optim), 
                                             DAVID = c(padj_DAVID_MetabolicProcess_phenpermutation_default, padj_DAVID_MetabolicProcess_phenpermutation_optim), 
                                             PADOG = c(padj_PADOG_GraftvsHost_phenpermutation_default, padj_PADOG_GraftvsHost_phenpermutation_optim),
@@ -513,38 +474,14 @@ padj_GeneSet2_phenpermutation_long$unique_ID <- paste0(padj_GeneSet2_phenpermuta
 
 
 
-# Indicate name of the gene set whose adjusted p-value was optimized 
-
-padj_GeneSet2_phenpermutation_long$gene_set <- NA
-
-for(i in 1:nrow(padj_GeneSet2_phenpermutation_long)){
-  
-  # for GSEA, GSEAPreranked and clusterProfiler's GSEA: the considered gene set 
-  # is t Cell mediated immunity 
-  if(grepl("GSEA",padj_GeneSet2_phenpermutation_long$GSA_tool[[i]])){
-    
-    padj_GeneSet2_phenpermutation_long$gene_set[i] <- "Demethylation"
-    
-    # for PADOG, the considered gene set is "Primary Immunodeficiency"
-  }else if(padj_GeneSet2_phenpermutation_long$GSA_tool[[i]] == "PADOG"){
-    
-    padj_GeneSet2_phenpermutation_long$gene_set[i] <- "GraftvsHost"
-    
-    # for clusterProfiler's ORA and GOSeq, the considered gene set is 
-    # "Metabolic Process"
-  }else 
-    
-    padj_GeneSet2_phenpermutation_long$gene_set[i] <- "CellularProcess"
-  
-  
-}
-
-
 
 
 # Combine both data sets into one big data set 
 padj_allgenesets_phenpermutation_long <- rbind(padj_GeneSet1_phenpermutation_long, 
                                                padj_GeneSet2_phenpermutation_long)
+
+# transform column indicating gene set (gene set 1 vs. gene set 2) to factor
+padj_allgenesets_phenpermutation_long$GS <- factor(padj_allgenesets_phenpermutation_long$GS)
 
 
 # transform GSA tools to factors
@@ -552,11 +489,6 @@ padj_allgenesets_phenpermutation_long <- rbind(padj_GeneSet1_phenpermutation_lon
 padj_allgenesets_phenpermutation_long$GSA_tool <- 
   factor(padj_allgenesets_phenpermutation_long$GSA_tool, 
          levels = c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "cP_GSEA", "GSEA", "GSEAPreranked"))
-
-
-padj_allgenesets_phenpermutation_long$gene_set <- 
-  factor(padj_allgenesets_phenpermutation_long$gene_set, 
-         levels = c("CellularProcess", "MetabolicProcess", "tCell", "Demethylation", "PrimImmun", "GraftvsHost"))
 
 
 
@@ -588,12 +520,12 @@ padj_allgenesets_phenpermutation_long$sig_threshold <-
 
 
 plot_adj_bottomly_phenpermutations <- 
-  ggplot(data =padj_allgenesets_phenpermutation_long, 
+  ggplot(data =padj_allgenesets_phenpermutationf_long, 
        aes(x = interaction(GSA_tool, state, lex.order = TRUE), 
            y = padj, group = 1)) + 
-geom_line( aes(group=unique_ID, color = gene_set), size=0.5, alpha=0.7) + 
-geom_point(aes(color = gene_set),size = 1.5, alpha = 0.7) + 
-scale_x_discrete(labels= rep(c("Default", "Minimum"), times = 6)) + 
+geom_line( aes(group=unique_ID, color = GS), size=0.5, alpha=0.7) + 
+geom_point(aes(color = GS),size = 1.5, alpha = 0.7) + 
+scale_x_discrete(labels= rep(c("Default", "Minimum"), times = 7)) + 
 theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9), 
       axis.title.x = element_text(vjust = -2), 
       plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm")) + ## add space below the actual plot (needed for the GSA tool names)
@@ -604,12 +536,8 @@ ylab("Adjusted p-value") +
 geom_step(data = padj_allgenesets_phenpermutation_long, aes(interaction(GSA_tool, state, lex.order = TRUE), y= sig_threshold), 
           col="gray", linetype = "dashed") +
 labs(color = "Gene set") +
-scale_color_discrete(labels=c("Cellular process", 
-                              "Metabolic process", 
-                              "T cell mediated immunity", 
-                              "Demethylation", 
-                              "Primary immunodeficiency", 
-                              "Graft versus host disease")) 
+scale_color_discrete(labels=c("1", 
+                              "2")) 
 
 
 
