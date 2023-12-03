@@ -6,8 +6,6 @@ This repository allows you to
 - reproduce the results from our over-optimism study generated in R 
 - inspect the documentation for the web-based applications
 
-@Moritz: Kann man annehmen, dass der Leser weiß, dass das working directory dann genau den Aufbau haben soll wie das Repo auf Github?
-
 **Note** that all of the scripts are based on the working directory you have to specifiy at the beginning.
 
 ## Preparation of the gene expression data for the optimizations
@@ -33,7 +31,7 @@ The following scripts were generated for all methods implemented in *R*, i.e. *G
 
 For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, we have prepared separate folders (of the same name as the respective method). For their structures see below. 
 
-# Run the optimisations
+# Run the optimisations for the *R*-based methods 
 Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_n_DEGS_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
@@ -41,15 +39,35 @@ Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterPro
 
 Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally. 
 
+# Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
 ## DAVID
+The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
+Our analysis was performed with the DAVID Knowledgebase v2023q3. 
 
+The documentation for DAVID is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). For both data sets, respectively, the required input objects for DAVID (for the true and the 10 permuted sample labels) are generate in the R scripts
+- **GenerateInputs_DAVID_Pickrell.R**
+- **GenerateInputs_DAVID_Bottomly.R**
+
+The resulting input objects are then stored in the subfolder **Data** in of the respective folder Pickrell/Bottomly. **Note** that for each data set, the generated input objects are identical for the maximisation of the number of differentially enriched gene sets (**goal 1**) and the minimisation of the adjusted p-value/rank (**goals 2 and 3**). 
+
+
+**Important:**
+The documentation of the number of differentially enriched gene sets (stored in subfolder **n_DEGS**) shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
+There was one more optimization step for goal 1 than for goals 2 and 3 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between goals 1, 2, and 3. 
+
+We were therefore document the optimization steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for goal 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
+
+- **Demethylation** (GO:0070988) and **t Cell mediated immunity** (GO:0002456) for the Pickrell data set,
+- **Metabolic Process** (GO:0008152) and **Cellular Process** (GO:0009987) for the Bottomly data set,
+  
+could **never** be decreased for their default value of 1. 
 
 ## GSEA (web-based application)
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
-The documentation for the web-based application is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
+The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
 - **p_adj**: Contains data and documentation for the minimization of the adjusted p-values of two gene sets 
 
