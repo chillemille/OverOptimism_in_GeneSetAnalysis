@@ -43,7 +43,9 @@ Both scripts source all required functions (i.e. preparation and optimisation fu
 
 ## DAVID
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
-Our analysis was performed with the DAVID Knowledgebase v2023q3. 
+Our analysis was performed with the DAVID Knowledgebase v2023q3.
+
+In your working directory, *generate the folder* *DAVID*
 
 The documentation for DAVID is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). For both data sets, respectively, the required input objects for DAVID (for the true and the 10 permuted sample labels) are generate in the R scripts
 - **GenerateInputs_DAVID_Pickrell.R**
@@ -66,6 +68,8 @@ could **never** be decreased for their default value of 1.
 ## GSEA (web-based application)
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
+
+In your working directory, *generate the folder* *GSEA*
 
 The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
@@ -92,6 +96,7 @@ Note that the optimization of GSEA was carried out over several months and by ha
 
 ## GSEAPreranked
 
+In your working directory, *generate the folder* *GSEAPreranked*
 
 ## Generate the results illustrations as shown in the paper
 - folder **Results_illustrations**: contains the *R* codes to generate the results images from the paper (and entails the images themselves)
