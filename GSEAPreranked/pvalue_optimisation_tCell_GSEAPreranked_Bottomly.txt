@@ -1,0 +1,401 @@
+################################################################################
+### (I) Full Optimization Process (Pre-Processing and Internal Parameters) #####
+################################################################################
+
+
+################################################################################
+### Original Phenotypes ########################################################
+################################################################################
+
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative 1: limma -> adj. p-value = 1
+
+# -> proceed with the default ranking generated using DESeq2 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 1
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 1
+
+### -> final results: adj. p-value = 1
+# optimal setting coincides with default setting 
+
+
+
+################################################################################
+### Random Phenotype Permutations ##############################################
+################################################################################
+
+
+################################################################################
+### Phenotype Permutation 1  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> ad. p-value = 0.6604594
+
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma, ranking by p-value -> adj. p-value = 0.759344
+# -> return to alternative ranking generated using DESeq2 
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.93330926
+# alternative 2: exponent 1.5 -> adj. p-value = 0.8523406
+# alternative 3: exponent 2 -> adj. p-value = 0.7235578
+
+
+#  -> > final results: adj. p-value = 0.6604594
+# default configuration coincides with optimal configuration
+
+
+################################################################################
+### Phenotype Permutation 2  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 1
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative 1: limma, ranking by p-value -> adj. p-value = 0.7542026
+
+# -> proceed with alternative ranking generated using limma
+
+#########
+# 4. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.97179914
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.9234213
+
+
+
+### -> final results: adj. p-value = 0.7542026
+# achieved with ALTERNATIVE ranking generated using limma
+
+
+
+
+################################################################################
+### Phenotype Permutation 3  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p.value = 0.9798141
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative : limma -> p.adj = 0.9576295
+
+# -> proceed with alternative ranking generated using limma 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.7589818
+# alternative 2: exponent 1.5 -> adj. p-value = 0.9908181
+# alternative 3: exponent 2 -> adj. p-value = 0.9933294
+
+### final results: adj. p-value = 0.7589818
+# achieved with 
+# ALTERNATIVE ranking generated using limma 
+# ALTERNATIVE exponent 0 
+
+
+
+################################################################################
+### Phenotype Permutation 4  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj p-value = 0.57627034
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.9729733
+
+# -> proceed with default ranking generated using DESeq2
+
+
+#########
+# 4. step: change exponent 
+######### 
+
+# alternative 1: exponent 0 -> adj. p-value = 0.8624485
+# alternative 2: exponent 1.5 -> adj. p-value = 0.6021893
+# alternative 3: exponent 2 -> adj. p-value = 0.7074654
+
+# final results: adj. p-value = 0.57627034
+# optimal configuration coincides with default configuration of parameters 
+
+
+
+
+
+################################################################################
+### Phenotype Permutation 5  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.822709
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.929875
+
+# -> return to default ranking generated using DESeq2 
+
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.9414946
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.9689939
+
+
+### final results: adj. p-value = 0.822709
+# optimal configuration of coincides with default configuration
+
+
+################################################################################
+### Phenotype Permutation 6  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.937159
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 1
+
+# -> return to default ranking generated using DESeq2
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 1
+# alternative 2: exponent 1.5 -> adj. p-value = 1
+# alternative 3: exponent 2 -> adj. p-value = 0.83406526
+
+# final results: adj. p-value =  0.83406526
+# achieved with ALTERNATIVE exponent 2 
+
+
+
+################################################################################
+### Phenotype Permutation 7  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.88564014
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative : limma -> adj. p-value = 0.7940431
+
+# proceed with alternative ranking generated using limma 
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.82804126
+# alternative 2: exponent 1.5 -> adj. p-value = 0.7937083
+# alternative 3: exponent 2 -> adj. p-value = 0.9930696
+
+
+
+# final results: adj. p-value = 0.7937083
+# achieved with 
+# ALTERNATIVE ranking using limma 
+# ALTERNATIVE exponent 1.5 
+
+
+
+
+################################################################################
+### Phenotype Permutation 8  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.62759393
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative 1: limma -> adj. p-value = 0.6549921
+
+# proceed with default ranking generated using DESeq2
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.8552458
+# alternative 2: exponent 1.5 -> adj. p-value = 0.75988406
+# alternative 3: exponent 2 -> adj. p-value = 0.43375164
+
+
+### final results: adj. p-value = 0.43375164
+# achieved with ALTERNATIVE exponent 2 
+
+
+################################################################################
+### Phenotype Permutation 9  ###################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# -> adj. p-value = 0.99037695
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative: limma -> adj. p-value = 0.45262173
+
+# -> proceed with alternative ranking generated using limma 
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 -> adj. p-value = 0.21605846
+# alternative 2: exponent 1.5 -> adj. p-value = 0.058096815
+# alternative 3: exponent 2 -> adj. p-value = 0.468571
+
+###  -> > final results: final results: adj. p-value = 0.058096815
+# achieved with
+# ALTERNATIVE ranking generated using limma 
+# ALTERNATIVE exponent 1.5
+
+
+
+################################################################################
+### Phenotype Permutation 10  ##################################################
+################################################################################
+
+
+#########
+# 1. step: Default
+#########
+
+# ->  adj. p-value = 0.8831213
+
+
+
+#########
+# 2. step: change method to generate ranking
+#########
+
+# alternative : limma, ranking by p-value  -> adj. p-value = 0.8108312
+
+# -> proceed with alternative ranking generated using limma 
+
+
+#########
+# 3. step: change exponent 
+#########
+
+# alternative 1: exponent 0 ->  adj. p-value = 0.98778003
+# alternative 2: exponent 1.5 -> adj. p-value = 0.93723977
+# alternative 3: exponent 2 -> adj. p-value = 0.64864224
+
+
+### -> final results: adj. p-value = 0.64864224
+# achieved with 
+# ALTERNATIVE ranking generated using limma 
+# ALTERNATIVE exponent 2
+
+
+
+
+
+
+
