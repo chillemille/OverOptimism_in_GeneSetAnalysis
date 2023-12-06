@@ -18,6 +18,37 @@ source("./Random_Phenotype_Permutations.R")
 source("./PreProcessing_Functions.R")
 
 
+######################################
+### generate required folders ########
+######################################
+
+dir.create("./GSEAPreranked/Pickrell")
+
+dir.create("./GSEAPreranked/Pickrell/n_DEGS")
+
+dir.create("./GSEAPreranked/Pickrell/n_DEGS/Data")
+
+dir.create("./GSEAPreranked/Pickrell/n_DEGS/Data/Raw")
+
+dir.create("./GSEAPreranked/Pickrell/n_DEGS/Data/Prep")
+
+dir.create("./GSEAPreranked/Pickrell/n_DEGS/Data/Prep/Original_Phenotype")
+dir.create("./GSEAPreranked/Pickrell/n_DEGS/Data/Raw/Original_Phenotype")
+
+for(i in 1:10){
+
+  path_raw <- paste0("./GSEAPreranked/Pickrell/n_DEGS/Data/Raw/Phenotype_Permutation",
+                     i)
+
+  path_prep <- paste0("./GSEAPreranked/Pickrell/n_DEGS/Data/Prep/Phenotype_Permutation",
+                      i)
+
+  dir.create(path_raw)
+  dir.create(path_prep)
+
+
+}
+
 
 
 

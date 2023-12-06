@@ -9,7 +9,6 @@ library(org.Mm.eg.db)
 library(DESeq2)
 library(edgeR)
 library(apeglm)
-library(ggplot2)
 
 # load pickrell data set with sample labels (true and permuted)
 load( "./Phenotype_Permutations_Pickrell.Rdata")
