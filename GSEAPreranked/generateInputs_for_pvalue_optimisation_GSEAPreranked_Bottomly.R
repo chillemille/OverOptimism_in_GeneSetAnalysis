@@ -397,7 +397,7 @@ DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 1
                             rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
-  path_DESeq2_phenorig <- "./GSEAPreranked/Bottomly/p_value/Demethylation/Data/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
+  path_DESeq2_phenorig <- "./GSEAPreranked/Bottomly/p_value/Data/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
 write.table(DESeq2_ranking_phenorig,
@@ -433,7 +433,7 @@ limma_ranking_phenorig <- rankedList_cP(limma_results,
                                         method = "limma")
 
 # Create path for storage of limma ranking
-path_limma_phenorig <- "./GSEAPreranked/Bottomly/p_value/Demethylation/Data/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
+path_limma_phenorig <- "./GSEAPreranked/Bottomly/p_value/Data/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
 
 
 # export
@@ -465,7 +465,7 @@ for(i in 1:ncol(phen_bottomly)){
                               rankedList_cP(rankby = "p_value", method = "DESeq2")
 
   # create path for storage of DESeq2 ranking
-  path_DESeq2_phenperm <- paste0("./GSEAPreranked/Bottomly/p_value/Demethylation/Data/Raw/Phenotype_Permutation",
+  path_DESeq2_phenperm <- paste0("./GSEAPreranked/Bottomly/p_value/Data/Raw/Phenotype_Permutation",
                                  i,
                                  "/DESeq2_ranking_permutation",
                                  i,
@@ -506,7 +506,7 @@ for(i in 1:ncol(phen_bottomly)){
                                           method = "limma")
 
   # Create path for storage of limma ranking
-  path_limma_phenperm <- paste0("./GSEAPreranked/Bottomly/p_value/Demethylation/Data/Raw/Phenotype_Permutation",
+  path_limma_phenperm <- paste0("./GSEAPreranked/Bottomly/p_value/Data/Raw/Phenotype_Permutation",
                                 i,
                                 "/limma_ranking_permutation",
                                 i,

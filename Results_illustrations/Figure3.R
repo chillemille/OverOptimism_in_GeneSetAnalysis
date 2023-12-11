@@ -6,6 +6,12 @@
 library(ggplot2)
 library(tidyr)
 
+################################################################################
+### load help functions to generate results illustrations ######################
+################################################################################
+
+source("./Results_illustrations/helpfunctions_results_illustrations_n_DEGS.R")
+
 
 
 ################################################################################
@@ -236,55 +242,60 @@ dat_overview_n_DEGS_pickrell_truephen <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pic
                                         cP_GSEA = c(n_DEGS_cP_GSEA_pickrell_truephen_default, n_DEGS_cP_GSEA_pickrell_truephen_optim),
                                         state = c("Default", "Maximum")) # declare default vs. optimum
 
-# transform data frame such that each observed n_DEGS value is in a separate column, additionally labelled by the
-# associated GSA tool and state
-dat_overview_n_DEGS_pickrell_truephen_long <- pivot_longer(dat_overview_n_DEGS_pickrell_truephen,
-                                                 cols=!c("state"),
-                                                 names_to="GSA_tool",
-                                                 values_to = "n_DEGS")
-# transform GSA tools to factors
-# -> this way we can fix the order of the tools in the graphic
-dat_overview_n_DEGS_pickrell_truephen_long$GSA_tool <- factor(dat_overview_n_DEGS_pickrell_truephen_long$GSA_tool,
-                                                    levels = c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "GSEA", "GSEAPreranked", "cP_GSEA"))
-
-
-# In the ggplot, we eventually want to add the names of the GSA tools below the actual x-axis (line annotate())
-# for this, we want to insert a line break in "GSEAPreranked" because the term is too long in one word
-
-# Replace "GSEAPreranked" by "GSEA- \n Preranked"
-add_labels_xaxis <- levels(dat_overview_n_DEGS_pickrell_truephen_long$GSA_tool)
-add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
-
-# Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
-add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
-
-
-# Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
-add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
-
-
-# create ggplot
-ggplot(data = dat_overview_n_DEGS_pickrell_truephen_long,
-       aes(x = interaction(GSA_tool, state, lex.order = TRUE),
-           y = n_DEGS, group = 1)) +
-geom_line(aes(group=GSA_tool), size=0.3, alpha=0.7, col = "#F8766D") +
-# add scatter for each default and optimal value
-geom_point(size = 1.2, alpha = 0.7, col = "#F8766D") +
-# add labels "Default" and "Maximum" for each GSA tool on the x-axis
-scale_x_discrete(labels= rep(c("Default", "Maximum"), times = 7)) +
-# rotate labels on the x-axis, remove x-axis title and add space below the plot
-theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
-     axis.title.x = element_text(vjust = -6), # move x-axis label downwards to add space for the individual GSA tools
-      plot.margin = margin(t = 1, b = 2, l = 1, r = 1, unit = "cm")) + ## add space below the actual plot (needed for the GSA tool names)
-# Add the tool names to the plot:
-annotate(geom = "text",
-         x = 1.5 + 2*(0:6),
-         y = -150,
-         label = add_labels_xaxis, size = 3) +
-# specify range of y-axis
-coord_cartesian(ylim = c(0, 650), expand = FALSE, clip = "off") +
-xlab("GSA tools") +
-ylab("Number of differentially enriched gene sets")
+# # transform data frame such that each observed n_DEGS value is in a separate column, additionally labelled by the
+# # associated GSA tool and state
+# dat_overview_n_DEGS_pickrell_truephen_long <- pivot_longer(dat_overview_n_DEGS_pickrell_truephen,
+#                                                  cols=!c("state"),
+#                                                  names_to="GSA_tool",
+#                                                  values_to = "n_DEGS")
+# # transform GSA tools to factors
+# # -> this way we can fix the order of the tools in the graphic
+# dat_overview_n_DEGS_pickrell_truephen_long$GSA_tool <- factor(dat_overview_n_DEGS_pickrell_truephen_long$GSA_tool,
+#                                                     levels = c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "GSEA", "GSEAPreranked", "cP_GSEA"))
+#
+#
+# # In the ggplot, we eventually want to add the names of the GSA tools below the actual x-axis (line annotate())
+# # for this, we want to insert a line break in "GSEAPreranked" because the term is too long in one word
+#
+# # Replace "GSEAPreranked" by "GSEA- \n Preranked"
+# add_labels_xaxis <- levels(dat_overview_n_DEGS_pickrell_truephen_long$GSA_tool)
+# add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
+#
+# # Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
+# add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
+#
+#
+# # Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
+# add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
+#
+#
+# # create ggplot
+# ggplot(data = dat_overview_n_DEGS_pickrell_truephen_long,
+#        aes(x = interaction(GSA_tool, state, lex.order = TRUE),
+#            y = n_DEGS, group = 1)) +
+# geom_line(aes(group=GSA_tool), size=0.4, alpha=0.7, col = "#F8766D") +
+# # add scatter for each default and optimal value
+# geom_point(size = 1.3, alpha = 0.7, col = "#F8766D") +
+# # add labels "Default" and "Maximum" for each GSA tool on the x-axis
+# scale_x_discrete(labels= rep(c("Default", "Maximum"), times = 7)) +
+# # rotate labels on the x-axis, remove x-axis title and add space below the plot
+# theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
+#      axis.title.x = element_text(vjust = -12, size = 14), # move x-axis label downwards to add space for the individual GSA tools
+#       plot.margin = margin(t = 1, b = 2, l = 1, r = 1, unit = "cm"),
+#       axis.title.y = element_text(size = 14)) +## add space below the actual plot (needed for the GSA tool names)
+# # Add the tool names to the plot:
+# annotate(geom = "text",
+#          x = 1.5 + 2*(0:6),
+#          y = -120,
+#          label = add_labels_xaxis, size = 4) +
+# # specify range of y-axis
+# coord_cartesian(ylim = c(0, 650), expand = FALSE, clip = "off") +
+# xlab("GSA tools") +
+# ylab("Number of differentially enriched gene sets")
+#
+# ggsave("./Results_illustrations/Figure3a.pdf",
+#        width = 10,
+#        height = 7)
 
 
 # (ii) Random permutations of the true sample conditions (Pickrell data set)
@@ -299,60 +310,19 @@ dat_overview_n_DEGS_pickrell_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_
                                                     ID = rep(c(1:10),2)) # add the number of the permutation
 
 
-# transform data frame such that each observed n_DEGS value is in a separate column, additionally labelled by the
-# associated GSA tool and state
-dat_overview_n_DEGS_pickrell_phenpermutation_long <- pivot_longer(dat_overview_n_DEGS_pickrell_phenpermutation,
-                                                                cols=!c("state", "ID"),
-                                                                names_to="GSA_tool",
-                                                                values_to = "n_DEGS")
-# transform GSA tools to factors
-# -> this way we can fix the order of the tools in the graphic
-dat_overview_n_DEGS_pickrell_phenpermutation_long$GSA_tool <- factor(dat_overview_n_DEGS_pickrell_phenpermutation_long$GSA_tool,
-                                                                    levels = c("GOSeq", "DAVID", "cP_ORA", "PADOG", "GSEA", "GSEAPreranked", "cP_GSEA"))
 
+################################################################################
+### Generate ggplots ###########################################################
+################################################################################
 
-# add the combination of the GSA tool and the permutation ID
-# -> this way, each value appears exactly twice and matches the default and optimal n_DEGS value for each tool in each permutation
-dat_overview_n_DEGS_pickrell_phenpermutation_long$unique_ID <- paste0(dat_overview_n_DEGS_pickrell_phenpermutation_long$GSA_tool,
-                                                                      "_",
-                                                                     dat_overview_n_DEGS_pickrell_phenpermutation_long$ID)
+plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_truephen, "true_labels")
 
-# In the ggplot, we eventually want to add the names of the GSA tools below the actual x-axis (line annotate())
-# for this, we want to insert a line break in "GSEAPreranked" because the term is too long in one word
+plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_phenpermutation,
+                                                               "random_permutations")
 
-# # Replace "GSEAPreranked" by "GSEA- \n Preranked"
-# add_labels_xaxis <- levels(dat_overview_n_DEGS_pickrell_phenpermutation_long$GSA_tool)
-# add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
-#
-#
-# # Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
-# add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
-#
-#
-# # Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
-# add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
+plot_n_DEGS <- plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
 
-
-# ggplot
-ggplot(data =dat_overview_n_DEGS_pickrell_phenpermutation_long,
-       aes(x = interaction(GSA_tool, state, lex.order = TRUE),
-           y = n_DEGS, group = 1)) +
-geom_line(aes(group=unique_ID), size=0.3, alpha=0.7, col ="#F8766D") +
-geom_point(size = 1.2, alpha = 0.7, col = "#F8766D") +
-scale_x_discrete(labels= rep(c("Default", "Maximum"),
-                             times = 7)) +
-theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
-      axis.title.x = element_text(vjust = -2),
-      plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm")) + ## add space below the actual plot (needed for the GSA tool names)
-# Add the tool names to the plot:
-annotate(geom = "text",
-         x = 1.5 + 2*(0:6),
-         y = -350,
-         label = add_labels_xaxis, size =3 )+
-coord_cartesian(ylim = c(0,750),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
-xlab("GSA tools") +
-ylab("Number of differentially enriched gene sets") +
-scale_y_continuous(breaks = sort(c(0,10, 100, 700)))
-
-
-
+## uncomment to save
+ggsave("./Results_illustrations/Figure3.pdf",
+       width = 10,
+       height = 12)
