@@ -6,7 +6,13 @@ This repository allows you to
 - reproduce the results from our over-optimism study generated in R 
 - inspect the documentation for the web-based applications
 
-**Note** that all of the scripts are based on the working directory you have to specifiy at the beginning.
+**Important note 1:** 
+Reproducing all of the results takes a long time and can take up more memory than is available. To prevent *R* from crashing, we therefore recommend limiting yourself to reproducing a part of the results.
+**Important note 2:**
+Some of the considered gene set analysis methods are web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*). The optimisation processes for these methods were performed by hand (and documented with screenshots). Fully reproducing the results would therefore take months. 
+**Important note 3**
+Following 'important note 2', I produced the results for these three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
+
 
 ## Preparation of the gene expression data for the optimizations
 
