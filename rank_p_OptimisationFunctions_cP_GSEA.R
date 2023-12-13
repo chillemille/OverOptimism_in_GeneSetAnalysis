@@ -7,8 +7,6 @@ library(org.Mm.eg.db)
 library(DESeq2)
 library(edgeR)
 library(apeglm)
-library(ggplot2)
-# library(tidyverse)
 
 
 # get gene expression datasets, phenotype assignments and random phenotype permutations
