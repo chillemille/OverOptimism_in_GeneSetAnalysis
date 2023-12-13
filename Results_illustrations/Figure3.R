@@ -315,14 +315,15 @@ dat_overview_n_DEGS_pickrell_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_
 ### Generate ggplots ###########################################################
 ################################################################################
 
-plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_truephen, "true_labels")
+plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_truephen, "true_labels", -10)
 
 plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_phenpermutation,
-                                                               "random_permutations")
+                                                               "random_permutations", -12)
 
-plot_n_DEGS <- plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
+plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
 
 ## uncomment to save
-ggsave("./Results_illustrations/Figure3.pdf",
+ggsave("./Results_illustrations/Figure3.eps",
        width = 10,
        height = 12)
+

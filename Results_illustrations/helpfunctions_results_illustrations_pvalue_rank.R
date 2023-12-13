@@ -171,8 +171,8 @@ plot <-
 ggplot(data = data_prep,
        aes(x = interaction(GSA_tool, state, lex.order = TRUE),
            y = value, group = 1)) +
-  geom_line( aes(group=unique_ID, color = GS), size=0.4, alpha=0.7) +
-  geom_point(aes(color = GS),size = 1.3, alpha = 0.7) +
+  geom_line( aes(group=unique_ID, color = GS), size=0.4) +
+  geom_point(aes(color = GS),size = 1.3) +
   scale_x_discrete(labels= rep(c("Default", "Minimum"),
                                 times = length(unique(data_prep$GSA_tool)))) +
   theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
@@ -182,7 +182,7 @@ ggplot(data = data_prep,
   annotate(geom = "text",
            x = 1.5 + 2*(0:(length(unique(data_prep$GSA_tool))-1)),
            y = -0.32,
-           label = add_labels_xaxis, size =5 )+
+           label = add_labels_xaxis, size =4 )+
   coord_cartesian(ylim = c(0,1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
   xlab("GSA method") +
   ylab(set_ylab) +

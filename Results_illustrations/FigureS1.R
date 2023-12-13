@@ -1,4 +1,5 @@
 #Illustration of results in step diagram
+library(stringr)
 
 # load clusterProfiler's GSEA results
 
@@ -27,7 +28,7 @@ doc_illustration$step <- factor(doc_illustration$step,
 
 
 #plot step diagram
-step_diagram <- ggplot(doc_illustration) +
+ggplot(doc_illustration) +
   geom_step(aes(x=step, y=n_DEGS, group=factor(phenotype_permutation), colour="#F8766D"), direction="hv", linetype=2) +
   geom_point(aes(x=step, y=n_DEGS, colour="#F8766D"), size=1.5) +
   geom_text(aes(x=step, y=n_DEGS), label=doc_illustration$optimal_parameter, nudge_y = 4,  colour="black",size = 4.5)+
@@ -39,8 +40,7 @@ step_diagram <- ggplot(doc_illustration) +
   ylab("Number of differentially enriched gene sets") +
   xlab("Optimisation step") +
   scale_y_continuous(breaks=seq(0, 50, 10), limits = c(-5,40)) +
-  theme(legend.position="none") #+
-  facet_wrap(~phenotype_permutation, nrow=1, ncol=1)
+  theme(legend.position="none")
 
 # Export to .eps
 ggsave(file="./Results_illustrations/FigureS1.eps",

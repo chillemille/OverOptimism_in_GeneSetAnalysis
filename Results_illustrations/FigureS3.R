@@ -735,7 +735,7 @@ plot_permutedlabels <- create_results_illustration_pvalue_rank(padj_GeneSet1_phe
 plot_padj <- plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
 
 ## uncomment to save
-ggsave2("./Results_illustrations/FigureS3.pdf",
+ggsave2("./Results_illustrations/FigureS3.eps",
         width = 10,
         height = 12)
 

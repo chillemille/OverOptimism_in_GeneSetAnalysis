@@ -554,7 +554,7 @@ plot_permutedlabels <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1
 plot_relrank <- plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
 
 ## uncomment to save
-ggsave("./Results_illustrations/FigureS4.pdf",
+ggsave("./Results_illustrations/FigureS4.eps",
        width = 10,
        height = 12)
 

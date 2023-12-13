@@ -88,13 +88,17 @@ prep_data_for_ggplot_n_DEGS <- function(default_to_optim, sample_labels){
 # function to square transform the y-axis
 # we display the data on the sqrt-scale due to the different magnitudes of the
 # points
+
+# note: vpos_methodlabels determines the vertical position of the method labels
+# in function annotate() in the plot (this needs to be adjusted to each data since
+# of n_DEGS differs considerably between the magnitude settings)
 labels_sq <- function(x) {
   paste(x^2)
 }
 
 
 ## ggplot
-create_results_illustration_n_DEGS <- function(default_to_optim, sample_labels){
+create_results_illustration_n_DEGS <- function(default_to_optim, sample_labels, vpos_methodlabels){
 
 
   data_prep <- prep_data_for_ggplot_n_DEGS(default_to_optim, sample_labels)
@@ -117,8 +121,8 @@ create_results_illustration_n_DEGS <- function(default_to_optim, sample_labels){
   plot <- ggplot(data = data_prep,
                  aes(x = interaction(GSA_tool, state, lex.order = TRUE),
                      y = sqrt(n_DEGS), group = 1)) +
-    geom_line(aes(group=unique_ID), size=0.4, alpha=0.7, col ="#F8766D") +
-    geom_point(size = 1.3, alpha = 0.7, col = "#F8766D") +
+    geom_line(aes(group=unique_ID), size=0.4,  col ="#F8766D") +
+    geom_point(size = 1.3,  col = "#F8766D") +
     scale_x_discrete(labels= rep(c("Default", "Maximum"),
                                  times = length(unique(data_prep$GSA_tool)))) +
     theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 11),
@@ -128,7 +132,7 @@ create_results_illustration_n_DEGS <- function(default_to_optim, sample_labels){
     # Add the tool names to the plot:
     annotate(geom = "text",
              x = 1.5 + 2*(0:(length(unique(data_prep$GSA_tool))-1)),
-             y = -8,
+             y = vpos_methodlabels,
              label = add_labels_xaxis, size =4 )+
     coord_cartesian(ylim=c(0,round_any(sqrt(max(data_prep$n_DEGS)), 5, ceiling)),clip = "off")+ # clip = "off" required to add GSA tool names below the plot
     xlab("GSA methods") +

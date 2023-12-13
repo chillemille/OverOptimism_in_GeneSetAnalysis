@@ -232,14 +232,14 @@ n_DEGS_GSEA_bottomly_phenpermutation_optim <- c(4,10,0,13,1,8,5,42,17,0)
 
 
 # optimal n_DEGS
-n_DEGS_GSEAPreranked_bottomly_truephen_default <- 1
+n_DEGS_GSEAPreranked_bottomly_truephen_default <- 0
 # default n_DEGS
 n_DEGS_GSEAPreranked_bottomly_truephen_optim <- 40
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_GSEAPreranked_bottomly_phenpermutation_default <- c(65, 1, 18, 1, 280, 124, 131, 8, 262, 724)
+n_DEGS_GSEAPreranked_bottomly_phenpermutation_default <- c(65, 0, 18, 0, 280, 124, 131, 8, 262, 724)
 # default n_DEGS
 n_DEGS_GSEAPreranked_bottomly_phenpermutation_optim <- c(225, 30, 168, 35, 381, 124, 499, 316, 554, 962)
 
@@ -283,15 +283,15 @@ dat_overview_n_DEGS_bottomly_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_
 ### Generate ggplots ###########################################################
 ################################################################################
 
-plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_truephen, "true_labels")
+plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_truephen, "true_labels", -8)
 
-# plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_phenpermutation,
-#                                                           "random_permutations")
-#
-# plot_n_DEGS <- plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
+plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_phenpermutation,
+                                                          "random_permutations", -14)
+
+plot_grid(plot_truelabels, plot_permutedlabels, labels=c("A", "B"), ncol = 1, nrow = 2)
 
 ## uncomment to save
-ggsave("./Results_illustrations/FigureS2.pdf",
+ggsave("./Results_illustrations/FigureS2.eps",
        width = 10,
        height = 12)
 
