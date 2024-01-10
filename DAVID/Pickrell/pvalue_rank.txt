@@ -1,0 +1,9 @@
+The documentation of the number of differentially enriched gene sets (stored in subfolder **n_DEGS**) shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
+There was one more optimization step for goal 1 than for goals 2 and 3 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between goals 1, 2, and 3. 
+
+We were therefore document the optimization steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for goal 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
+
+- 'Demethylation' (GO:0070988) and 't Cell mediated immunity' (GO:0002456) for the Pickrell data set,
+- 'Metabolic Process' (GO:0008152) and 'Cellular Process' (GO:0009987) for the Bottomly data set,
+  
+could 'never' be decreased for their default value of 1. 
