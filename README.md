@@ -1,35 +1,46 @@
 # OverOptimism_in_GeneSetAnalysis
 <<<<<<< HEAD
-Repository for code and documentation in our analysis on over-optimism on gene set analysis.
+Repository for code and documentation in our analysis on over-optimism in gene set analysis.
 =======
 This repository allows you to 
 - reproduce the results from our over-optimism study generated in R 
 - inspect the documentation for the web-based applications
 
 **Important note 1:** 
+
 Reproducing all of the results takes a long time and can take up more memory than is available. To prevent *R* from crashing, we therefore recommend limiting yourself to reproducing a part of the results.
+
 **Important note 2:**
+
 Some of the considered gene set analysis methods are web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*). The optimisation processes for these methods were performed by hand (and documented with screenshots). Fully reproducing the results would therefore take months. 
-**Important note 3**
+
+**Important note 3:**
+
 Following 'important note 2', I produced the results for these three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
 
+## Reproduce the figures (in *R*)
+To reproduce a figure from the paper, run the corresponding script from folder `R/Figures`.
 
-## Preparation of the gene expression data for the optimizations
+Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
+## Rerun the full experiment (folder *R*)
+Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in folder 
+
+#### Preparation of the gene expression data for the optimisations (folder `R/Prepare_data_and_permutations`)
 This is the first script to run when reproducing the results.
 
 - **Random_Phenotype_Permutations.R**: *R* code to obtain
   1. both gene expression data sets and true labels of the respective samples 
   2. the ten random permutations of the true sample labels for both gene expression data sets
   
-  The generated random phenotype permutations and the gene expression data set "bottomly" are additionally provided in the folder **GeneExpression_data** in this repository. These are then sourced in the subsequent functions. 
+  The generated random phenotype permutations and the gene expression data set "Bottomly" are additionally provided in the folder **GeneExpression_data** in this repository. These are then sourced in the subsequent functions. 
  
-## Preparation of the gene expression data for the GSA methods
+#### Preparation of the gene expression data for the GSA methods (folder `R/Functions`)
 
  - **PreProcessing_Functions.R**: contains functions provided in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
  - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the methods.
  
-## Define optimisation functions
+#### Define optimisation functions (folder `R/Functions`)
 The following scripts were generated for all methods implemented in *R*, i.e. *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA. These contain all functions required to perform the optimization for the respective computational GSA method. The scripts are then sourced when running the optimisations in the next step. 
   
 - **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1).
@@ -37,13 +48,16 @@ The following scripts were generated for all methods implemented in *R*, i.e. *G
 
 For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, we have prepared separate folders (of the same name as the respective method). For their structures see below. 
 
-# Run the optimisations for the *R*-based methods 
+#### Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
 Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_n_DEGS_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
 - **Run_pvalue_rank_optimisations.R**: script to run optimisations of the adjusted p-value and rank of the specific gene sets
 
-Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally. 
+Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally.
+
+#### Generate the results figures (folder `R/Figures`)
+To reproduce a results figure from the main document or the supplement from the paper, run the corresponding *R* script.
 
 # Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
@@ -102,7 +116,7 @@ Note that the optimization of GSEA was carried out over several months and by ha
 
 ## GSEAPreranked
 
-In your working directory, *generate the folder* *GSEAPreranked*
+In your working directory, generate the folder* *GSEAPreranked*
 
 ## Generate the results illustrations as shown in the paper
 - folder **Results_illustrations**: contains the *R* codes to generate the results images from the paper (and entails the images themselves)
