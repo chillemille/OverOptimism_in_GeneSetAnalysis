@@ -61,6 +61,8 @@ The *R* scripts to generate the results figures are directly named after the fig
 
 # Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
+Note that for the three web-based applications, only optimisation goals 1 and 2 are pursued. 
+
 ## DAVID
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
 Our analysis was performed with the DAVID Knowledgebase v2023q3.
@@ -96,7 +98,14 @@ could **never** be decreased for their default value of 1.
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
-In your working directory, *generate the folder* *GSEA*
+#### Generation of inputs (folder `R/Functions/GSEA_Web`)
+For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
+
+- **n_DEGS_optimisation_GSEAWeb_... .R**: Input generation for optimization goal 1 (maximization of the number of differentially enriched gene sets)
+- **rank_p_optimisation_Demethylation_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set **Demethylation** (optimization goal 2)
+- - **rank_p_optimisation_tCell_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set t Cell mediated immunity.  
+
+
 
 The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
