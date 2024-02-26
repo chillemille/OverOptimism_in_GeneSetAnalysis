@@ -3,7 +3,7 @@
 Repository for code and documentation in our analysis on over-optimism in gene set analysis.
 =======
 This repository allows you to 
-- reproduce the results from our over-optimism study generated in R 
+- reproduce the results from our over-optimism study generated in *R* 
 - inspect the documentation for the web-based applications
 
 **Important note 1:** 
@@ -24,7 +24,7 @@ To reproduce a figure from the paper, run the corresponding script from folder `
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
 ## Rerun the full experiment (folder *R*)
-Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in folder 
+Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder *R*.
 
 #### Preparation of the gene expression data for the optimisations (folder `R/Prepare_data_and_permutations`)
 This is the first script to run when reproducing the results.
@@ -46,7 +46,12 @@ The following scripts were generated for all methods implemented in *R*, i.e. *G
 - **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1).
 - **rank_p_OptimisationFunctions_... .R**: Functions for the optimization of the adjusted p-value and rank of the specific (optimization goals 2 and 3).
 
-For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, we have prepared separate folders (of the same name as the respective method). For their structures see below. 
+For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding *R* scripts to generate the required inputs are defined in folder `R/Functions`, while they do not appear in the *R* scripts in the folder `R/Run_optimisations` 
+
+##### DAVID
+For DAVID, a single
+
+
 
 #### Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
 Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
