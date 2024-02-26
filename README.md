@@ -57,7 +57,7 @@ Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterPro
 Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally.
 
 #### Generate the results figures (folder `R/Figures`)
-To reproduce a results figure from the main document or the supplement from the paper, run the corresponding *R* script.
+The *R* scripts to generate the results figures are directly named after the figure.  
 
 # Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
