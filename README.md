@@ -46,12 +46,7 @@ The following scripts were generated for all methods implemented in *R*, i.e. *G
 - **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1).
 - **rank_p_OptimisationFunctions_... .R**: Functions for the optimization of the adjusted p-value and rank of the specific (optimization goals 2 and 3).
 
-For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding *R* scripts to generate the required inputs are defined in folder `R/Functions`, while they do not appear in the *R* scripts in the folder `R/Run_optimisations` 
-
-##### DAVID
-For DAVID, a single
-
-
+For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding descriptions are placed in separate paragraphs below. 
 
 #### Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
 Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
@@ -70,14 +65,21 @@ To reproduce a results figure from the main document or the supplement from the 
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
 Our analysis was performed with the DAVID Knowledgebase v2023q3.
 
-In your working directory, *generate the folder* *DAVID*
+#### Generation of input data sets (folder `R/Functions`)
+The *R* script to generate the input data sets for the Pickrell **and** the Bottomly data set is stored in the file 
+- **generate_Inputs_DAVID.R**
+  
+The input data sets are then stored in the folder
+- `Results/Intermediate_results/DAVID/Pickrell/Data`
+- `Results/Intermediate_results/DAVID`/Bottomly/Data`
 
-The documentation for DAVID is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). For both data sets, respectively, the required input objects for DAVID (for the true and the 10 permuted sample labels) are generate in the R scripts
-- **GenerateInputs_DAVID_Pickrell.R**
-- **GenerateInputs_DAVID_Bottomly.R**
+Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across all optimisation goals 1-3 since the individual optimization steps are identical. 
 
-The resulting input objects are then stored in the subfolder **Data** in of the respective folder Pickrell/Bottomly. **Note** that for each data set, the generated input objects are identical for the maximisation of the number of differentially enriched gene sets (**goal 1**) and the minimisation of the adjusted p-value/rank (**goals 2 and 3**). 
+#### Inspect documentation of the results (folder `R/Functions/Intermediate_results/DAVID`)
+For the maximization of the number of differentially enriched gene sets, you find the documentation screenshots (and Excel files) in the folder 
 
+- **Pickrell/n_DEGS/Screenshots** for the Pickrell data set 
+- **Bottomly/n_DEGS/Screenshots** for the Bottomly data set 
 
 **Important:**
 The documentation of the number of differentially enriched gene sets (stored in subfolder **n_DEGS**) shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
