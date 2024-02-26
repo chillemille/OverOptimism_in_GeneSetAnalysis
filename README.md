@@ -105,7 +105,9 @@ For the Pickrell and the Bottomly data set each, you will find the following thr
 - **rank_p_optimisation_Demethylation_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set **Demethylation** (optimization goal 2)
 - - **rank_p_optimisation_tCell_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set t Cell mediated immunity.  
 
+The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These inputs require further processing according to (https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats).  
 
+#### Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Web`)
 
 The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
