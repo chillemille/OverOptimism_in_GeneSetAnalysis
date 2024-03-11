@@ -154,9 +154,33 @@ Note that the optimization of GSEA was carried out over several months and by ha
 For the Pickrell and the Bottomly data set each, you will find the following *R* scripts:
 
 - **n_DEGS_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 1 goal 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the alternatives depend on the previous step(s)). 
-- **generateInputs_for_pvalue_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 2.
+- **generateInputs_for_pvalue_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 2 (additionally, the corresponding documentations are stored in text files in this folder).
 
-Additionally, for optimisation goal 2, the corresponding documentations are stored in text files in this folder. 
+**Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in (https://www.gsea-msigdb.org/gsea/index.jsp). 
+
+#### 2. Run GSEA optimisation 
+As for the regular method *GSEA*, the required data sets are uploaded in the tab **Load data**, after which, however, you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Preranked`. 
+
+
+
+
+#### 3. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Preranked`)
+
+The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
+- **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
+- **p_adj**: Contains data and documentation for the minimization of the adjusted p-values of two gene sets 
+
+In the folders **n_DEGS** and **p_adj**, there are the following subfolders: 
+- **Data**: Contains for the true and the 10 permuted sample labels the ...
+  - ... raw, i.e. exported from R, data sets in folder **Raw**
+  - ... prepared data sets in the format required by the web application in folder **Prep**
+- **Screenshots**: Contains the screenshots of the progression of the optimizatino process for the true sample labels and the 10 permutations 
+
+Note that the optimization of GSEAPreranked was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimization processes can be found in the screenshots containing the name "Param", namely 
+- in the top left corner for the version of the overall web application
+- in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
+
+  In addition to the screenshots, the optimization processes are documented in the respective *R* scripts as comments.
 
 
 
