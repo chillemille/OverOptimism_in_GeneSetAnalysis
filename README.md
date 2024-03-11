@@ -67,7 +67,7 @@ Note that for the three web-based applications, only optimisation goals 1 and 2 
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
 Our analysis was performed with the DAVID Knowledgebase v2023q3.
 
-#### Generation of input data sets (folder `R/Functions`)
+#### 1. Generation of input data sets (folder `R/Functions`)
 The *R* script to generate the input data sets for the Pickrell **and** the Bottomly data set is stored in the file 
 - **generate_Inputs_DAVID.R**
   
@@ -77,7 +77,10 @@ The input data sets are then stored in the folder
 
 Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across all optimisation goals 1-3 since the individual optimization steps are identical. 
 
-#### Inspect documentation of the results (folder `R/Functions/Intermediate_results/DAVID`)
+#### 2. Run DAVID optimisation 
+Access the link (https://david.ncifcrf.gov/). An input list generated in step one can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** (step 2) and set the list type as **Gene List** (step 3). A more detailed illustration of the steps of the optimization process to be performed by hand can be taken from the corresponding screenshots. 
+
+#### 3. Inspect documentation of the results (folder `R/Functions/Intermediate_results/DAVID`)
 For the maximization of the number of differentially enriched gene sets, you find the documentation screenshots (and Excel files) in the folder 
 
 - **Pickrell/n_DEGS/Screenshots** for the Pickrell data set 
@@ -98,16 +101,26 @@ could **never** be decreased for their default value of 1.
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
-#### Generation of inputs (folder `R/Functions/GSEA_Web`)
+#### 1. Generation of inputs (folder `R/Functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
 
 - **n_DEGS_optimisation_GSEAWeb_... .R**: Input generation for optimization goal 1 (maximization of the number of differentially enriched gene sets)
 - **rank_p_optimisation_Demethylation_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set **Demethylation** (optimization goal 2)
 - - **rank_p_optimisation_tCell_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set t Cell mediated immunity.  
 
-The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These inputs require further processing according to (https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats).  
+The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These inputs require further processing according to (https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats). Inspect section 
 
-#### Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Web`)
+- **GCT: Gene Cluster Text file format (*.gct)** for the preprocessing of the gene expression data set in Excel.
+- **CLS: Categorical (e.g tumor vs normal) class file format (*.cls)** for the preprocessing of the corresponding phenotype assignments.
+
+  The corresponding preprocessed files are then stored in subfolder `Prep`.
+
+#### 2. Run GSEA optimisation 
+The application must be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp). In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
+
+
+
+#### 3. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Web`)
 
 The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
@@ -129,7 +142,7 @@ Note that the optimization of GSEA was carried out over several months and by ha
 - in the top left corner for the version of the overall web application
 - in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
 
-  In addition to the screenshots, the optimization processes are documented in the respective *R* scripts. 
+  In addition to the screenshots, the optimization processes are documented in the respective *R* scripts as comments. 
 
 
 ### GSEAPreranked
