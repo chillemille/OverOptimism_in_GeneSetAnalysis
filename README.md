@@ -12,7 +12,7 @@ Reproducing all of the results takes a long time and can take up more memory tha
 
 **Important note 2:**
 
-Some of the considered gene set analysis methods are web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*). The optimisation processes for these methods were performed by hand (and documented with screenshots). Fully reproducing the results would therefore take months. 
+Some of the considered GSA methods are web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*). The optimisation processes for these methods were performed by hand (and documented with screenshots). Fully reproducing the results would therefore take months. 
 
 **Important note 3:**
 
@@ -24,9 +24,9 @@ To reproduce a figure from the paper, run the corresponding script from folder `
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
 ## Rerun the full experiment (folder *R*)
-Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder *R*.
+Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R`.
 
-#### Preparation of the gene expression data for the optimisations (folder `R/Prepare_data_and_permutations`)
+#### 1. Preparation of the gene expression data for the optimisations (folder `R/Prepare_data_and_permutations`)
 This is the first script to run when reproducing the results.
 
 - **Random_Phenotype_Permutations.R**: *R* code to obtain
@@ -35,12 +35,12 @@ This is the first script to run when reproducing the results.
   
   The generated random phenotype permutations and the gene expression data set "Bottomly" are additionally provided in the folder **GeneExpression_data** in this repository. These are then sourced in the subsequent functions. 
  
-#### Preparation of the gene expression data for the GSA methods (folder `R/Functions`)
+#### 2. Preparation of the gene expression data for the GSA methods (folder `R/Functions`)
 
- - **PreProcessing_Functions.R**: contains functions provided in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
- - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the methods.
+ - **PreProcessing_Functions.R**: contains functions required in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
+ - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the optimisations of the methods. 
  
-#### Define optimisation functions (folder `R/Functions`)
+#### 3. Define optimisation functions (folder `R/Functions`)
 The following scripts were generated for all methods implemented in *R*, i.e. *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA. These contain all functions required to perform the optimization for the respective computational GSA method. The scripts are then sourced when running the optimisations in the next step. 
   
 - **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1).
@@ -48,7 +48,7 @@ The following scripts were generated for all methods implemented in *R*, i.e. *G
 
 For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding descriptions are placed in separate paragraphs below. 
 
-#### Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
+#### 4. Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
 Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_n_DEGS_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
@@ -56,14 +56,14 @@ Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterPro
 
 Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally.
 
-#### Generate the results figures (folder `R/Figures`)
+#### 5. Generate the results figures (folder `R/Figures`)
 The *R* scripts to generate the results figures are directly named after the figure.  
 
-# Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
+## Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
 Note that for the three web-based applications, only optimisation goals 1 and 2 are pursued. 
 
-## DAVID
+### DAVID
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
 Our analysis was performed with the DAVID Knowledgebase v2023q3.
 
@@ -73,7 +73,7 @@ The *R* script to generate the input data sets for the Pickrell **and** the Bott
   
 The input data sets are then stored in the folder
 - `Results/Intermediate_results/DAVID/Pickrell/Data`
-- `Results/Intermediate_results/DAVID`/Bottomly/Data`
+- `Results/Intermediate_results/DAVID/Bottomly/Data`
 
 Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across all optimisation goals 1-3 since the individual optimization steps are identical. 
 
@@ -94,7 +94,7 @@ We were therefore document the optimization steps for objectives 2 and 3 directl
   
 could **never** be decreased for their default value of 1. 
 
-## GSEA (web-based application)
+### GSEA (web-based application)
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
@@ -132,7 +132,7 @@ Note that the optimization of GSEA was carried out over several months and by ha
   In addition to the screenshots, the optimization processes are documented in the respective *R* scripts. 
 
 
-## GSEAPreranked
+### GSEAPreranked
 
 In your working directory, generate the folder* *GSEAPreranked*
 
