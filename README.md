@@ -147,19 +147,16 @@ Note that the optimization of GSEA was carried out over several months and by ha
 
 ### GSEAPreranked
 
-In your working directory, generate the folder* *GSEAPreranked*
-
-## Generate the results illustrations as shown in the paper
-- folder **Results_illustrations**: contains the *R* codes to generate the results images from the paper (and entails the images themselves)
-    - **Struktur muss noch beschrieben werden, wenn alles steht**
- 
-    - 
+*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from (https://www.gsea-msigdb.org/gsea/index.jsp)).
 
 
+#### 1. Generation of inputs (folder `R/Functions/GSEAPreranked`)
+For the Pickrell and the Bottomly data set each, you will find the following *R* scripts:
 
+- **n_DEGS_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 1 goal 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the alternatives depend on the previous step(s)). 
+- **generateInputs_for_pvalue_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 2.
 
+Additionally, for optimisation goal 2, the corresponding documentations are stored in text files in this folder. 
 
-
->>>>>>> cb9285866d9a885d30850ebb0dd258feee0701c6
 
 
