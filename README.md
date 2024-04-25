@@ -35,28 +35,17 @@ This is the first script to run when reproducing the results.
   
   The generated random phenotype permutations and the gene expression data set "Bottomly" are additionally provided in the folder **GeneExpression_data** in this repository. These are then sourced in the subsequent functions. 
  
-#### 2. Preparation of the gene expression data for the GSA methods (folder `R/Functions`)
+For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently (and now described separately) since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding descriptions are placed in separate paragraphs below. 
 
- - **PreProcessing_Functions.R**: contains functions required in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
- - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the optimisations of the methods. 
- 
-#### 3. Define optimisation functions (folder `R/Functions`)
-The following scripts were generated for all methods implemented in *R*, i.e. *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA. These contain all functions required to perform the optimization for the respective computational GSA method. The scripts are then sourced when running the optimisations in the next step. 
-  
-- **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1).
-- **rank_p_OptimisationFunctions_... .R**: Functions for the optimization of the adjusted p-value and rank of the specific (optimization goals 2 and 3).
-
-For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding descriptions are placed in separate paragraphs below. 
-
-#### 4. Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
+#### 2. Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
 Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_n_DEGS_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
 - **Run_pvalue_rank_optimisations.R**: script to run optimisations of the adjusted p-value and rank of the specific gene sets
 
-Both scripts source all required functions (i.e. preparation and optimisation functions) from the previous sections internally.
+Both scripts source all required functions (i.e. preparation and optimisation functions, stored in `R/Functions`) from the previous sections internally.
 
-#### 5. Generate the results figures (folder `R/Figures`)
+#### 3. Generate the results figures (folder `R/Figures`)
 The *R* scripts to generate the results figures are directly named after the figure.  
 
 ## Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
@@ -90,7 +79,7 @@ For the maximization of the number of differentially enriched gene sets, you fin
 The documentation of the number of differentially enriched gene sets (stored in subfolder **n_DEGS**) shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
 There was one more optimization step for goal 1 than for goals 2 and 3 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between goals 1, 2, and 3. 
 
-We were therefore document the optimization steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for goal 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
+We were therefore able document the optimization steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for goal 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
 
 - **Demethylation** (GO:0070988) and **t Cell mediated immunity** (GO:0002456) for the Pickrell data set,
 - **Metabolic Process** (GO:0008152) and **Cellular Process** (GO:0009987) for the Bottomly data set,
@@ -120,11 +109,11 @@ These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require fur
 
 The corresponding preprocessed files are then stored in subfolder `Prep`.
 
-#### 2. Run GSEA optimisation 
+#### 3. Run GSEA optimisation 
 The application must be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp). In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
 
 
-#### 3. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Web`)
+#### 4. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Web`)
 
 The documentation for GSEA is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
@@ -161,9 +150,6 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 #### 3. Run GSEAPreranked optimisation 
 As for the regular method *GSEA*, the required data sets are uploaded in the tab **Load data**, after which, however, you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Preranked`. 
 
-
-
-
 #### 3. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Preranked`)
 
 The documentation for GSEAPreranked is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
@@ -181,6 +167,16 @@ Note that the optimization of GSEAPreranked was carried out over several months 
 - in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
 
 In addition to the screenshots, the optimization processes are documented in the respective *R* scripts as comments for goal 1 (**n_DEGS_optimisation_GSEAPreranked_ ... .R** in folder `R/Functions/GSEAPreranked`) and in .txt files **pvalue_optimisation_Demethylation_GSEAPreranked_ ...** for goal 2).  
+
+## Description of additional *R* scripts 
+
+### Folder `R/Functions`
+
+ - **PreProcessing_Functions.R**: contains functions required in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
+ - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the optimisations of the methods. 
+ - **n_DEGS_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
+- **rank_p_OptimisationFunctions_... .R**: Functions for the optimization of the adjusted p-value and rank of the specific (optimization goals 2 and 3; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
+
 
 
 
