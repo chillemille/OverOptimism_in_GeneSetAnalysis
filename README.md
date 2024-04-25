@@ -150,7 +150,7 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 #### 3. Run GSEAPreranked optimisation 
 As for the regular method *GSEA*, the required data sets are uploaded in the tab **Load data**, after which, however, you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Preranked`. 
 
-#### 3. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Preranked`)
+#### 4. Inspect documentation of the results (folder `R/Functions/Intermediate_results/GSEA_Preranked`)
 
 The documentation for GSEAPreranked is structured by both gene expression data sets (folders **Pickrell** and **Bottomly**). Within each folder, you will find a folder 
 - **n_DEGS**: Contains data and documentation for the maximization of the number of differentially enriched gene sets
