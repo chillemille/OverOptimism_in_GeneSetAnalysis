@@ -5,6 +5,7 @@
 library(ggplot2)
 library(tidyr)
 library(cowplot)
+library(plyr)
 
 ################################################################################
 ### load help functions to generate results illustrations ######################
