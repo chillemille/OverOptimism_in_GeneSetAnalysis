@@ -8,7 +8,15 @@ This repository allows you to
 
 **Important note 1:** 
 
-Reproducing all of the results takes a long time and can take up more memory than is available. To prevent *R* from crashing, we therefore recommend limiting yourself to reproducing a part of the results.
+Reproducing all results **from scratch** is possible when using 
+
+- identical data sets 
+- identical seed(s)
+- identical *R* package versions
+- identical versions of the web applications
+  as used in the original experiments 
+
+However, reproducing the whole experiment **from scratch** takes a long time and can take up more memory than is available. To prevent *R* from crashing, we therefore recommend limiting yourself to reproducing a part of the results.
 
 **Important note 2:**
 
@@ -18,11 +26,19 @@ Some of the considered GSA methods are web-based applications (*DAVID*, *GSEA*, 
 
 Following 'important note 2', I produced the results for these three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
 
+- task 1: maximize number of differentially enriched gene sets
+- task 2: minimize the adjusted p-value of a specific gene set
+- task 3: minimize the rank of a specific gene set among all remaining gene sets 
+
+
+
+*** 
 ## Reproduce the figures (in *R*)
 To reproduce a figure from the paper, run the corresponding script from folder `R/Figures`.
 
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
+***
 ## Rerun the full experiment (folder *R*)
 Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R`.
 
