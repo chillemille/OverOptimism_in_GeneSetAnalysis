@@ -52,8 +52,8 @@ Note that this takes several days or weeks, depending on the available resources
 
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
-- **Run_task1_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
-- **Run_task2_3_optimisations.R**: script to run optimisations of the adjusted p-value and rank of the specific gene sets
+- **Run_task1_optimisations.R**: script to run optimisation task 1
+- **Run_task2_3_optimisations.R**: script to run optimisations tasks 2 and 3 
 
 Both scripts source all required functions and preprocess the initial gene expression data sets internally. For the remaining, web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations were performed in the corresponding web-based application (i.e., by hand). To generate the figures, the optimisation results were therefore also transferred manually to the corresponding *R* scripts (`R/Code_figures`). See below for instructions on how to reproduce the optimisation results for the web-based applications yourself. 
 
