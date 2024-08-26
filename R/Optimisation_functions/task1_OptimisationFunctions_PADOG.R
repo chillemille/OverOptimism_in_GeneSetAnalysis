@@ -12,10 +12,10 @@ library(edgeR) # for pre-filtering function filterByExpr()
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 
 # load require pre-processing functions
-source("./R/Optimisation_functions/PreProcessing_Functions.R")
+source("./R/Help_functions/PreProcessing_Functions.R")
 
 # load functions to perform RNA-Seq transformation for (approximate) alignment with the normal distribution
-source("./R/Optimisation_functions/RNASeq_Transformation.R")
+source("./R/Help_functions/RNASeq_Transformation.R")
 
 
 ####################################################################################

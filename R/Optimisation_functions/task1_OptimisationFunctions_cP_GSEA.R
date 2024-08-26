@@ -13,7 +13,7 @@ library(dplyr)
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 
 # load required pre-processing functions
-source("./R/Optimisation_functions/PreProcessing_Functions.R")
+source("./R/Help_functions/PreProcessing_Functions.R")
 
 
 ##################################################################################

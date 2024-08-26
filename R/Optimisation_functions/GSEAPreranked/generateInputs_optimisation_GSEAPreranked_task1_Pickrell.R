@@ -15,7 +15,7 @@ library(apeglm)
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 
 # load preprocessing functions
-source("./R/Functions/PreProcessing_Functions.R")
+source("./R/Help_functions/PreProcessing_Functions.R")
 
 
 ######################################

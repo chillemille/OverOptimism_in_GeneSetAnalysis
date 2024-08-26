@@ -11,13 +11,13 @@ library(edgeR)
 library(apeglm)
 
 ##### run script to convert mouse ensembl IDs to human gene Symbols
-source("./R/Functions/GSEAPreranked/Mapping_MouseID_to_HumanID.R")
+source("./R/Help_functions/Mapping_MouseID_to_HumanID.R")
 
 ### run script to obtain gene expression data sets, true and randomly permuted phenotype assignments
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 
 # load preprocessing functions
-source("./R/Functions/PreProcessing_Functions.R")
+source("./R/Help_functions/PreProcessing_Functions.R")
 
 
 ######################################

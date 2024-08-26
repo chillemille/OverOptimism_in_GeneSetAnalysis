@@ -9,7 +9,7 @@ library(edgeR) # for filterByExpr()
 # load Bottomly data set
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 # load data preprocessing functions
-source("./R/Optimisation_functions/RNASeq_Transformation.R")
+source("./R/Help_functions/RNASeq_Transformation.R")
 
 
 ################################################################################

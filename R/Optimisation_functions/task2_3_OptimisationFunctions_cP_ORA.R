@@ -14,7 +14,7 @@ library(org.Mm.eg.db)
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 
 # load the preprocessing functions
-source("./R/Optimisation_functions/PreProcessing_Functions.R")
+source("./R/Help_functions/PreProcessing_Functions.R")
 
 
 
