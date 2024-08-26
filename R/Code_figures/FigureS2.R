@@ -11,7 +11,7 @@ library(plyr)
 ### load help functions to generate results illustrations ######################
 ################################################################################
 
-source("./R/Figures/helpfunctions_results_illustrations_n_DEGS.R")
+source("./R/Code_figures/helpfunctions_results_illustrations_n_DEGS.R")
 
 
 

@@ -11,7 +11,7 @@ library(cowplot)
 ### load help functions to generate results illustrations ######################
 ################################################################################
 
-source("./R/Figures/helpfunctions_results_illustrations_pvalue_rank.R")
+source("./R/Code_figures/helpfunctions_results_illustrations_pvalue_rank.R")
 
 ################################################################################
 ################################################################################
