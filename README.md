@@ -62,7 +62,7 @@ The *R* scripts to generate the results figures are directly named after the fig
 
 *** 
 
-## Reproduce optimisation results for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
+## Reproduce optimisation results for web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
 ### DAVID
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
