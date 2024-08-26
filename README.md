@@ -47,7 +47,7 @@ To reproduce a figure from the paper (based on intermediate results), run the co
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
 ***
-## Reproduce intermediate results (from sratch)
+## Reproduce intermediate results (from scratch)
 Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R/Run_optimisations`.
 
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
