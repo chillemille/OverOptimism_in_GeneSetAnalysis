@@ -26,8 +26,8 @@ as used in the original experiments. However, reproducing the whole experiment *
 
 Some of the considered GSA methods are web-based applications (*DAVID* version 6.8; *GSEA* and *GSEAPreranked* version 4.2.2/4.2.3 (see corresponding screenshot for exact version)). The optimisation processes for these methods were performed by hand (and documented with screenshots) using the following three steps: 
 
-1. In *R*: Preprocess initial gene expression data sets to match the format required by the web applications.
-2. Further pre-processing steps in Excel (for *GSEA* and *GSEAPreranked*)
+1. In *R*: Generate input data sets for web application from initial gene expression data 
+2. for *GSEA* and *GSEAPreranked*: Further pre-processing steps in Excel (for *GSEA* and *GSEAPreranked*)
 3. Data is uploaded to respective web application and optimisations regarding tasks 1 and 2 are performed.
 4. Results of the optimisation processed are entered manually in *R* (scripts in `R/Code_figures`) for the generation of the results graphs. 
 
@@ -107,7 +107,7 @@ could **never** be decreased for their default value of 1.
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
-#### 1. Generation of inputs (folder `R/Optimisation_functions/GSEA_Web`)
+#### 1. Generation of inputs in *R* (folder `R/Optimisation_functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
 
 - **task1_optimisation_GSEAWeb_... .R**: Input generation for task 1 (maximization of the number of differentially enriched gene sets)
@@ -125,7 +125,7 @@ These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require fur
 
 The corresponding preprocessed files are then stored in subfolder `Prep`.
 
-#### 3. Run GSEA optimisation 
+#### 3. Upload data and make optimisations according to task 1 or 2 
 The application must be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp). In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
 
 
@@ -153,22 +153,16 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 
 **Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in (https://www.gsea-msigdb.org/gsea/index.jsp). 
 
-#### 3. Run GSEAPreranked optimisation 
-As for the regular method *GSEA*, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. 
+#### 3. Upload data and make optimisations according to task 1 or 2 
+The required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. 
 
-#### 4. Inspect documentation of the results (folder `R/Results/Documentation_Screenshots`)
+#### 4. Transfer results to *R* files to generate results figures 
 
-The documentation is placed in folders 
+The screenshot documentation is placed in folders 
 - `Screenshots_GSEAPreranked_..._task1` for task 1 (for Bottomly or Pickrell data set)
-- `Screenshots_GSEAPreranked_... task2...`For task 2, (for Bottomly or Pickrell data set; for corresponding gene set). 
+- `Screenshots_GSEAPreranked_... task2...`For task 2, (for Bottomly or Pickrell data set; for corresponding gene set).
 
-
-
-In the folders **n_DEGS** and **p_adj**, there are the following subfolders: 
-- **Data**: Contains for the true and the 10 permuted sample labels the ...
-  - ... raw, i.e. exported from R, data sets in folder **Raw**
-  - ... prepared data sets in the format required by the web application in folder **Prep**
-- **Screenshots**: Contains the screenshots of the progression of the optimizatino process for the true sample labels and the 10 permutations 
+The results from these screenshots are then transferred to the corresponding *R* scripts in folder `R/Code_figures'. 
 
 Note that the optimisation of GSEAPreranked was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimisation processes can be found in the screenshots containing the name "Param", namely 
 - in the top left corner for the version of the overall web application
