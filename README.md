@@ -1,6 +1,6 @@
-# OverOptimism_in_GeneSetAnalysis
-<<<<<<< HEAD
-Repository for code and documentation in our analysis on over-optimism in gene set analysis.
+<!--# OverOptimism_in_GeneSetAnalysis
+<<<<<<< HEAD -->
+Repository for code and documentation for analysis on over-optimism in GSA.
 =======
 This repository allows you to reproduce the results from our over-optimism study generated in *R* . This includes the following optimisation tasks: 
 
@@ -28,45 +28,35 @@ Some of the considered GSA methods are web-based applications (*DAVID* version 6
 2. Data is uploaded to the web applications (and optimisations regarding tasks 1 and 2 are performed)
 3. Results of the optimisation processed are entered manually in R to for the results graphs.
 
-**Important: fully reproducing this process would take weeks!**
+**Fully reproducing this process would take weeks!**
 
 **Important note 3:**
 
 Following 'important note 2', I produced the results for these three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
 
 *** 
-## Reproduce the figures (in *R*)
-To reproduce a figure from the paper, run the corresponding script from folder `R/Figures`.
+## Reproduce the figures (based on intermediate results)
+To reproduce a figure from the paper (based on intermediate results), run the corresponding script from folder `R/Code_figures`. The scripts are named after the figure they generate in the manuscript. 
 
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
 ***
-## Rerun the full experiment (folder *R*)
+## Rerun the full experiment (from sratch)
 Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R`.
 
-#### 1. Preparation of the gene expression data for the optimisations (folder `R/Prepare_data_and_permutations`)
-This is the first script to run when reproducing the results.
-
-- **Random_Phenotype_Permutations.R**: *R* code to obtain
-  1. both gene expression data sets and true labels of the respective samples 
-  2. the ten random permutations of the true sample labels for both gene expression data sets
-  
-  The generated random phenotype permutations and the gene expression data set "Bottomly" are additionally provided in the folder **GeneExpression_data** in this repository. These are then sourced in the subsequent functions. 
- 
-For the web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations are structured differently (and now described separately) since the optimisations themselves are to be performed in the corresponding web-based application. Therefore, the corresponding descriptions are placed in separate paragraphs below. 
-
-#### 2. Run the optimisations for the *R*-based methods (folder `R/Run_optimisations`)
-Run optimisations for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
+### 1. Run optimisations for *R*-based GSA methods*GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_task1_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
 - **Run_task2_3_optimisations.R**: script to run optimisations of the adjusted p-value and rank of the specific gene sets
 
-Both scripts source all required functions (i.e. preparation and optimisation functions, stored in `R/Functions`) from the previous sections internally.
+Both scripts source all required functions and preprocess the initial gene expression data sets internally. For the remaining, web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations were performed in the corresponding web-based application (i.e., by hand). To generate the figures, the optimisation results were therefore also transferred manually to the corresponding R scripts (`R/Code_figures`). See below for instructions on how to reproduce the optimisation results for the web-based applications yourself. 
 
-#### 3. Generate the results figures (folder `R/Code_figures`)
+### 2. Generate the results figures (folder `R/Code_figures`)
 The *R* scripts to generate the results figures are directly named after the figure.  
 
-## Optimisations for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
+*** 
+
+## Reproduce optimisation results for the web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
 ### DAVID
 The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
@@ -80,20 +70,20 @@ The input data sets are then stored in the folder
 - `Results/Intermediate_results/DAVID/Pickrell`
 - `Results/Intermediate_results/DAVID/Bottomly`
 
-Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across all optimisation goals 1-3 since the individual optimization steps are identical. 
+Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both optimisation goals 1 and 2 since the individual optimization steps are identical. 
 
 #### 2. Run DAVID optimisation 
 Access the link (https://david.ncifcrf.gov/). An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** (step 2) and set the list type as **Gene List** (step 3). A more detailed illustration of the steps of the optimization process to be performed by hand can be taken from the corresponding screenshots. 
 
-#### 3. Inspect documentation of the results (folder `R/Results/Screenshots_WebApplications`)
+#### 3. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
 For the maximization of the number of differentially enriched gene sets, you find the documentation screenshots (and Excel files) in the folder 
 
 - **Screenshots_DAVID_Pickrell** for the Pickrell data set 
 - **Screenshots_DAVID_Bottomly** for the Bottomly data set 
 
 **Important:**
-The documentation of the number of differentially enriched gene sets (stored in subfolder **n_DEGS**) shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
-There was one more optimization step for goal 1 than for goals 2 and 3 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between goals 1, 2, and 3. 
+The documentation shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
+There was one more optimization step for goal 1 than for goal 2 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between goals 1, 2, and 3. 
 
 We were therefore able document the optimization steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for goal 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
 
@@ -129,7 +119,7 @@ The corresponding preprocessed files are then stored in subfolder `Prep`.
 The application must be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp). In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
 
 
-#### 4. Inspect documentation of the results (folder `R/Results/Screenshots_WebApplications`)
+#### 4. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
 
 Note that the optimization of GSEA was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimization processes can be found in the screenshots containing the name "Param", namely 
 - in the top left corner for the version of the overall web application
@@ -174,6 +164,9 @@ Note that the optimization of GSEAPreranked was carried out over several months 
 
 In addition to the screenshots, the optimization processes are documented in the respective *R* scripts as comments for goal 1 (**n_DEGS_optimisation_GSEAPreranked_ ... .R** in folder `R/Functions/GSEAPreranked`) and in .txt files **pvalue_optimisation_Demethylation_GSEAPreranked_ ...** for goal 2).  
 
+
+<!--
+
 ## Description of additional *R* scripts 
 
 ### Folder `R/Functions`
@@ -182,6 +175,8 @@ In addition to the screenshots, the optimization processes are documented in the
  - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the optimisations of the methods. 
  - **task1_OptimisationFunctions_... .R**: Functions for the optimization of the number of differentially enriched gene sets for the respective computational GSA method (optimization goal 1; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
 - **task2_3_OptimisationFunctions_... .R**: Functions for the optimization of the adjusted p-value and rank of the specific (optimization goals 2 and 3; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
+
+-->
 
 
 
