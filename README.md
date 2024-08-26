@@ -36,7 +36,8 @@ Some of the considered GSA methods are web-based applications (*DAVID* version 6
 
 Following 'important note 2', I produced the results for these three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
 
-**Note 4**
+**Note 4:**
+
 The *R* results can be reproduced using *R* package renv and command renv::restore(). See (https://rstudio.github.io/renv/articles/renv.html) for information on how to use renv. 
 
 *** 
