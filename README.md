@@ -2,12 +2,7 @@
 <<<<<<< HEAD -->
 Repository for code and documentation for analysis on over-optimism in GSA.
 =======
-This repository allows you to reproduce the results from our over-optimism study generated in *R*, including the following optimisation tasks: 
-
-- **task 1**: maximize number of differentially enriched gene sets
-- **task 2**: minimize the adjusted p-value of a specific gene set
-- **task 3**: minimize the rank of a specific gene set among all remaining gene sets (omitted for the web applications; see below)
-
+This repository allows you to reproduce the results from our over-optimism analysis or (i) four *R*-based methods and (ii) three web-based methods. 
 ### Important notes 
 
 **Note 1:** 
@@ -16,45 +11,45 @@ Reproducing all results **from scratch** is possible when using
 
 - identical data sets 
 - identical seed(s)
-- identical *R* package versions
+- identical *R* package versions/ versions of the web applications
 - identical gene set database versions
-- identical versions of the web applications
   
-as used in the original experiments. However, reproducing the whole experiment **from scratch** takes a long time and can take up more memory than is available. To prevent *R* from crashing, we therefore recommend limiting yourself to reproducing a part of the results.
+as used in the original experiments. This is traightforward for the *R*-based methods (using renv), however, might take up more memory than available and cause your system to crash. For the web-based methods, reproducing the results requires several intermediate steps (see note 4) and is very time-consuming; detailed descriptions are provided below. 
 
 **Note 2:**
 
-Some of the considered GSA methods are web-based applications (*DAVID* version 6.8; *GSEA* and *GSEAPreranked* version 4.2.2/4.2.3 (see corresponding screenshot for exact version)). The optimisation processes for these methods were performed by hand (and documented with screenshots) using the following three steps: 
+The *R* results can be reproduced using *R* package *renv* and command *renv::restore()*. See https://rstudio.github.io/renv/articles/renv.html for information on how to use *renv*. 
+
+**Note 3:**
+
+I produced the results for the three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
+
+**Note 4:**
+
+The web-based applications (*DAVID* version 6.8; *GSEA* and *GSEAPreranked* version 4.2.2/4.2.3 were performed by hand (and documented with screenshots) using the following three steps: 
 
 1. In *R*: Generate input data sets for web application from initial gene expression data 
 2. for *GSEA* and *GSEAPreranked*: Further pre-processing steps in Excel (for *GSEA* and *GSEAPreranked*)
 3. Data is uploaded to respective web application and optimisations regarding tasks 1 and 2 are performed.
-4. Results of the optimisation processed are entered manually in *R* (scripts in `R/Code_figures`) for the generation of the results graphs. 
+4. Results of the optimisation processed are entered manually in *R* (scripts in `R/Code_figures`) for the generation of the results graphs.
 
 **Fully reproducing this process would take weeks!**
 
-**Note 3:**
-
-Following note 2, I produced the results for the three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
-
-**Note 4:**
-
-The *R* results can be reproduced using *R* package *renv* and command *renv::restore()*. See (https://rstudio.github.io/renv/articles/renv.html) for information on how to use *renv*. 
-
 *** 
-## Reproduce the figures based on intermediate results
+## Reproduce figures based on intermediate results
 To reproduce a figure from the paper (based on intermediate results), run the corresponding script from folder `R/Code_figures`. The scripts are named after the figure they generate in the manuscript. 
 
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
+
 ***
-## Reproduce the figures from scratch
+## Reproduce figures from scratch
 Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R/Run_optimisations`.
 
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
-- **Run_task1_optimisations.R**: script to run optimisation task 1
-- **Run_task2_3_optimisations.R**: script to run optimisations tasks 2 and 3 
+- **Run_task1_optimisations.R**: required for Figures 3 and S2
+- **Run_task2_3_optimisations.R**: required for Figures 4, 5, S3, and S4 
 
 Both scripts source all required functions and preprocess the initial gene expression data sets internally. 
 
@@ -70,21 +65,21 @@ The *R* scripts to generate the results figures are directly named after the fig
 Note that for the web-applications, we strongly recommend to read the manuscript. 
 
 ### DAVID
-The web-based application *DAVID* can be accessed via the following link: (https://david.ncifcrf.gov/)
+The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/
 Our analysis was performed with the DAVID Knowledgebase v2023q3.
 
 #### 1. Generation of input data sets (folder `R/Functions`)
 The *R* script to generate the input data sets for the Pickrell **and** the Bottomly data set is stored in the file 
 - **generate_Inputs_DAVID.R**
   
-The input data sets are then stored in the folder
+The generated input data sets are then stored in the folder
 - `Results/Intermediate_results/DAVID/Pickrell`
 - `Results/Intermediate_results/DAVID/Bottomly`
 
 Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both tasks 1 and 2 since the individual optimisation steps are identical. 
 
 #### 2. Run DAVID optimisation 
-Access the link (https://david.ncifcrf.gov/). An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. A more detailed illustration of the steps of the optimisation process to be performed by hand can be taken from the corresponding screenshots. 
+Access the link https://david.ncifcrf.gov/. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. A more detailed illustration of the steps of the optimisation process to be performed by hand can be taken from the corresponding screenshots. 
 
 #### 3. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
 For task 1, you find the documentation screenshots (and Excel results files) in the folder 
@@ -105,7 +100,7 @@ could **never** be decreased for their default value of 1.
 
 ### GSEA (web-based application)
 
-The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
+The application can be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp, for which an account must be created.
 
 #### 1. Generation of inputs in *R* (folder `R/Optimisation_functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
@@ -118,7 +113,7 @@ The input data generated from each of the scripts is stored in folder `Results/I
 
 #### 2. Further preprocessing in Excel
 
-These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require further processing according to (https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats). For this, inspect Sections 
+These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require further processing according to https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats. For this, inspect Sections 
 
 - **GCT: Gene Cluster Text file format (*.gct)** for the preprocessing of the gene expression data set in Excel.
 - **CLS: Categorical (e.g tumor vs normal) class file format (*.cls)** for the preprocessing of the corresponding phenotype assignments.
@@ -126,7 +121,7 @@ These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require fur
 The corresponding preprocessed files are then stored in subfolder `Prep`.
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
-The application must be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp). In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
+The application must be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp. In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
 
 
 #### 4. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
@@ -140,7 +135,7 @@ In addition to the screenshots, the optimisation processes are documented in the
 
 ### GSEAPreranked
 
-*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from (https://www.gsea-msigdb.org/gsea/index.jsp)).
+*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp).
 
 
 #### 1. Generation of inputs (folder `R/Functions/GSEAPreranked`)
@@ -151,7 +146,7 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 
 #### 2. Further preprocessing in Excel 
 
-**Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in (https://www.gsea-msigdb.org/gsea/index.jsp). 
+**Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in https://www.gsea-msigdb.org/gsea/index.jsp. 
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
 The required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. 
