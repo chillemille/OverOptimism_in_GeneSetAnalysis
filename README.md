@@ -41,7 +41,7 @@ To reproduce a figure from the paper (based on intermediate results), run the co
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
 ***
-## Rerun the full experiment (from sratch)
+## Reproduce intermediate results (from sratch)
 Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R`.
 
 ### 1. Run optimisations for *R*-based GSA methods*GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
@@ -101,7 +101,7 @@ For the Pickrell and the Bottomly data set each, you will find the following thr
 
 - **n_DEGS_optimisation_GSEAWeb_... .R**: Input generation for task 1 (maximization of the number of differentially enriched gene sets)
 - **rank_p_optimisation_Demethylation_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set **Demethylation** (task 2)
-- - **rank_p_optimisation_tCell_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set t Cell mediated immunity.  
+- **rank_p_optimisation_tCell_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set t Cell mediated immunity.  
 
 The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These contain the gene expression measurements as well as the phenotype assignments (which are stores in subfolder **Phenotypes**). 
 
@@ -136,8 +136,8 @@ In addition to the screenshots, the optimisation processes are documented in the
 #### 1. Generation of inputs (folder `R/Functions/GSEAPreranked`)
 For the Pickrell and the Bottomly data set each, you will find the following *R* scripts:
 
-- **n_DEGS_optimisation_GSEAPreranked_... .R**: Input generation for task 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the options depend on the previous step(s)). 
-- **generateInputs_for_pvalue_optimisation_GSEAPreranked_... .R**: Input generation for task 2 (additionally, the corresponding optimisation documentations are stored in text files in this folder).
+- **generateInputs_optimisation_GSEAPreranked_task1_... .R**: Input generation for task 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the options depend on the previous step(s)). 
+- **generateInputs_GSEAPreranked_task2_... .R**: Input generation for task 2 (additionally, the corresponding optimisation documentations are stored in text files in this folder).
 
 #### 2. Further preprocessing in Excel 
 
