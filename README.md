@@ -26,7 +26,7 @@ Some of the considered GSA methods are web-based applications (*DAVID* version 6
 
 1. in *R*: Preprocess initial gene expression data sets to match the format required by the web applications
 2. Data is uploaded to the web applications (and optimisations regarding tasks 1 and 2 are performed)
-3. Results of the optimisation processed are entered manually in R to for the results graphs.
+3. Results of the optimisation processed are entered manually in *R* to for the results graphs.
 
 **Fully reproducing this process would take weeks!**
 
@@ -42,14 +42,14 @@ Note that, while the *R* scripts source the intermediate results from the GSA me
 
 ***
 ## Reproduce intermediate results (from sratch)
-Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R`.
+Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R/Run_optimisations`.
 
-### 1. Run optimisations for *R*-based GSA methods*GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
+### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_task1_optimisations.R**: script to run optimisations of the number of differentially enriched gene sets
 - **Run_task2_3_optimisations.R**: script to run optimisations of the adjusted p-value and rank of the specific gene sets
 
-Both scripts source all required functions and preprocess the initial gene expression data sets internally. For the remaining, web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations were performed in the corresponding web-based application (i.e., by hand). To generate the figures, the optimisation results were therefore also transferred manually to the corresponding R scripts (`R/Code_figures`). See below for instructions on how to reproduce the optimisation results for the web-based applications yourself. 
+Both scripts source all required functions and preprocess the initial gene expression data sets internally. For the remaining, web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations were performed in the corresponding web-based application (i.e., by hand). To generate the figures, the optimisation results were therefore also transferred manually to the corresponding *R* scripts (`R/Code_figures`). See below for instructions on how to reproduce the optimisation results for the web-based applications yourself. 
 
 ### 2. Generate the results figures (folder `R/Code_figures`)
 The *R* scripts to generate the results figures are directly named after the figure.  
@@ -171,7 +171,7 @@ In addition to the screenshots, the optimisation processes are documented in the
 
 ### Folder `R/Functions`
 
- - **PreProcessing_Functions.R**: contains functions required in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
+ - **PreProcessing_Functions.R**: contains functions required in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective *R* scripts.
  - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the optimisations of the methods. 
  - **task1_OptimisationFunctions_... .R**: Functions for the optimisation of the number of differentially enriched gene sets for the respective computational GSA method (task 1; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
 - **task2_3_OptimisationFunctions_... .R**: Functions for the optimisation of the adjusted p-value and rank of the specific (tasks 2 and 3; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
