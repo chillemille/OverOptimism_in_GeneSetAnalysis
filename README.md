@@ -107,7 +107,7 @@ could **never** be decreased for their default value of 1.
 
 The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.jsp), for which an account must be created.
 
-#### 1. Generation of inputs (folder `R/Functions/GSEA_Web`)
+#### 1. Generation of inputs (folder `R/Optimisation_functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
 
 - **task1_optimisation_GSEAWeb_... .R**: Input generation for task 1 (maximization of the number of differentially enriched gene sets)
