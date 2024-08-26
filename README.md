@@ -70,7 +70,7 @@ The input data sets are then stored in the folder
 - `Results/Intermediate_results/DAVID/Pickrell`
 - `Results/Intermediate_results/DAVID/Bottomly`
 
-Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both optimisation goals 1 and 2 since the individual optimisation steps are identical. 
+Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both tasks 1 and 2 since the individual optimisation steps are identical. 
 
 #### 2. Run DAVID optimisation 
 Access the link (https://david.ncifcrf.gov/). An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** (step 2) and set the list type as **Gene List** (step 3). A more detailed illustration of the steps of the optimisation process to be performed by hand can be taken from the corresponding screenshots. 
@@ -83,9 +83,9 @@ For the maximization of the number of differentially enriched gene sets, you fin
 
 **Important:**
 The documentation shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
-There was one more optimisation step for goal 1 than for goal 2 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between goals 1, 2, and 3. 
+There was one more optimisation step for task 1 than for task 2 (step 3: gene set database KEGG; it never led to an increase in the number of differentially enriched gene set). The remaining optimisation steps were identical between tasks 1, 2, and 3. 
 
-We were therefore able document the optimisation steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for goal 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
+We were therefore able document the optimisation steps for objectives 2 and 3 directly from documentation for objective 1. It (i.e., the Excel files for each optimisation step for task 1) showed us that both gene expression data sets and for all of the sample labels, the adjusted p-value and rank of the respective gene sets 
 
 - **Demethylation** (GO:0070988) and **t Cell mediated immunity** (GO:0002456) for the Pickrell data set,
 - **Metabolic Process** (GO:0008152) and **Cellular Process** (GO:0009987) for the Bottomly data set,
@@ -99,8 +99,8 @@ The application can be downloaded from (https://www.gsea-msigdb.org/gsea/index.j
 #### 1. Generation of inputs (folder `R/Functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
 
-- **n_DEGS_optimisation_GSEAWeb_... .R**: Input generation for optimisation goal 1 (maximization of the number of differentially enriched gene sets)
-- **rank_p_optimisation_Demethylation_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set **Demethylation** (optimisation goal 2)
+- **n_DEGS_optimisation_GSEAWeb_... .R**: Input generation for task 1 (maximization of the number of differentially enriched gene sets)
+- **rank_p_optimisation_Demethylation_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set **Demethylation** (task 2)
 - - **rank_p_optimisation_tCell_GSEAWeb_... .R**: Input generation for the minimization of the adjusted p-value of gene set t Cell mediated immunity.  
 
 The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These contain the gene expression measurements as well as the phenotype assignments (which are stores in subfolder **Phenotypes**). 
@@ -136,8 +136,8 @@ In addition to the screenshots, the optimisation processes are documented in the
 #### 1. Generation of inputs (folder `R/Functions/GSEAPreranked`)
 For the Pickrell and the Bottomly data set each, you will find the following *R* scripts:
 
-- **n_DEGS_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the options depend on the previous step(s)). 
-- **generateInputs_for_pvalue_optimisation_GSEAPreranked_... .R**: Input generation for optimisation goal 2 (additionally, the corresponding optimisation documentations are stored in text files in this folder).
+- **n_DEGS_optimisation_GSEAPreranked_... .R**: Input generation for task 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the options depend on the previous step(s)). 
+- **generateInputs_for_pvalue_optimisation_GSEAPreranked_... .R**: Input generation for task 2 (additionally, the corresponding optimisation documentations are stored in text files in this folder).
 
 #### 2. Further preprocessing in Excel 
 
@@ -162,7 +162,7 @@ Note that the optimisation of GSEAPreranked was carried out over several months 
 - in the top left corner for the version of the overall web application
 - in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
 
-In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments for goal 1 (**n_DEGS_optimisation_GSEAPreranked_ ... .R** in folder `R/Functions/GSEAPreranked`) and in .txt files **pvalue_optimisation_Demethylation_GSEAPreranked_ ...** for goal 2).  
+In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments for task 1 (**n_DEGS_optimisation_GSEAPreranked_ ... .R** in folder `R/Functions/GSEAPreranked`) and in .txt files **pvalue_optimisation_Demethylation_GSEAPreranked_ ...** for task 2).  
 
 
 <!--
@@ -173,8 +173,8 @@ In addition to the screenshots, the optimisation processes are documented in the
 
  - **PreProcessing_Functions.R**: contains functions required in the preprocessing of (almost) all of the investigated GSA methods and is therefore sourced in each of the respective R scripts.
  - **RNASeq_Transformation.R**: contains two functions to transform the gene expression measurements to match the characteristics for microarray data, as needed for the methods *PADOG* and *GSEA* (web-based application). It is sourced in the corresponding scripts for the optimisations of the methods. 
- - **task1_OptimisationFunctions_... .R**: Functions for the optimisation of the number of differentially enriched gene sets for the respective computational GSA method (optimisation goal 1; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
-- **task2_3_OptimisationFunctions_... .R**: Functions for the optimisation of the adjusted p-value and rank of the specific (optimisation goals 2 and 3; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
+ - **task1_OptimisationFunctions_... .R**: Functions for the optimisation of the number of differentially enriched gene sets for the respective computational GSA method (task 1; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
+- **task2_3_OptimisationFunctions_... .R**: Functions for the optimisation of the adjusted p-value and rank of the specific (tasks 2 and 3; only for *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, *clusterProfiler*'s GSEA).
 
 -->
 
