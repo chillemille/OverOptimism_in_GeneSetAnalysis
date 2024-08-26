@@ -42,13 +42,13 @@ Following note 2, I produced the results for the three web-based application ove
 The *R* results can be reproduced using *R* package *renv* and command *renv::restore()*. See (https://rstudio.github.io/renv/articles/renv.html) for information on how to use *renv*. 
 
 *** 
-## Reproduce the figures (based on intermediate results)
+## Reproduce the figures based on intermediate results
 To reproduce a figure from the paper (based on intermediate results), run the corresponding script from folder `R/Code_figures`. The scripts are named after the figure they generate in the manuscript. 
 
 Note that, while the *R* scripts source the intermediate results from the GSA methods implemented in *R* internally, the results for the web-based applications *GSEA*, *GSEAPreranked*, and *DAVID* were transferred from the corresponding screenshots **by hand** since the optimisation processes could not be run in *R*. 
 
 ***
-## Reproduce the figures (from scratch)
+## Reproduce the figures from scratch
 Note that this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R/Run_optimisations`.
 
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
