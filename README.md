@@ -8,7 +8,9 @@ This repository allows you to reproduce the results from our over-optimism study
 - **task 2**: minimize the adjusted p-value of a specific gene set
 - **task 3**: minimize the rank of a specific gene set among all remaining gene sets (omitted for the web applications; see below)
 
-**Important note 1:** 
+### Important notes 
+
+**Note 1:** 
 
 Reproducing all results **from scratch** is possible when using 
 
@@ -20,7 +22,7 @@ Reproducing all results **from scratch** is possible when using
   
 as used in the original experiments. However, reproducing the whole experiment **from scratch** takes a long time and can take up more memory than is available. To prevent *R* from crashing, we therefore recommend limiting yourself to reproducing a part of the results.
 
-**Important note 2:**
+**Note 2:**
 
 Some of the considered GSA methods are web-based applications (*DAVID* version 6.8; *GSEA* and *GSEAPreranked* version 4.2.2/4.2.3 (see corresponding screenshot for exact version)). The optimisation processes for these methods were performed by hand (and documented with screenshots) using the following three steps: 
 
@@ -30,9 +32,12 @@ Some of the considered GSA methods are web-based applications (*DAVID* version 6
 
 **Fully reproducing this process would take weeks!**
 
-**Important note 3:**
+**Note 3:**
 
 Following 'important note 2', I produced the results for these three web-based application over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
+
+**Note 4**
+The *R* results can be reproduced using *R* package renv and command renv::restore(). See (https://rstudio.github.io/renv/articles/renv.html) for information on how to use renv. 
 
 *** 
 ## Reproduce the figures (based on intermediate results)
