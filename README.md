@@ -4,7 +4,7 @@ Repository for code and documentation for analysis on over-optimism in GSA.
 =======
 This repository allows you to reproduce the results from our over-optimism analysis on four *R*-based and three web-based GSA methods. 
 
-### Important notes 
+### Important notes
 
 **Note 1:** 
 
@@ -166,7 +166,7 @@ In addition to the screenshots, the optimisation processes are documented in the
 *GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp). 
 
 
-#### 1. Generation of inputs (folder `R/Functions/GSEAPreranked`)
+#### 1. Generation of inputs (folder `R/Optimisation_functions/GSEAPreranked`)
 For the Pickrell and the Bottomly data set each, you will find the following *R* scripts:
 
 - **generateInputs_optimisation_GSEAPreranked_task1_... .R**: Input generation for task 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the options depend on the previous step(s)). 
@@ -203,7 +203,7 @@ Note that the optimisation of GSEAPreranked was carried out over several months 
 - in the top left corner for the version of the overall web application
 - in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
 
-In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments for task 1 (**n_DEGS_optimisation_GSEAPreranked_ ... .R** in folder `R/Functions/GSEAPreranked`) and in .txt files **pvalue_optimisation_Demethylation_GSEAPreranked_ ...** for task 2).  
+In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments for task 1 (**task1_optimisation_GSEAPreranked_ ... .R** in folder `R/Optimisation_functions/GSEAPreranked`) and in .txt files **task2_documentation_GSEAPreranked_ ... .txt** for task 2).  
 
 
 <!--
