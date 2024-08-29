@@ -90,7 +90,7 @@ The optimisation steps are the following (see corresponding screenshots for more
 3. **For task 1 only**: change gene set database to KEGG 
 4. Change set of background genes: upload **universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step1 or step 2 leads to better results w.r.t the optimisation task).
 
-In each step, you choose the option that leads to better results w.r.t the given optimisation task (task 1 or task 2). 
+In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option that yielding better results. 
 
 #### 3. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
 For task 1, you find the documentation screenshots (and Excel results files) in the folder 
@@ -132,12 +132,12 @@ These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require fur
 The corresponding preprocessed files are then stored in subfolder `Prep`.
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
-The application must be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp. In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
+The application must be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp. In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. Note that in each step, the random seed is set to **149**. 
 
 
 Optimisation steps for tasks 1 and 2 : 
 
-1. Upload pre-processed gene expression data set: upload **exprdat_default_... .gct"**
+1. Upload pre-processed gene expression data set: upload **exprdat_default_... .gct**
 2. Change RNA-Seq transformation method: upload **exprdat_vst_... .gct**
 3. Change pre-filtering method: upload **exprdat_vst_filterByExpr_... .gct**
 4. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
@@ -148,6 +148,9 @@ Optimisation steps for tasks 1 and 2 :
     - change to **classic**
     - change to **weighted_p1.5**
     - change to **weighted_p2**
+  
+In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
+
 
 
 #### 4. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
@@ -161,7 +164,7 @@ In addition to the screenshots, the optimisation processes are documented in the
 
 ### GSEAPreranked
 
-*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp).
+*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp). 
 
 
 #### 1. Generation of inputs (folder `R/Functions/GSEAPreranked`)
@@ -175,15 +178,28 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 **Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in https://www.gsea-msigdb.org/gsea/index.jsp. 
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
-The required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. 
+The required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. Note that in each step, the random seed is set to **149**. 
+
+
+Optimisation steps for tasks 1 and 2 : 
+
+1. Upload default gene ranking: upload **DESeq2_ranking_ ... .rnk**
+2. Change method to rank the genes: upload **limma_ranking_ ... .rnk**
+3. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
+4. Change enrichment statistic 
+    - change to **classic**
+    - change to **weighted_p1.5**
+    - change to **weighted_p2**
+  
+In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
 
 #### 4. Transfer results to *R* files to generate results figures 
 
 The screenshot documentation is placed in folders 
-- `Screenshots_GSEAPreranked_..._task1` for task 1 (for Bottomly or Pickrell data set)
-- `Screenshots_GSEAPreranked_... task2...`For task 2, (for Bottomly or Pickrell data set; for corresponding gene set).
+- **Screenshots_GSEAPreranked_..._task1** for task 1 ("...": Bottomly or Pickrell data set)
+- **Screenshots_GSEAPreranked_... task2_GENESET**For task 2, ("...": Bottomly or Pickrell data set).
 
-The results from these screenshots are then transferred to the corresponding *R* scripts in folder `R/Code_figures'. 
+The results from these screenshots are then transferred to the corresponding *R* scripts in folder **R/Code_figures**. 
 
 Note that the optimisation of GSEAPreranked was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimisation processes can be found in the screenshots containing the name "Param", namely 
 - in the top left corner for the version of the overall web application
