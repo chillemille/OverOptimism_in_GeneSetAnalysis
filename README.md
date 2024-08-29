@@ -86,9 +86,9 @@ Access the link https://david.ncifcrf.gov/. An input list generated in step 1 ca
 The optimisation steps are the following (see corresponding screenshots for more detailed illustrations): 
 
 1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt**
-2. Upload list of differentially expressed genes generated using limma (gene set database GO (BP)): **DEGs_limma_... .txt**
-3. Change gene set database to KEGG (for goal 1 only; must be klicked in web application)
-4. Upload alternative universe (**universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step1 or step 2 leads to better results w.r.t the optimisation task).
+2. Change method to detect differentially enriched genes: upload **DEGs_limma_... .txt**
+3. **For task 1 only**: change gene set database to KEGG 
+4. Change set of background genes: upload **universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step1 or step 2 leads to better results w.r.t the optimisation task).
 
 In each step, you choose the option that leads to better results w.r.t the given optimisation task (task 1 or task 2). 
 
@@ -133,6 +133,21 @@ The corresponding preprocessed files are then stored in subfolder `Prep`.
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
 The application must be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp. In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. 
+
+
+Optimisation steps for tasks 1 and 2 : 
+
+1. Upload pre-processed gene expression data set: upload **exprdat_default_... .gct"**
+2. Change RNA-Seq transformation method: upload **exprdat_vst_... .gct**
+3. Change pre-filtering method: upload **exprdat_vst_filterByExpr_... .gct**
+4. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
+5. Change metric for ranking genes 
+    - change to **tTest**
+    - change to **Diff_of_classes**
+6. Change enrichment statistic 
+    - change to **classic**
+    - change to **weighted_p1.5**
+    - change to **weighted_p2**
 
 
 #### 4. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
