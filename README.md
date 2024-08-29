@@ -60,9 +60,9 @@ The *R* scripts to generate the results figures are directly named after the fig
 
 *** 
 
-## Reproduce optimisation results for web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
+## Detailed: reproduce optimisation results for web-based methods *DAVID*, *GSEA*, and *GSEAPreranked*
 
-Note that for the web-applications, we strongly recommend to read the manuscript. 
+Note that for the over-optimism analysis of the web-applications, we strongly recommend to read the manuscript as it requires several steps from which most must be performed by hand. These steps are structured according to note 4 above and we describe them in detail in the following.  
 
 ### DAVID
 The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/
@@ -72,14 +72,25 @@ Our analysis was performed with the DAVID Knowledgebase v2023q3.
 The *R* script to generate the input data sets for the Pickrell **and** the Bottomly data set is stored in the file 
 - **generate_Inputs_DAVID.R**
   
-The generated input data sets are then stored in the folder
+The generated input data sets are then stored in the folders
 - `Results/Intermediate_results/DAVID/Pickrell`
 - `Results/Intermediate_results/DAVID/Bottomly`
 
-Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both tasks 1 and 2 since the individual optimisation steps are identical. 
+and in there in subfolders that corresponds to the given phenotypes (original phenotypes or phenotype permutations 1-10)
+
+Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both tasks 1 and 2 since the individual optimisation steps are (almost) identical. 
 
 #### 2. Run DAVID optimisation 
-Access the link https://david.ncifcrf.gov/. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. A more detailed illustration of the steps of the optimisation process to be performed by hand can be taken from the corresponding screenshots. 
+Access the link https://david.ncifcrf.gov/. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the iput gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. 
+
+The optimisation steps are the following (see corresponding screenshots for more detailed illustrations): 
+
+1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt**
+2. Upload list of differentially expressed genes generated using limma (gene set database GO (BP)): **DEGs_limma_... .txt**
+3. Change gene set database to KEGG (for goal 1 only; must be klicked in web application)
+4. Upload alternative universe (**universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step1 or step 2 leads to better results w.r.t the optimisation task).
+
+In each step, you choose the option that leads to better results w.r.t the given optimisation task (task 1 or task 2). 
 
 #### 3. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
 For task 1, you find the documentation screenshots (and Excel results files) in the folder 
