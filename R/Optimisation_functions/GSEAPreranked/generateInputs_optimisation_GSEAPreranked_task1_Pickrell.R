@@ -22,6 +22,7 @@ source("./R/Help_functions/PreProcessing_Functions.R")
 ### generate required folders ########
 ######################################
 
+dir.create("./Results/Intermediate_results/GSEAPreranked")
 dir.create("./Results/Intermediate_results/GSEAPreranked/Pickrell")
 dir.create("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1")
 dir.create("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw")

@@ -29,18 +29,17 @@ name_data <- c("Pickrell", "Bottomly")
 for(j in 1:2){
 
 # create folder to contain everything associated with the Pickrell data set
-dir.create(paste0("./R/Optimisation_functions/DAVID/", name_data[j]))
+dir.create(paste0("./Results/Intermediate_results/DAVID/", name_data[j]))
 
 # create folder to contain all data
-dir.create("./R/Optimisation_functions/DAVID/", name_data[j], "/Data")
+dir.create(paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data"))
 
 # create folder to contain the data for the true sample labels
-dir.create("./R/Optimisation_functions/DAVID/", name_data[j], "/Data/Phen_Original")
+dir.create(paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original"))
 
 for(i in 1:10){
 
-  path_data_permutations <- paste0("./R/Optimisation_functions/DAVID/", name_data[j], "/Data/Permutation", i)
-  dir.create(path_data_permutations)
+  dir.create(paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i))
 
 }
 
@@ -105,7 +104,7 @@ n_DEGs_DESeq2_phenorig <- length(DEGs_DESeq2_phenorig)
 
 
 # create path for storage of DESeq2 results
-path_DEGs_deseq2_phenorig <- paste0("./R/Optimisation_functions/DAVID/", name_data[j], "/Data/Original_Phenotype/DEGs_DESeq2_phenorig.txt")
+path_DEGs_deseq2_phenorig <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original/DEGs_DESeq2_phenorig.txt")
 
 # export DESeq2 results
 write.table(DEGs_DESeq2_phenorig,
@@ -124,7 +123,7 @@ universe_DESeq2_phenorig <- rownames(DESeq2_results_phenorig[!is.na(DESeq2_resul
 
 
 # create path for storage of DESeq2 results
-path_universe_deseq2_phenorig <- paste0("./R/Optimisation_functions/DAVID/",name_data[j],"/Data/Original_Phenotype/universe_DESeq2_phenorig.txt")
+path_universe_deseq2_phenorig <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Phen_Original/universe_DESeq2_phenorig.txt")
 
 # export alternative universe
 write.table(universe_DESeq2_phenorig,
@@ -166,7 +165,7 @@ n_DEGs_limma_phenorig <- length(DEGs_limma_phenorig)
 
 
 # create path for storage of limma results
-path_DEGs_limma_phenorig <- paste0("./R/Optimisation_functions/DAVID/", name_data[j], "/Data/Original_Phenotype/DEGs_limma_phenorig.txt")
+path_DEGs_limma_phenorig <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original/DEGs_limma_phenorig.txt")
 
 # export DESeq2 results
 write.table(DEGs_limma_phenorig,
@@ -181,7 +180,7 @@ universe_limma_phenorig <- rownames(limma_results_phenorig[!is.na(limma_results_
 
 
 # create path for storage of limma results
-path_universe_limma_phenorig <- paste0("./R/Optimisation_functions/DAVID/",name_data[j],"/Data/Original_Phenotype/universe_limma_phenorig.txt")
+path_universe_limma_phenorig <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Phen_Original/universe_limma_phenorig.txt")
 
 # export alternative universe
 write.table(universe_limma_phenorig,
@@ -226,7 +225,7 @@ for(i in 1:ncol(perm_phen_labels)){
 
 
   # create path for storage of DESeq2 results
-  path_DEGs_deseq2 <- paste0("./R/Optimisation_functions/DAVID/",name_data[j],"/Data/Permutation", i, "/DEGs_DESeq2_permutation",i,".txt")
+  path_DEGs_deseq2 <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Permutation", i, "/DEGs_DESeq2_permutation",i,".txt")
 
   # # export DESeq2 results
   write.table(DEGs_DESeq2,
@@ -243,7 +242,7 @@ for(i in 1:ncol(perm_phen_labels)){
 
 
   # create path for storage of DESeq2 results
-  path_universe_deseq2 <- paste0("./R/Optimisation_functions/DAVID/",name_data[j],"/Data/Permutation", i, "/universe_DESeq2_permutation",i,".txt")
+  path_universe_deseq2 <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Permutation", i, "/universe_DESeq2_permutation",i,".txt")
 
   # export alternative universe
   write.table(universe_DESeq2,
@@ -286,7 +285,7 @@ for(i in 1:ncol(perm_phen_labels)){
 
 
   # create path for storage of limma results
-  path_DEGs_limma <- paste0("./R/Optimisation_functions/DAVID/",name_data[j],"/Data/Permutation", i, "/DEGs_limma_permutation",i,".txt")
+  path_DEGs_limma <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Permutation", i, "/DEGs_limma_permutation",i,".txt")
 
   # export DESeq2 results
   write.table(DEGs_limma,
@@ -301,7 +300,7 @@ for(i in 1:ncol(perm_phen_labels)){
 
 
   # create path for storage of limma results
-  path_universe_limma <- paste0("./R/Optimisation_functions/DAVID/name_data[j]/Data/Permutation", i, "/universe_limma_permutation",i,".txt")
+  path_universe_limma <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i, "/universe_limma_permutation",i,".txt")
 
   # export alternative universe
   write.table(universe_limma,
