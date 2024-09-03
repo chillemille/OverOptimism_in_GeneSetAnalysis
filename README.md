@@ -23,11 +23,11 @@ The *R* results can be reproduced using *R* package *renv* and command *renv::re
 
 **Note 3:**
 
-I produced the results for the three web-based applications over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course, not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
+I produced the results for the three web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*) over a period of several months, including the part in which I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course, not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
 
 **Note 4:**
 
-The web-based applications (*DAVID* version 6.8; *GSEA* and *GSEAPreranked* version 4.2.2/4.2.3 were performed by hand (and documented with screenshots) using the following three steps: 
+The web-based applications were performed by hand (and documented with screenshots) using the following three steps: 
 
 1. In *R*: Generate input data sets for web application from initial gene expression data 
 2. for *GSEA* and *GSEAPreranked*: Further pre-processing steps in Excel (for *GSEA* and *GSEAPreranked*)
@@ -67,7 +67,7 @@ Note that for the over-optimism analysis of the web-applications, we strongly re
 
 ### DAVID
 The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/
-Our analysis was performed with the DAVID Knowledgebase v2023q3.
+Our analysis was performed with *DAVID* version 6.8 and the DAVID Knowledgebase v2023q3.
 
 #### 1. Generation of input data sets (folder `R/Optimisation_functions`)
 The *R* script to generate the input data sets for the Pickrell **and** the Bottomly data set is stored in the file  **generate_Inputs_DAVID.R**. 
@@ -112,7 +112,7 @@ could **never** be decreased for their default value of 1.
 ***
 ### GSEA (web-based application)
 
-The application can be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp, for which an account must be created.
+The application can be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp, for which an account must be created. I performed the experiment on versions 4.2.2/4.2.3 (the exact version can be found on the corresponding screenshot). 
 
 #### 1. Generation of inputs in *R* (folder `R/Optimisation_functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
@@ -163,7 +163,7 @@ In addition to the screenshots, the optimisation processes are documented in the
 ***
 ### GSEAPreranked
 
-*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp). 
+*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp). The experiment was performed on versions 4.2.2 and 4.2.3
 
 
 #### 1. Generation of inputs (folder `R/Optimisation_functions/GSEAPreranked`)
