@@ -49,7 +49,7 @@ Note that this takes several days or weeks, depending on the available resources
 
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
-- **Run_task1_optimisations.R**: required for Figures 3 and S2
+- **Run_task1_optimisations.R**: required for Figures 3 and S2, 
 - **Run_task2_3_optimisations.R**: required for Figures 4, 5, S3, and S4,  
 
 where task 1, 2, and 3 are the optimisation tasks based on which over-optimism is assessed. Both scripts source all required functions and preprocess the initial gene expression data sets internally. 
@@ -63,7 +63,10 @@ The *R* scripts to generate the results figures are named directly after the fig
 
 ## Detailed: reproduce analysis for web-based methods *DAVID*, *GSEA*, *GSEAPreranked*
 
-Note that for the over-optimism analysis of the web-applications, we strongly recommend reading the manuscript as it requires several steps, most of which must be performed by hand. These steps are structured according to note 4 above and described in detail in the following.  
+Note that for the over-optimism analysis of the web-applications, we strongly recommend reading the manuscript as it requires several steps, most of which must be performed by hand. These steps are structured according to note 4 above and described in detail in the following. Note that for the web-based applications, only tasks 1 and 2 are pursued: 
+
+- task 1: maximise number of differentially enriched gene sets
+- task 2: minimise adjusted p-value of a specific gene set
 
 ### DAVID
 The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/
