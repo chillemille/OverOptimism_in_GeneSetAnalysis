@@ -88,7 +88,7 @@ The optimisation steps are the following (see corresponding screenshots for more
 1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt**
 2. Change method to detect differentially expressed genes: upload **DEGs_limma_... .txt**
 3. **For task 1 only**: change gene set database to KEGG 
-4. Change set of background genes: upload **universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step1 or step 2 leads to better results w.r.t the optimisation task).
+4. Change set of background genes: upload **universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step 1 or step 2 leads to better results w.r.t the optimisation task).
 
 In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
 
@@ -121,7 +121,7 @@ For the Pickrell and the Bottomly data set each, you will find the following thr
 - **task2_optimisation_Demethylation_GSEAWeb_... .R**: input generation task 2; gene set **Demethylation** 
 - **task2_optimisation_tCell_GSEAWeb_... .R**: Input generation task 2;  gene set **t Cell mediated immunity**.  
 
-The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These contain the gene expression measurements as well as the phenotype assignments (which are stores in subfolder **Phenotypes**). 
+The input data generated from each of the scripts is stored in folder `Results/Intermediate_results/GSEA_Web/...Raw`. These contain the gene expression measurements as well as the phenotype assignments (which are stored in subfolder **Phenotypes**). 
 
 #### 2. Further preprocessing in Excel
 
@@ -150,7 +150,12 @@ Optimisation steps for tasks 1 and 2 :
     - change to **weighted_p1.5**
     - change to **weighted_p2**
   
-In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
+For each optimisation step, the results of the GSEA run can be found in the provided report tab: 
+
+- For task 1, you add up the number of gene sets reported as "significant at FDR < 0.25" under both tabs "Enrichment in phenotype: ..."
+- For task 2, you get the adjusted p-value of the given gene set by transferring both "Detailed enrichment results in html format" to Excel and inspecting column "FDR_qval"
+
+In each optimisation step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
 
 #### 4. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
 
