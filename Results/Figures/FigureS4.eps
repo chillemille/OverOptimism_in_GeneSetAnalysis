@@ -54,11 +54,48 @@
            >>
          ] setcolorspace } bind def
 /srgb { setcolor } bind def
+% begin encoding
+/WinAnsiEncoding [
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+ /space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright
+ /parenleft /parenright /asterisk /plus /comma /minus /period /slash
+ /zero /one /two /three /four /five /six /seven
+ /eight /nine /colon /semicolon /less /equal /greater /question
+ /at /A /B /C /D /E /F /G
+ /H /I /J /K /L /M /N /O
+ /P /Q /R /S /T /U /V /W
+ /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+ /grave /a /b /c /d /e /f /g
+ /h /i /j /k /l /m /n /o
+ /p /q /r /s /t /u /v /w
+ /x /y /z /braceleft /bar /braceright /asciitilde /.notdef
+ /Euro /.notdef /quotesinglbase /florin /quotedblbase /ellipsis /dagger /daggerdbl
+ /circumflex /perthousand /Scaron /guilsinglleft /OE /.notdef /Zcaron /.notdef
+ /.notdef /quoteleft /quoteright /quotedblleft /quotedblright /bullet /endash /emdash
+ /tilde /trademark /scaron /guilsinglright /oe /.notdef /zcaron /Ydieresis
+ /space /exclamdown /cent /sterling /currency /yen /brokenbar /section
+ /dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron
+ /degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /periodcentered
+ /cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown
+ /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+ /Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis
+ /Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply
+ /Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls
+ /agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla
+ /egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis
+ /eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide
+ /oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis
+]
+ def
+% end encoding
 %%IncludeResource: font Helvetica
 /Helvetica findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font1 exch definefont pop
@@ -66,7 +103,7 @@ dup length dict begin
 /Helvetica-Bold findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font2 exch definefont pop
@@ -74,7 +111,7 @@ dup length dict begin
 /Helvetica-Oblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font3 exch definefont pop
@@ -82,7 +119,7 @@ dup length dict begin
 /Helvetica-BoldOblique findfont
 dup length dict begin
   {1 index /FID ne {def} {pop pop} ifelse} forall
-  /Encoding ISOLatin1Encoding def
+  /Encoding WinAnsiEncoding def
   currentdict
   end
 /Font4 exch definefont pop
@@ -96,13 +133,6 @@ dup length dict begin
 %%EndProlog
 %%Page: 1 1
 bp
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -697,15 +727,14 @@ o
 /Font1 findfont 11 s
 0 0 0 srgb
 141.58 502.29 (GOSeq) .5 0 t
-277.78 510.48 (clusterProfiler's ) .5 0 t
+238.66 510.48 (clusterProfiler') 0 ta
+-0.550 (s ) tb gr
 277.78 494.09 ( ORA) .5 0 t
 394.12 502.29 (P) 0 ta
 -1.320 (ADOG) tb gr
-550.19 510.48 (clusterProfiler's ) .5 0 t
+511.07 510.48 (clusterProfiler') 0 ta
+-0.550 (s ) tb gr
 550.19 494.09 ( GSEA) .5 0 t
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -726,7 +755,6 @@ o
 61.73 700.17 (0.50) 1 0 t
 61.73 760.29 (0.75) 1 0 t
 61.73 820.40 (1.00) 1 0 t
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.2000 0.2000 0.2000 srgb
@@ -755,7 +783,6 @@ np
 63.92 823.63 m
 2.74 0 l
 o
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -832,10 +859,10 @@ o
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
 /Font1 findfont 14 s
 0 0 0 srgb
 345.88 470.84 (GSA method) .5 0 t
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 /Font1 findfont 14 s
@@ -851,11 +878,8 @@ o
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 /bg { 1 1 1 srgb } def
 636.06 672.75 55.60 61.32 r p2
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 /Font1 findfont 11 s
@@ -863,9 +887,7 @@ o
 641.54 719.48 (Gene set) 0 0 t
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-/bg { 0.9490 0.9490 0.9490 srgb } def
+/bg { 0.9216 0.9216 0.9216 srgb } def
 641.54 695.51 17.28 17.28 r p2
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -891,7 +913,7 @@ o
 650.18 704.15 1.74 c p3
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-/bg { 0.9490 0.9490 0.9490 srgb } def
+/bg { 0.9216 0.9216 0.9216 srgb } def
 641.54 678.23 17.28 17.28 r p2
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -917,15 +939,9 @@ o
 650.18 686.87 1.74 c p3
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 /Font1 findfont 9 s
 0 0 0 srgb
 664.30 700.92 (1) 0 0 t
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 /Font1 findfont 9 s
@@ -949,16 +965,13 @@ o
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
 /Font2 findfont 14 s
 0 0 0 srgb
 0.00 848.92 (A) -0.50 0 t
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 432.00 cl
 /bg { 1 1 1 srgb } def
 1 1 1 srgb
@@ -1116,15 +1129,14 @@ o
 /Font1 findfont 11 s
 0 0 0 srgb
 141.58 70.29 (GOSeq) .5 0 t
-277.78 78.48 (clusterProfiler's ) .5 0 t
+238.66 78.48 (clusterProfiler') 0 ta
+-0.550 (s ) tb gr
 277.78 62.09 ( ORA) .5 0 t
 394.12 70.29 (P) 0 ta
 -1.320 (ADOG) tb gr
-550.19 78.48 (clusterProfiler's ) .5 0 t
+511.07 78.48 (clusterProfiler') 0 ta
+-0.550 (s ) tb gr
 550.19 62.09 ( GSEA) .5 0 t
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -1145,7 +1157,6 @@ o
 61.73 268.17 (0.50) 1 0 t
 61.73 328.29 (0.75) 1 0 t
 61.73 388.40 (1.00) 1 0 t
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.2000 0.2000 0.2000 srgb
@@ -1174,7 +1185,6 @@ np
 63.92 391.63 m
 2.74 0 l
 o
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -1251,10 +1261,10 @@ o
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
 /Font1 findfont 14 s
 0 0 0 srgb
 345.88 38.84 (GSA method) .5 0 t
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 /Font1 findfont 14 s
@@ -1270,11 +1280,8 @@ o
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 /bg { 1 1 1 srgb } def
 636.06 240.75 55.60 61.32 r p2
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 /Font1 findfont 11 s
@@ -1282,9 +1289,7 @@ o
 641.54 287.48 (Gene set) 0 0 t
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-/bg { 0.9490 0.9490 0.9490 srgb } def
+/bg { 0.9216 0.9216 0.9216 srgb } def
 641.54 263.51 17.28 17.28 r p2
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -1310,7 +1315,7 @@ o
 650.18 272.15 1.74 c p3
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-/bg { 0.9490 0.9490 0.9490 srgb } def
+/bg { 0.9216 0.9216 0.9216 srgb } def
 641.54 246.23 17.28 17.28 r p2
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
@@ -1336,15 +1341,9 @@ o
 650.18 254.87 1.74 c p3
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 /Font1 findfont 9 s
 0 0 0 srgb
 664.30 268.92 (1) 0 0 t
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
-0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 /Font1 findfont 9 s
@@ -1368,9 +1367,25 @@ o
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
 /Font2 findfont 14 s
 0 0 0 srgb
 0.00 416.92 (B) -0.50 0 t
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
+0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
 0.00 0.00 720.00 864.00 cl
