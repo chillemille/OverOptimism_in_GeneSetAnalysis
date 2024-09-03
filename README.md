@@ -69,7 +69,7 @@ Note that for the over-optimism analysis of the web-applications, we strongly re
 - task 2: minimise adjusted p-value of a specific gene set
 
 ### DAVID
-The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/
+The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/.
 Our analysis was performed with *DAVID* version 6.8 and the DAVID Knowledgebase v2023q3.
 
 #### 1. Generation of input data sets (folder `R/Optimisation_functions`)
