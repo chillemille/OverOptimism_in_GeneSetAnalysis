@@ -30,9 +30,9 @@ I produced the results for the three web-based applications (*DAVID*, *GSEA*, an
 The web-based applications were performed by hand (and documented with screenshots) using the following three steps: 
 
 1. In *R*: Generate input data sets for web application from initial gene expression data 
-2. for *GSEA* and *GSEAPreranked*: Further pre-processing steps in Excel (for *GSEA* and *GSEAPreranked*)
-3. Data is uploaded to the respective web application and optimisations regarding tasks 1 and 2 are performed.
-4. Results of the optimisation processes are entered manually in *R* (scripts in `R/Code_figures`) for the generation of the results graphs.
+2. For *GSEA* and *GSEAPreranked*: Further pre-processing steps in Excel (for *GSEA* and *GSEAPreranked*)
+3. Data is uploaded to the respective web application and optimisations are performed
+4. Results of the optimisation processes are entered manually in *R* (scripts in `R/Code_figures`) for the generation of the results graphs
 
 **Fully reproducing this process would take weeks!**
 
@@ -50,9 +50,9 @@ Note that this takes several days or weeks, depending on the available resources
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_task1_optimisations.R**: required for Figures 3 and S2
-- **Run_task2_3_optimisations.R**: required for Figures 4, 5, S3, and S4 
+- **Run_task2_3_optimisations.R**: required for Figures 4, 5, S3, and S4,  
 
-Both scripts source all required functions and preprocess the initial gene expression data sets internally. 
+where task 1, 2, and 3 are the optimisation tasks based on which over-optimism is assessed. Both scripts source all required functions and preprocess the initial gene expression data sets internally. 
 
 For the remaining, web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations were performed in the corresponding web-based application (i.e., by hand). To generate the results figures from the manuscript, the optimisation results were therefore also transferred manually to the corresponding *R* scripts (`R/Code_figures`). See below for instructions on how to reproduce the optimisation results for the web-based applications. 
 
