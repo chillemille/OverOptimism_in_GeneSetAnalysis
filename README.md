@@ -21,7 +21,7 @@ as used in the original experiments. This is straightforward for the *R*-based m
 
 The *R* results can be reproduced using *R* package *renv* command *renv::restore()*. See https://rstudio.github.io/renv/articles/renv.html for information on how to use *renv*. 
 
-Note: After installing and activating renv, there may be packages that are indicated by the renv.lock but are not installed on your system yet. These packages should be installed using command `renv::install(<package>)`, where '<package>' indicates the affected package. 
+Note: After installing and activating renv, there may be packages that are indicated by the renv.lock but are not installed on your system yet. These packages should be installed using command `renv::install("package")`, where "package" indicates the affected package that needs to be installed. 
 
 **Note 3:**
 
