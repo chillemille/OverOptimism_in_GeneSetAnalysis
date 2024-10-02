@@ -8,16 +8,6 @@ library(org.Hs.eg.db)
 library(org.Mm.eg.db)
 
 
-# load gene expression data set with true phenotype randomly permuted phenotype assignments
-source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
-
-# load required pre-processing functions
-source("./R/Help_functions/PreProcessing_Functions.R")
-
-# load functions for RNA-Seq transformation
-source("./R/Help_functions/RNASeq_Transformation.R")
-
-
 ####################################################################################
 ###phenotype label preparation######################################################
 ####################################################################################

@@ -9,6 +9,10 @@
 if(!dir.exists("./Results/Intermediate_results")){dir.create(path = "./Results/Intermediate_results")}
 
 
+#####################################
+### source all required functions ###
+#####################################
+
 # get gene expression datasets, phenotype assignments and random phenotype permutations
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 

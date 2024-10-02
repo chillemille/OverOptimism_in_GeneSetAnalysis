@@ -9,14 +9,6 @@ library(edgeR)
 library(org.Hs.eg.db)
 library(goseq)
 
-# load gene expression data set with true phenotype randomly permuted phenotype assignments
-source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
-
-# load required pre-processing functions
-source("./R/Help_functions/PreProcessing_Functions.R")
-
-
-
 
 ################################################################################
 ### get gene's adjusted p-value or rank (based on what is needed) ##############

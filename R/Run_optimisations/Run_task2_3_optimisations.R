@@ -3,10 +3,25 @@
 ### for GOSeq, PADOG, clusterProfiler's GSEA and ORA ###########################
 ################################################################################
 
+
 # create Results folder in working directory if is does not exist already
 # in this folder, all results are to be stored
 
 if(!dir.exists("./Results/Intermediate_results")){dir.create(path = "./Results/Intermediate_results")}
+
+#####################################
+### source all required functions ###
+#####################################
+
+# get gene expression datasets, phenotype assignments and random phenotype permutations
+source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
+
+# load required pre-processing functions
+source("./R/Help_functions/PreProcessing_Functions.R")
+
+# load functions for RNA-Seq transformation (for PADOG)
+source("./R/Help_functions/RNASeq_Transformation.R")
+
 
 ################################################################################
 ### GOSeq ######################################################################

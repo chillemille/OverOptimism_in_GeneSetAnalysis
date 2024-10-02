@@ -10,14 +10,6 @@ library(org.Hs.eg.db)
 library(org.Mm.eg.db)
 
 
-#load phenotype permutations and gene expression data sets
-source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
-
-# load the preprocessing functions
-source("./R/Help_functions/PreProcessing_Functions.R")
-
-
-
 ################################################################################
 ### get gene's adjusted p-value or rank (based on what is needed) ##############
 ################################################################################

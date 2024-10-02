@@ -9,12 +9,6 @@ library(edgeR)
 library(apeglm)
 
 
-# get gene expression datasets, phenotype assignments and random phenotype permutations
-source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
-
-# load required pre-processing functions
-source("./R/Help_functions/PreProcessing_Functions.R")
-
 
 ##################################################################################
 ##create ranked list from DE results##############################################
