@@ -140,12 +140,12 @@ rankedList_cP <- function(DE_results, rankby, method){
 
 # create DESeq2 results and rank by p-value
 DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>%
-                           conversion_mouseEnsembl_HumanSymbol(dupl_removal_method = 1) %>%
-                           deseq_preprocess(phenotype_labels = bottomly.eset$strain ) %>%
-                           DESeq() %>%
-                           lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
-                           as.data.frame() %>%
-                           rankedList_cP(rankby = "p_value", method = "DESeq2")
+  conversion_mouseEnsembl_HumanSymbol(dupl_removal_method = 1) %>%
+  deseq_preprocess(phenotype_labels = bottomly.eset$strain ) %>%
+  DESeq() %>%
+  lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
+  as.data.frame() %>%
+  rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
 path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
@@ -164,18 +164,18 @@ write.table(DESeq2_ranking_phenorig,
 
 # filtering indicator
 keep_phenorig <- DGEList(Biobase::exprs(bottomly.eset), group = bottomly.eset$strain) %>%
-                 filterByExpr()
+  filterByExpr()
 
 # design matrix
 mm_phenorig <- model.matrix( ~ bottomly.eset$strain)
 
 # create limma results and rank by p-value
 limma_ranking_phenorig <- conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenorig, ], dupl_removal_method = 1) %>%
-                          DGEList(group = bottomly.eset$strain) %>%
-                          calcNormFactors() %>%
-                          voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>%
-                          eBayes() %>% topTable(coef=ncol(mm_phenorig), number=100000) %>%
-                          rankedList_cP(rankby= "p_value", method="limma")
+  DGEList(group = bottomly.eset$strain) %>%
+  calcNormFactors() %>%
+  voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>%
+  eBayes() %>% topTable(coef=ncol(mm_phenorig), number=100000) %>%
+  rankedList_cP(rankby= "p_value", method="limma")
 
 # Create path for storage of limma ranking
 path_limma_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
@@ -194,63 +194,63 @@ write.table(limma_ranking_phenorig,
 
 for(i in 1:ncol(phen_bottomly)){
 
-################
-# DESeq2 ranking
-################
+  ################
+  # DESeq2 ranking
+  ################
 
-# create DESeq2 results and rank by p-value
-DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10)  %>%
-                           conversion_mouseEnsembl_HumanSymbol(dupl_removal_method = 1) %>%
-                           deseq_preprocess(phenotype_labels = phen_bottomly[,i] ) %>% DESeq() %>%
-                           lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
-                           as.data.frame() %>%
-                           rankedList_cP(rankby = "p_value", method = "DESeq2")
+  # create DESeq2 results and rank by p-value
+  DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10)  %>%
+    conversion_mouseEnsembl_HumanSymbol(dupl_removal_method = 1) %>%
+    deseq_preprocess(phenotype_labels = phen_bottomly[,i] ) %>% DESeq() %>%
+    lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
+    as.data.frame() %>%
+    rankedList_cP(rankby = "p_value", method = "DESeq2")
 
-# create path for storage of DESeq2 ranking
-path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
-                               i,
-                               "/DESeq2_ranking_permutation",i,".txt")
+  # create path for storage of DESeq2 ranking
+  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
+                                 i,
+                                 "/DESeq2_ranking_permutation",i,".txt")
 
-# export
-write.table(DESeq2_ranking_phenperm,
-            file = path_DESeq2_phenperm,
-            quote = FALSE,
-            row.names = TRUE,
-            col.names = FALSE)
-
-
-##############
-#limma ranking
-##############
-
-# filtering indicator
-keep_phenperm <- DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,i]) %>%
-                  filterByExpr()
-
-# design matrix
-mm_phenperm <- model.matrix( ~ phen_bottomly[,i])
-
-# create limma results and rank by p-value
-limma_ranking_phenperm <-  conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
-                            DGEList(group = phen_bottomly[,i]) %>% calcNormFactors() %>%
-                            voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>%
-                            eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
-                            rankedList_cP(rankby= "p_value", method="limma")
-
-# Create path for storage of limma ranking
-path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
-                              i,
-                              "/limma_ranking_permutation",
-                              i,
-                              ".txt")
+  # export
+  write.table(DESeq2_ranking_phenperm,
+              file = path_DESeq2_phenperm,
+              quote = FALSE,
+              row.names = TRUE,
+              col.names = FALSE)
 
 
-# export
-write.table(limma_ranking_phenperm,
-            file = path_limma_phenperm,
-            quote = FALSE,
-            row.names = TRUE,
-            col.names = FALSE)
+  ##############
+  #limma ranking
+  ##############
+
+  # filtering indicator
+  keep_phenperm <- DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,i]) %>%
+    filterByExpr()
+
+  # design matrix
+  mm_phenperm <- model.matrix( ~ phen_bottomly[,i])
+
+  # create limma results and rank by p-value
+  limma_ranking_phenperm <-  conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
+    DGEList(group = phen_bottomly[,i]) %>% calcNormFactors() %>%
+    voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>%
+    eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
+    rankedList_cP(rankby= "p_value", method="limma")
+
+  # Create path for storage of limma ranking
+  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
+                                i,
+                                "/limma_ranking_permutation",
+                                i,
+                                ".txt")
+
+
+  # export
+  write.table(limma_ranking_phenperm,
+              file = path_limma_phenperm,
+              quote = FALSE,
+              row.names = TRUE,
+              col.names = FALSE)
 
 
 }

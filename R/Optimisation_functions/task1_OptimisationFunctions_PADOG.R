@@ -7,11 +7,11 @@ library(org.Hs.eg.db)
 library(org.Mm.eg.db)
 library(edgeR) # for pre-filtering function filterByExpr()
 
-####################################################################################
-###phenotype label preparation######################################################
-####################################################################################
-#padog requires character vector with class labels of the samples
-#-> can only contain "c" for control samples or "d" for disease samples
+################################################################################
+### phenotype label preparation#################################################
+################################################################################
+# padog requires character vector with class labels of the samples
+# -> can only contain "c" for control samples or "d" for disease samples
 
 phenotype_prep <- function(phenotype_labels){
 
@@ -25,13 +25,13 @@ phenotype_prep <- function(phenotype_labels){
 
   } else{
 
-  # from initial phenotype labels, create vector with levels "c" and "d"
-  return(factor(phenotype_labels,
-                levels = c(0,1),
-                labels = c("c","d")))
+    # from initial phenotype labels, create vector with levels "c" and "d"
+    return(factor(phenotype_labels,
+                  levels = c(0,1),
+                  labels = c("c","d")))
 
-        }
   }
+}
 
 
 ####################################################################################
@@ -111,8 +111,8 @@ PADOG_optim <- function(expression_data, phenotype_labels){
 
     expression_data_transf  <-  geneID_conversion(exprdat_list_prefilt[[i]],
                                                   dupl_removal_method = 1) %>%
-                                voom_trans(phenotype_labels = phenotype_labels,
-                                           normmethod = "TMM")
+      voom_trans(phenotype_labels = phenotype_labels,
+                 normmethod = "TMM")
 
     # (ii) run PADOG
     seed <- 1007
@@ -157,7 +157,7 @@ PADOG_optim <- function(expression_data, phenotype_labels){
 
   ##########
   #2. step: Choose optimal manner of removing duplicated gene IDs caused by gene ID conversion
-           #from ENSEMBL to ENTREZ gene ID
+  #from ENSEMBL to ENTREZ gene ID
   ##########
 
   #perform 2 manners of gene ID conversion for the optimally pre-filtered gene expression data set
@@ -187,9 +187,9 @@ PADOG_optim <- function(expression_data, phenotype_labels){
 
   }
 
-    #calculate lossfunction for each result and store in vector
-    n_DEGS_vec_convID <- unlist(lapply(X= PADOG_results_IDconv_list,
-                                       FUN = lossfunction_padog))
+  #calculate lossfunction for each result and store in vector
+  n_DEGS_vec_convID <- unlist(lapply(X= PADOG_results_IDconv_list,
+                                     FUN = lossfunction_padog))
 
   #update documentation
 
@@ -212,12 +212,12 @@ PADOG_optim <- function(expression_data, phenotype_labels){
   #alternative to voom transformation (default): DESeq2's varianceStabilizingTransformation
   seed  <-  1007
   PADOG_vst  <-  variancetransform(expression_data_opt, phenotype_labels) %>%
-                                   padog(group = phenotype_prep(phenotype_labels),
-                                         dseed = seed,
-                                         organism = organism) %>%
-                                   mutate(p_adj = p.adjust(Ppadog, method="BH"))
+    padog(group = phenotype_prep(phenotype_labels),
+          dseed = seed,
+          organism = organism) %>%
+    mutate(p_adj = p.adjust(Ppadog, method="BH"))
 
-   #update documentation frame
+  #update documentation frame
   doc[4, "optimal_parameter"] <- ifelse(lossfunction_padog(PADOG_vst) > n_DEGS ,
                                         "varianceStabilizingTransformation",
                                         "voom")

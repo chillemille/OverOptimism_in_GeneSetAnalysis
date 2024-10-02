@@ -76,7 +76,7 @@ for(i in 1:10){
   # store the optimal number of differentially enriched gene sets
   n_DEGS_GOSeq_pickrell_phenpermutation_optim[i] <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
   # store the default number of differentially enriched gene sets
- n_DEGS_GOSeq_pickrell_phenpermutation_default[i] <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
+  n_DEGS_GOSeq_pickrell_phenpermutation_default[i] <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
 
 
 }
@@ -235,26 +235,26 @@ n_DEGS_GSEAPreranked_pickrell_phenpermutation_optim <- c(351, 639, 133, 710, 196
 
 # (i) True sample conditions
 dat_overview_n_DEGS_pickrell_truephen <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pickrell_truephen_default, n_DEGS_cP_ORA_pickrell_truephen_optim),
-                                        GOSeq = c(n_DEGS_GOSeq_pickrell_truephen_default, n_DEGS_GOSeq_pickrell_truephen_optim),
-                                        DAVID = c(n_DEGS_DAVID_pickrell_truephen_default, n_DEGS_DAVID_pickrell_truephen_optim),
-                                        PADOG = c(n_DEGS_PADOG_pickrell_truephen_default, n_DEGS_PADOG_pickrell_truephen_optim),
-                                        GSEA = c(n_DEGS_GSEA_pickrell_truephen_default, n_DEGS_GSEA_pickrell_truephen_optim),
-                                        GSEAPreranked = c(n_DEGS_GSEAPreranked_pickrell_truephen_default, n_DEGS_GSEAPreranked_pickrell_truephen_optim),
-                                        cP_GSEA = c(n_DEGS_cP_GSEA_pickrell_truephen_default, n_DEGS_cP_GSEA_pickrell_truephen_optim),
-                                        state = c("Default", "Maximum")) # declare default vs. optimum
+                                                    GOSeq = c(n_DEGS_GOSeq_pickrell_truephen_default, n_DEGS_GOSeq_pickrell_truephen_optim),
+                                                    DAVID = c(n_DEGS_DAVID_pickrell_truephen_default, n_DEGS_DAVID_pickrell_truephen_optim),
+                                                    PADOG = c(n_DEGS_PADOG_pickrell_truephen_default, n_DEGS_PADOG_pickrell_truephen_optim),
+                                                    GSEA = c(n_DEGS_GSEA_pickrell_truephen_default, n_DEGS_GSEA_pickrell_truephen_optim),
+                                                    GSEAPreranked = c(n_DEGS_GSEAPreranked_pickrell_truephen_default, n_DEGS_GSEAPreranked_pickrell_truephen_optim),
+                                                    cP_GSEA = c(n_DEGS_cP_GSEA_pickrell_truephen_default, n_DEGS_cP_GSEA_pickrell_truephen_optim),
+                                                    state = c("Default", "Maximum")) # declare default vs. optimum
 
 
 
 # (ii) Random permutations of the true sample conditions (Pickrell data set)
 dat_overview_n_DEGS_pickrell_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pickrell_phenpermutation_default, n_DEGS_cP_ORA_pickrell_phenpermutation_optim),
-                                                    GOSeq = c(n_DEGS_GOSeq_pickrell_phenpermutation_default, n_DEGS_GOSeq_pickrell_phenpermutation_optim),
-                                                    DAVID = c(n_DEGS_DAVID_pickrell_phenpermutation_default, n_DEGS_DAVID_pickrell_phenpermutation_optim),
-                                                    PADOG = c(n_DEGS_PADOG_pickrell_phenpermutation_default, n_DEGS_PADOG_pickrell_phenpermutation_optim),
-                                                    GSEA = c(n_DEGS_GSEA_pickrell_phenpermutation_default,n_DEGS_GSEA_pickrell_phenpermutation_optim),
-                                                    GSEAPreranked = c(n_DEGS_GSEAPreranked_pickrell_phenpermutation_default, n_DEGS_GSEAPreranked_pickrell_phenpermutation_optim),
-                                                    cP_GSEA = c(n_DEGS_cP_GSEA_pickrell_phenpermutation_default, n_DEGS_cP_GSEA_pickrell_phenpermutation_optim),
-                                                    state = c(rep("Default",10), rep("Maximum",10)), # state: default vs. optimum
-                                                    ID = rep(c(1:10),2)) # add the number of the permutation
+                                                           GOSeq = c(n_DEGS_GOSeq_pickrell_phenpermutation_default, n_DEGS_GOSeq_pickrell_phenpermutation_optim),
+                                                           DAVID = c(n_DEGS_DAVID_pickrell_phenpermutation_default, n_DEGS_DAVID_pickrell_phenpermutation_optim),
+                                                           PADOG = c(n_DEGS_PADOG_pickrell_phenpermutation_default, n_DEGS_PADOG_pickrell_phenpermutation_optim),
+                                                           GSEA = c(n_DEGS_GSEA_pickrell_phenpermutation_default,n_DEGS_GSEA_pickrell_phenpermutation_optim),
+                                                           GSEAPreranked = c(n_DEGS_GSEAPreranked_pickrell_phenpermutation_default, n_DEGS_GSEAPreranked_pickrell_phenpermutation_optim),
+                                                           cP_GSEA = c(n_DEGS_cP_GSEA_pickrell_phenpermutation_default, n_DEGS_cP_GSEA_pickrell_phenpermutation_optim),
+                                                           state = c(rep("Default",10), rep("Maximum",10)), # state: default vs. optimum
+                                                           ID = rep(c(1:10),2)) # add the number of the permutation
 
 
 
@@ -265,7 +265,7 @@ dat_overview_n_DEGS_pickrell_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_
 plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_truephen, "true_labels", -10)
 
 plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_phenpermutation,
-                                                               "random_permutations", -12)
+                                                          "random_permutations", -12)
 
 plot_grid(plot_permutedlabels, plot_truelabels, labels=c("A", "B"), ncol = 1, nrow = 2)
 

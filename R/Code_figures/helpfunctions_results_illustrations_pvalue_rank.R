@@ -148,58 +148,58 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
 create_results_illustration_pvalue_rank <- function(default_to_optim_geneset1, default_to_optim_geneset2, goal = "p_adj", sample_labels){
 
 
-data_prep <- prep_data_for_ggplot_pvaluerank(default_to_optim_geneset1, default_to_optim_geneset2, goal, sample_labels)
+  data_prep <- prep_data_for_ggplot_pvaluerank(default_to_optim_geneset1, default_to_optim_geneset2, goal, sample_labels)
 
 
-set_ylab <- ifelse(goal == "rel_rank", "(Relative) rank", "Adjusted p-value")
+  set_ylab <- ifelse(goal == "rel_rank", "(Relative) rank", "Adjusted p-value")
 
 
-# Replace "GSEAPreranked" by "GSEA- \n Preranked" (line break makes plot easier to understand)
-add_labels_xaxis <- levels(data_prep$GSA_tool)
-add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
+  # Replace "GSEAPreranked" by "GSEA- \n Preranked" (line break makes plot easier to understand)
+  add_labels_xaxis <- levels(data_prep$GSA_tool)
+  add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
 
 
-# Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
-add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
+  # Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
+  add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
 
 
-# Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
-add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
+  # Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
+  add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
 
 
-plot <-
-ggplot(data = data_prep,
-       aes(x = interaction(GSA_tool, state, lex.order = TRUE),
-           y = value, group = 1)) +
-  geom_line( aes(group=unique_ID, color = GS), size=0.4) +
-  geom_point(aes(color = GS),size = 1.3) +
-  scale_x_discrete(labels= rep(c("Default", "Minimum"),
-                                times = length(unique(data_prep$GSA_tool)))) +
-  theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
-        axis.title.x = element_text(vjust = -15, size = 14),
-        plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm"), ## add space below the actual plot (needed for the GSA tool names)
-        axis.title.y = element_text(size = 14)) +
-  annotate(geom = "text",
-           x = 1.5 + 2*(0:(length(unique(data_prep$GSA_tool))-1)),
-           y = -0.32,
-           label = add_labels_xaxis, size =4 )+
-  coord_cartesian(ylim = c(0,1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
-  xlab("GSA method") +
-  ylab(set_ylab) +
-  labs(color = "Gene set") +
-  scale_color_discrete(labels=c("1",
-                                "2"))
+  plot <-
+    ggplot(data = data_prep,
+           aes(x = interaction(GSA_tool, state, lex.order = TRUE),
+               y = value, group = 1)) +
+    geom_line( aes(group=unique_ID, color = GS), size=0.4) +
+    geom_point(aes(color = GS),size = 1.3) +
+    scale_x_discrete(labels= rep(c("Default", "Minimum"),
+                                 times = length(unique(data_prep$GSA_tool)))) +
+    theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
+          axis.title.x = element_text(vjust = -15, size = 14),
+          plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm"), ## add space below the actual plot (needed for the GSA tool names)
+          axis.title.y = element_text(size = 14)) +
+    annotate(geom = "text",
+             x = 1.5 + 2*(0:(length(unique(data_prep$GSA_tool))-1)),
+             y = -0.32,
+             label = add_labels_xaxis, size =4 )+
+    coord_cartesian(ylim = c(0,1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
+    xlab("GSA method") +
+    ylab(set_ylab) +
+    labs(color = "Gene set") +
+    scale_color_discrete(labels=c("1",
+                                  "2"))
 
-if(goal == "p_adj"){
+  if(goal == "p_adj"){
 
-  plot <- plot +  geom_step( dat = data_prep,
-                             aes(interaction(GSA_tool, state, lex.order = TRUE),
-                                y= sig_threshold),
-                            col="gray", linetype = "dashed")
-}
+    plot <- plot +  geom_step( dat = data_prep,
+                               aes(interaction(GSA_tool, state, lex.order = TRUE),
+                                   y= sig_threshold),
+                               col="gray", linetype = "dashed")
+  }
 
 
-return(plot)
+  return(plot)
 
 }
 

@@ -521,21 +521,21 @@ for(i in 1:10){
 
 # (i) Random permutations of the random permutations of the sample conditions, first data set
 rel_rank_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(rank_cP_ORA_tCell_phenpermutation_default, rank_cP_ORA_tCell_phenpermutation_optim),
-                                            GOSeq = c(rank_GOSeq_MetabolicProcess_phenpermutation_default, rank_GOSeq_MetabolicProcess_phenpermutation_optim),
-                                            PADOG = c(rank_PADOG_PrimImmun_phenpermutation_default, rank_PADOG_PrimImmun_phenpermutation_optim),
-                                            cP_GSEA = c(rank_cP_GSEA_tCell_phenpermutation_default, rank_cP_GSEA_tCell_phenpermutation_optim),
-                                            state = c(rep("Default",10), rep("Minimum",10)), # state: default vs. optimum
-                                            ID = rep(c(1:10),2)) # add the number of the permutation
+                                                GOSeq = c(rank_GOSeq_MetabolicProcess_phenpermutation_default, rank_GOSeq_MetabolicProcess_phenpermutation_optim),
+                                                PADOG = c(rank_PADOG_PrimImmun_phenpermutation_default, rank_PADOG_PrimImmun_phenpermutation_optim),
+                                                cP_GSEA = c(rank_cP_GSEA_tCell_phenpermutation_default, rank_cP_GSEA_tCell_phenpermutation_optim),
+                                                state = c(rep("Default",10), rep("Minimum",10)), # state: default vs. optimum
+                                                ID = rep(c(1:10),2)) # add the number of the permutation
 
 
 
 # (ii) Random permutations of the random permutations of the sample conditions, second data set
 rel_rank_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(rank_cP_ORA_Demethylation_phenpermutation_default, rank_cP_ORA_Demethylation_phenpermutation_optim),
-                                            GOSeq = c(rank_GOSeq_CellularProcess_phenpermutation_default, rank_GOSeq_CellularProcess_phenpermutation_optim),
-                                            PADOG = c(rank_PADOG_GraftvsHost_phenpermutation_default, rank_PADOG_GraftvsHost_phenpermutation_optim),
-                                            cP_GSEA = c(rank_cP_GSEA_Demethylation_phenpermutation_default, rank_cP_GSEA_Demethylation_phenpermutation_optim),
-                                            state = c(rep("Default",10), rep("Minimum",10)), # state: default vs. optimum
-                                            ID = rep(c(1:10),2)) # add the number of the permutation
+                                                GOSeq = c(rank_GOSeq_CellularProcess_phenpermutation_default, rank_GOSeq_CellularProcess_phenpermutation_optim),
+                                                PADOG = c(rank_PADOG_GraftvsHost_phenpermutation_default, rank_PADOG_GraftvsHost_phenpermutation_optim),
+                                                cP_GSEA = c(rank_cP_GSEA_Demethylation_phenpermutation_default, rank_cP_GSEA_Demethylation_phenpermutation_optim),
+                                                state = c(rep("Default",10), rep("Minimum",10)), # state: default vs. optimum
+                                                ID = rep(c(1:10),2)) # add the number of the permutation
 
 
 

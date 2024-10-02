@@ -92,16 +92,16 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
   # run DESeq2 with default settings and a pre-filtering threshold of 10
   deseq2_results_default <- pre_filt(expression_data, threshold = 10) %>%
-                            geneID_conversion(dupl_removal_method = 1) %>%
-                            deseq_preprocess(phenotype_labels = phenotype_labels) %>%
-                            DESeq() %>% results() %>%
-                            as.data.frame() %>%
-                            dplyr::rename(p_adj=padj)
+    geneID_conversion(dupl_removal_method = 1) %>%
+    deseq_preprocess(phenotype_labels = phenotype_labels) %>%
+    DESeq() %>% results() %>%
+    as.data.frame() %>%
+    dplyr::rename(p_adj=padj)
 
   # run ORA tool with DESeq2 result as input and internal parameters in their default configuration
   cP_ORA_results_DESeq2 <- cP_ORA_input_preparation(deseq2_results_default) %>%
-                           enrichGO(OrgDb=organism, ont = "BP") %>%
-                           as.data.frame()
+    enrichGO(OrgDb=organism, ont = "BP") %>%
+    as.data.frame()
 
   # store number of differentially enriched gene sets
   n_DEGS_detechniques[1] <- lossfunction_cPORA(cP_ORA_results_DESeq2)
@@ -123,17 +123,17 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
   # as before, pre-filtering is performed prior to the conversion of gene IDs
   limma_results <- geneID_conversion(expression_data[keep, ], dupl_removal_method = 1) %>%
-                   DGEList(group = phenotype_labels) %>% calcNormFactors() %>%
-                   voom(design = mm) %>% lmFit(design = mm) %>% eBayes() %>% topTable(coef = ncol(mm), number = 60000) %>%
-                   as.data.frame() %>% dplyr::rename(p_adj = adj.P.Val)
+    DGEList(group = phenotype_labels) %>% calcNormFactors() %>%
+    voom(design = mm) %>% lmFit(design = mm) %>% eBayes() %>% topTable(coef = ncol(mm), number = 60000) %>%
+    as.data.frame() %>% dplyr::rename(p_adj = adj.P.Val)
 
 
   #run clusterProfiler's ORA tool (with defaut parameters) for each of the resulting lists of differentially
   #expressed gene sets -> default gene set database: GO
 
   cP_ORA_results_limma <- cP_ORA_input_preparation(limma_results) %>%
-                         enrichGO(OrgDb = organism, ont = "BP") %>%
-                         as.data.frame()
+    enrichGO(OrgDb = organism, ont = "BP") %>%
+    as.data.frame()
 
   # store number of differentially enriched gene sets
   n_DEGS_detechniques[2] <- lossfunction_cPORA(cP_ORA_results_limma)
@@ -184,14 +184,14 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
     # run DESeq2 workflow
     deseq2_results_prefilt <- lapply(X = exprdat_list_prefilt, FUN = geneID_conversion, dupl_removal_method = 1) %>%
-                              lapply(FUN=deseq_preprocess, phenotype_labels = phenotype_labels) %>%
-                              lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
-                              lapply(as.data.frame) %>% lapply(dplyr::rename, p_adj = padj)
+      lapply(FUN=deseq_preprocess, phenotype_labels = phenotype_labels) %>%
+      lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
+      lapply(as.data.frame) %>% lapply(dplyr::rename, p_adj = padj)
 
     #(ii) run clusterProfiler's ORA tool with default parameters
     cP_ORA_results_prefilt <- lapply(X = deseq2_results_prefilt,FUN = cP_ORA_input_preparation) %>%
-                              lapply(FUN = enrichGO, OrgDb=organism, ont = "BP") %>%
-                              lapply(as.data.frame)
+      lapply(FUN = enrichGO, OrgDb=organism, ont = "BP") %>%
+      lapply(as.data.frame)
 
     #count number of differentially enriched gene sets resulting from the alternative prefiltering thresholds
     n_DEGS_prefilt <- unlist(lapply(X = cP_ORA_results_prefilt,
@@ -223,7 +223,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
     # DEFAULT pre-filtering using filterByExpr
     keep1 <- DGEList(counts=expression_data,
                      group=phenotype_labels) %>%
-             filterByExpr()
+      filterByExpr()
 
     # 1. ALTERNATIVE pre-filtering using cpm: keep those genes that have at least 1 count per million in at least 2 samples
     keep2 <- rowSums(cpm(expression_data) > 1) >=2
@@ -243,21 +243,21 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
     limma_resuls <- list()
 
     limma_results <- lapply(FUN = geneID_conversion, X = exprdat_list_prefilt, dupl_removal_method = 1) %>%
-                     lapply(FUN = DGEList,
-                             group = phenotype_labels) %>%
-                     lapply(FUN = calcNormFactors) %>%
-                     lapply(FUN = voom,design = mm) %>% lapply(FUN = lmFit,design = mm) %>% lapply(FUN = eBayes) %>%
-                     lapply(FUN = topTable,
-                             coef = ncol(mm),
-                             number = 60000) %>%
-                     lapply(FUN = as.data.frame) %>%
-                     lapply(FUN = dplyr::rename, p_adj = adj.P.Val)
+      lapply(FUN = DGEList,
+             group = phenotype_labels) %>%
+      lapply(FUN = calcNormFactors) %>%
+      lapply(FUN = voom,design = mm) %>% lapply(FUN = lmFit,design = mm) %>% lapply(FUN = eBayes) %>%
+      lapply(FUN = topTable,
+             coef = ncol(mm),
+             number = 60000) %>%
+      lapply(FUN = as.data.frame) %>%
+      lapply(FUN = dplyr::rename, p_adj = adj.P.Val)
 
 
     # perform ORA
     cP_ORA_results_prefilt <- lapply(FUN=cP_ORA_input_preparation, X=limma_results) %>%
-                              lapply(FUN=enrichGO,OrgDb=organism, ont = "BP") %>%
-                              lapply(FUN=as.data.frame)
+      lapply(FUN=enrichGO,OrgDb=organism, ont = "BP") %>%
+      lapply(FUN=as.data.frame)
 
     # get number of differentially enriched gene sets for each pre-filtering approach
     n_DEGS_prefilt <- unlist(lapply(X = cP_ORA_results_prefilt,
@@ -297,29 +297,29 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
     # run DESeq2 workflow for each of the three gene ID conversion schemes
     DE_results_convID_list <- lapply(FUN = geneID_conversion, X=1:2, expression_data = exprdat_prefilt_opt) %>%
-                              lapply(FUN = deseq_preprocess,phenotype_labels = phenotype_labels) %>%
-                              lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
-                              lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = padj)
+      lapply(FUN = deseq_preprocess,phenotype_labels = phenotype_labels) %>%
+      lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
+      lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = padj)
 
     ### perform ORA for both DE results resulting from duplicate gene ID removal
     cP_ORA_results_convID <- lapply(FUN = cP_ORA_input_preparation, X = DE_results_convID_list) %>%
-                             lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>%
-                             lapply(FUN = as.data.frame)
+      lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>%
+      lapply(FUN = as.data.frame)
 
   } else if(opt_DE_technique == "limma"){
 
     # perform edgeR workflow for each of the three gene ID conversion schemes
     DE_results_convID_list <- lapply(geneID_conversion, expression_data=exprdat_prefilt_opt, X = 1:2) %>%
-                              lapply(FUN = DGEList,  group = phenotype_labels) %>%
-                              lapply(calcNormFactors) %>% lapply(FUN=voom,design= mm) %>%
-                              lapply(FUN=lmFit,design= mm ) %>% lapply(FUN = eBayes) %>%
-                              lapply(FUN = topTable, coef=ncol(mm), number = 60000) %>%
-                              lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = adj.P.Val)
+      lapply(FUN = DGEList,  group = phenotype_labels) %>%
+      lapply(calcNormFactors) %>% lapply(FUN=voom,design= mm) %>%
+      lapply(FUN=lmFit,design= mm ) %>% lapply(FUN = eBayes) %>%
+      lapply(FUN = topTable, coef=ncol(mm), number = 60000) %>%
+      lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = adj.P.Val)
 
     ### perform ORA for all of the 3 DE results resulting from duplicate gene ID removal
     cP_ORA_results_convID <- lapply(FUN = cP_ORA_input_preparation, X = DE_results_convID_list) %>%
-                             lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>%
-                             lapply(FUN = as.data.frame)
+      lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>%
+      lapply(FUN = as.data.frame)
 
   }
 
@@ -386,15 +386,15 @@ get_DEGs_default <- function(expression_data, phenotype_labels){
   # indicate which of the two strings can be found in the gene IDs of the expression data at hand
   ind_organism <- sapply(FUN = grepl,
                          X = c("ENSG", "ENSMUSG"),
-                        x = rownames(expression_data)[1])
+                         x = rownames(expression_data)[1])
 
 
   # (i) generate input list of differentially expressed genes (default parameters)
   DE_results <- pre_filt(expression_data, threshold = 10) %>%
-                geneID_conversion(dupl_removal_method = 1) %>%
-                deseq_preprocess( phenotype_labels = phenotype_labels) %>%
-                DESeq() %>% results() %>%
-                as.data.frame() %>% dplyr::rename(p_adj = padj)
+    geneID_conversion(dupl_removal_method = 1) %>%
+    deseq_preprocess( phenotype_labels = phenotype_labels) %>%
+    DESeq() %>% results() %>%
+    as.data.frame() %>% dplyr::rename(p_adj = padj)
 
   # Return:
   # (i) differential expression analysis results
@@ -439,9 +439,9 @@ cP_ORA_rkegg_optim <- function(DE_results, oragnism_kegg){
   univ_adapt <- rownames(DE_results[!is.na(DE_results$p_adj), ])
   #rerun function
   cp_ora_kegg_univ <- enrichKEGG(DEG_vec,
-                               organism= organism_kegg,
-                               keyType="kegg",
-                               universe=univ_adapt)
+                                 organism= organism_kegg,
+                                 keyType="kegg",
+                                 universe=univ_adapt)
 
   #evaluate whether number of DEGS has increased
   if(lossfunction_cPORA(cp_ora_kegg_univ) > n_DEGS){
@@ -601,8 +601,8 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
 
   #(i) default: GO
   cP_default_go <- enrichGO(DEG_vec,
-                          OrgDb = organism_go,
-                          ont="BP")
+                            OrgDb = organism_go,
+                            ont="BP")
 
   #default result (incl. default unranked list)
   doc[1,"n_DEGS"] <- lossfunction_cPORA(cP_default_go)
@@ -640,7 +640,7 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
   }else if(best_db == "KEGG"){
     #perform KEGG "Stellschraubenanalyse"
     cP_ora_optim <- cP_ORA_rkegg_optim(DE_results,
-                                   organism_kegg)
+                                       organism_kegg)
 
   }
 

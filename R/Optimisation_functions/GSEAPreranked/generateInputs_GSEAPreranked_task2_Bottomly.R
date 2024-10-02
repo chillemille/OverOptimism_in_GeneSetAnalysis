@@ -383,15 +383,15 @@ rankedList_cP <- function(DE_results, rankby, method){
 
 # create DESeq2 results and rank by p-value
 DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>%
-                            geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-                            deseq_preprocess(phenotype_labels = bottomly.eset$strain ) %>%
-                            DESeq() %>%
-                            lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>%
-                            as.data.frame() %>%
-                            rankedList_cP(rankby = "p_value", method = "DESeq2")
+  geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
+  deseq_preprocess(phenotype_labels = bottomly.eset$strain ) %>%
+  DESeq() %>%
+  lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>%
+  as.data.frame() %>%
+  rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
-  path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
+path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
 write.table(DESeq2_ranking_phenorig,
@@ -407,19 +407,19 @@ write.table(DESeq2_ranking_phenorig,
 
 # filtering indicator
 keep_phenorig <- DGEList(Biobase::exprs(bottomly.eset), group = bottomly.eset$strain) %>%
-                  filterByExpr()
+  filterByExpr()
 
 # design matrix
 mm_phenorig <- model.matrix( ~ bottomly.eset$strain)
 
 # generate limma results
 limma_results <- geneID_conversion_SYMBOL(Biobase::exprs(bottomly.eset)[keep_phenorig, ], dupl_removal_method = 1) %>%
-                  DGEList(group = bottomly.eset$strain) %>%
-                  calcNormFactors() %>%
-                  voom(design = mm_phenorig) %>%
-                  lmFit(design = mm_phenorig) %>%
-                  eBayes() %>%
-                  topTable(coef = ncol(mm_phenorig), number = 100000)
+  DGEList(group = bottomly.eset$strain) %>%
+  calcNormFactors() %>%
+  voom(design = mm_phenorig) %>%
+  lmFit(design = mm_phenorig) %>%
+  eBayes() %>%
+  topTable(coef = ncol(mm_phenorig), number = 100000)
 
 # create limma results and rank by p-value
 limma_ranking_phenorig <- rankedList_cP(limma_results,
@@ -451,12 +451,12 @@ for(i in 1:ncol(phen_bottomly)){
 
   # create DESeq2 results and rank by p-value
   DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>%
-                              geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-                              deseq_preprocess(phenotype_labels = phen_bottomly[, i] ) %>%
-                              DESeq() %>%
-                              lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>%
-                              as.data.frame() %>%
-                              rankedList_cP(rankby = "p_value", method = "DESeq2")
+    geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
+    deseq_preprocess(phenotype_labels = phen_bottomly[, i] ) %>%
+    DESeq() %>%
+    lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>%
+    as.data.frame() %>%
+    rankedList_cP(rankby = "p_value", method = "DESeq2")
 
   # create path for storage of DESeq2 ranking
   path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation",
@@ -479,19 +479,19 @@ for(i in 1:ncol(phen_bottomly)){
 
   # filtering indicator
   keep_phenperm <- DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, i]) %>%
-                    filterByExpr()
+    filterByExpr()
 
   # design matrix
   mm_phenperm <- model.matrix( ~ phen_bottomly[, i])
 
   # create limma results
   limma_results_phenperm <- geneID_conversion_SYMBOL(Biobase::exprs(bottomly.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
-                            DGEList(group = phen_bottomly[, i]) %>%
-                            calcNormFactors() %>%
-                            voom(design = mm_phenperm) %>%
-                            lmFit(design = mm_phenperm) %>%
-                            eBayes() %>%
-                            topTable(coef = ncol(mm_phenperm), number = 100000)
+    DGEList(group = phen_bottomly[, i]) %>%
+    calcNormFactors() %>%
+    voom(design = mm_phenperm) %>%
+    lmFit(design = mm_phenperm) %>%
+    eBayes() %>%
+    topTable(coef = ncol(mm_phenperm), number = 100000)
 
 
   # create ranking by p-value

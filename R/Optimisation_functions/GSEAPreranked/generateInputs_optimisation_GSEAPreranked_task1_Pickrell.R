@@ -374,10 +374,10 @@ rankedList_cP <- function(DE_results, rankby, method){
 
 # create DESeq2 results and rank by p-value
 DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>%
-                            geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-                            deseq_preprocess(phenotype_labels = pickrell.eset$gender ) %>% DESeq() %>%
-                            lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>% as.data.frame() %>%
-                            rankedList_cP(rankby = "p_value", method = "DESeq2")
+  geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
+  deseq_preprocess(phenotype_labels = pickrell.eset$gender ) %>% DESeq() %>%
+  lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>% as.data.frame() %>%
+  rankedList_cP(rankby = "p_value", method = "DESeq2")
 
 # create path for storage of DESeq2 ranking
 path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
@@ -396,17 +396,17 @@ write.table(DESeq2_ranking_phenorig,
 
 # filtering indicator
 keep_phenorig <- DGEList(Biobase::exprs(pickrell.eset), group = pickrell.eset$gender) %>%
-                 filterByExpr()
+  filterByExpr()
 
 # design matrix
 mm_phenorig <- model.matrix( ~ pickrell.eset$gender)
 
 # create limma results and rank by p-value
 limma_ranking_phenorig <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenorig, ], dupl_removal_method = 1) %>%
-                          DGEList(group = pickrell.eset$gender) %>% calcNormFactors() %>%
-                          voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>%
-                          eBayes() %>% topTable(coef=ncol(mm_phenorig), number=100000) %>%
-                          rankedList_cP(rankby= "p_value", method="limma")
+  DGEList(group = pickrell.eset$gender) %>% calcNormFactors() %>%
+  voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>%
+  eBayes() %>% topTable(coef=ncol(mm_phenorig), number=100000) %>%
+  rankedList_cP(rankby= "p_value", method="limma")
 
 # Create path for storage of limma ranking
 path_limma_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
@@ -424,66 +424,66 @@ write.table(limma_ranking_phenorig,
 
 for(i in 1:ncol(phen_pickrell)){
 
-################
-# DESeq2 ranking
-################
+  ################
+  # DESeq2 ranking
+  ################
 
-# create DESeq2 results and rank by p-value
-DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>%
-                            geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-                            deseq_preprocess(phenotype_labels = phen_pickrell[,i] ) %>%
-                            DESeq() %>%
-                            lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
-                            as.data.frame() %>%
-                            rankedList_cP(rankby = "p_value", method = "DESeq2")
+  # create DESeq2 results and rank by p-value
+  DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>%
+    geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
+    deseq_preprocess(phenotype_labels = phen_pickrell[,i] ) %>%
+    DESeq() %>%
+    lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
+    as.data.frame() %>%
+    rankedList_cP(rankby = "p_value", method = "DESeq2")
 
-# create path for storage of DESeq2 ranking
-path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
-                               i,
-                               "/DESeq2_ranking_permutation",
-                               i,
-                               ".txt")
+  # create path for storage of DESeq2 ranking
+  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
+                                 i,
+                                 "/DESeq2_ranking_permutation",
+                                 i,
+                                 ".txt")
 
-# export
-write.table(DESeq2_ranking_phenperm,
-            file = path_DESeq2_phenperm,
-            quote = FALSE,
-            row.names = TRUE,
-            col.names = FALSE)
-
-
-##############
-#limma ranking
-##############
-
-# filtering indicator
-keep_phenperm <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,i]) %>%
-                  filterByExpr()
-
-# design matrix
-mm_phenperm <- model.matrix( ~ phen_pickrell[,i])
-
-# create limma results and rank by p-value
-limma_ranking_phenperm <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
-                          DGEList(group = phen_pickrell[,i]) %>% calcNormFactors() %>%
-                          voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>%
-                          eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
-                          rankedList_cP(rankby= "p_value", method="limma")
-
-# Create path for storage of limma ranking
-path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
-                              i,
-                              "/limma_ranking_permutation",
-                              i,
-                              ".txt")
+  # export
+  write.table(DESeq2_ranking_phenperm,
+              file = path_DESeq2_phenperm,
+              quote = FALSE,
+              row.names = TRUE,
+              col.names = FALSE)
 
 
-# export
-write.table(limma_ranking_phenperm,
-            file = path_limma_phenperm,
-            quote = FALSE,
-            row.names = TRUE,
-            col.names = FALSE)
+  ##############
+  #limma ranking
+  ##############
+
+  # filtering indicator
+  keep_phenperm <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,i]) %>%
+    filterByExpr()
+
+  # design matrix
+  mm_phenperm <- model.matrix( ~ phen_pickrell[,i])
+
+  # create limma results and rank by p-value
+  limma_ranking_phenperm <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
+    DGEList(group = phen_pickrell[,i]) %>% calcNormFactors() %>%
+    voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>%
+    eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
+    rankedList_cP(rankby= "p_value", method="limma")
+
+  # Create path for storage of limma ranking
+  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
+                                i,
+                                "/limma_ranking_permutation",
+                                i,
+                                ".txt")
+
+
+  # export
+  write.table(limma_ranking_phenperm,
+              file = path_limma_phenperm,
+              quote = FALSE,
+              row.names = TRUE,
+              col.names = FALSE)
 
 }
 

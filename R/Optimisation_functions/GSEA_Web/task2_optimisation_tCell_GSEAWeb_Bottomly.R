@@ -51,61 +51,61 @@ for(i in 1:10){
 # export phenotype assignments and gene expression data set pre-processed in default manner
 
 
-  ##############
-  ### phenotypes
-  ##############
+##############
+### phenotypes
+##############
 
-  # convert levels ("female", "male") to 0 and 1
-  phen_orig <- c()
-  phen_orig[ bottomly.eset$strain == levels(bottomly.eset$strain)[[1]]] <- 0
-  phen_orig[ bottomly.eset$strain == levels(bottomly.eset$strain)[[2]]] <- 1
+# convert levels ("female", "male") to 0 and 1
+phen_orig <- c()
+phen_orig[ bottomly.eset$strain == levels(bottomly.eset$strain)[[1]]] <- 0
+phen_orig[ bottomly.eset$strain == levels(bottomly.eset$strain)[[2]]] <- 1
 
-  path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phenotypes/Phenotype_original.txt")
+path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phenotypes/Phenotype_original.txt")
 
-  write.table(phen_orig,
-              file = path_phen,
-              quote = FALSE,
-              row.names = FALSE,
-              col.names = FALSE)
-
-
-  ####################################
-  ### default gene expression data set
-  ####################################
-
-  # default pre-process pickrell data
-  dat_default_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    voom_trans(phenotype_labels = bottomly.eset$strain)
-
-  # generate path
-  path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_default_phen_original.txt")
-
-  ### export
-  write.table(dat_default_phenorig,
-              file = path_dat_phenorig,
-              quote = FALSE,
-              row.names = TRUE,
-              col.names = TRUE)
-
-  ############################################
-  ### vst transformed gene expression data set
-  ############################################
+write.table(phen_orig,
+            file = path_phen,
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = FALSE)
 
 
-  # default pre-process pickrell data
-  dat_vst_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    variancetransform(phenotype_labels = bottomly.eset$strain )
+####################################
+### default gene expression data set
+####################################
 
-  # generate path
-  path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_vst_phen_original.txt")
+# default pre-process pickrell data
+dat_default_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
+  voom_trans(phenotype_labels = bottomly.eset$strain)
+
+# generate path
+path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_default_phen_original.txt")
+
+### export
+write.table(dat_default_phenorig,
+            file = path_dat_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
+            col.names = TRUE)
+
+############################################
+### vst transformed gene expression data set
+############################################
 
 
-  # export
-  write.table(dat_vst_phenorig,
-              file = path_dat_vst_phenorig,
-              quote = FALSE,
-              row.names = TRUE,
-              col.names = TRUE)
+# default pre-process pickrell data
+dat_vst_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
+  variancetransform(phenotype_labels = bottomly.eset$strain )
+
+# generate path
+path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_vst_phen_original.txt")
+
+
+# export
+write.table(dat_vst_phenorig,
+            file = path_dat_vst_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
+            col.names = TRUE)
 
 
 
@@ -133,19 +133,19 @@ for(i in 1:10){
 #########
 
 
-  # generate pre-filtering indicator using filterByExpr()
-  prefilt_ind_phenorig <-  DGEList(Biobase::exprs(bottomly.eset), group = bottomly.eset$strain) %>% filterByExpr()
-  # perform voom-transformation on accordingly pre-filtered pickrell data set
-  exprdat_prefilt_phenorig <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phenorig,], phenotype_labels = bottomly.eset$strain)
+# generate pre-filtering indicator using filterByExpr()
+prefilt_ind_phenorig <-  DGEList(Biobase::exprs(bottomly.eset), group = bottomly.eset$strain) %>% filterByExpr()
+# perform voom-transformation on accordingly pre-filtered pickrell data set
+exprdat_prefilt_phenorig <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phenorig,], phenotype_labels = bottomly.eset$strain)
 
-  ### export
-  path_filterByExpr_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_filterByExpr_phenorig.txt")
+### export
+path_filterByExpr_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_filterByExpr_phenorig.txt")
 
-  write.table(exprdat_prefilt_phenorig,
-              file = path_filterByExpr_phenorig,
-              quote = FALSE,
-              row.names = TRUE,
-              col.names = TRUE)
+write.table(exprdat_prefilt_phenorig,
+            file = path_filterByExpr_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
+            col.names = TRUE)
 
 
 # -> adjusted p-value = 0.98552865
@@ -588,7 +588,7 @@ i <- 5
 
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen5 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,5]) %>%
-                      filterByExpr()
+  filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen5 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen5,],
                                            phenotype_labels = phen_bottomly[,5])
@@ -662,7 +662,7 @@ i <- 6
 
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen6 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,6]) %>%
-                      filterByExpr()
+  filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen6 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen6,],
                                            phenotype_labels = phen_bottomly[,6])
@@ -739,7 +739,7 @@ i <- 7
 
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen7 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,7]) %>%
-                      filterByExpr()
+  filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen7 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen7,],
                                            phenotype_labels = phen_bottomly[,7])
@@ -815,7 +815,7 @@ i <- 8
 
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen8 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,8]) %>%
-                      filterByExpr()
+  filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen8 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen8,],
                                            phenotype_labels = phen_bottomly[,8])
@@ -890,7 +890,7 @@ i <- 9
 
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen9 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,9]) %>%
-                      filterByExpr()
+  filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen9 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen9,],
                                            phenotype_labels = phen_bottomly[,9])
@@ -972,7 +972,7 @@ i <- 10
 
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen10 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[,10]) %>%
-                       filterByExpr()
+  filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen10 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen10,],
                                      phenotype_labels = phen_bottomly[,10])

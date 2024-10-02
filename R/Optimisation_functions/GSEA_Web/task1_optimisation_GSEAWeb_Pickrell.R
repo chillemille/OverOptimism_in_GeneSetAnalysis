@@ -64,61 +64,61 @@ pre_filt <- function(expression_data, threshold){
 # export phenotype assignments and gene expression data set pre-processed in default manner
 
 
-  ##############
-  ### phenotypes
-  ##############
+##############
+### phenotypes
+##############
 
-  # convert levels ("female", "male") to 0 and 1
-  phen_orig <- c()
-  phen_orig[ pickrell.eset$gender == levels(pickrell.eset$gender)[[1]]] <- 0
-  phen_orig[ pickrell.eset$gender == levels(pickrell.eset$gender)[[2]]] <- 1
+# convert levels ("female", "male") to 0 and 1
+phen_orig <- c()
+phen_orig[ pickrell.eset$gender == levels(pickrell.eset$gender)[[1]]] <- 0
+phen_orig[ pickrell.eset$gender == levels(pickrell.eset$gender)[[2]]] <- 1
 
-  path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phenotypes/Phenotype_original.txt")
+path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phenotypes/Phenotype_original.txt")
 
-  write.table(phen_orig,
-              file = path_phen,
-              quote = FALSE,
-              row.names = FALSE,
-              col.names = FALSE)
-
-
-  ####################################
-  ### default gene expression data set
-  ####################################
-
-  # default pre-process pickrell data
-  dat_default_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    voom_trans(phenotype_labels = pickrell.eset$gender)
-
-  # generate path
-  path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Original/exprdat_default_phen_original.txt")
-
-  ### export
-  write.table(dat_default_phenorig,
-              file = path_dat_phenorig,
-              quote = FALSE,
-              row.names = TRUE,
-              col.names = TRUE)
-
-  ############################################
-  ### vst transformed gene expression data set
-  ############################################
+write.table(phen_orig,
+            file = path_phen,
+            quote = FALSE,
+            row.names = FALSE,
+            col.names = FALSE)
 
 
-  # default pre-process pickrell data
-  dat_vst_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
-    variancetransform(phenotype_labels = pickrell.eset$gender )
+####################################
+### default gene expression data set
+####################################
 
-  # generate path
-  path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Original/exprdat_vst_phen_original.txt")
+# default pre-process pickrell data
+dat_default_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
+  voom_trans(phenotype_labels = pickrell.eset$gender)
+
+# generate path
+path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Original/exprdat_default_phen_original.txt")
+
+### export
+write.table(dat_default_phenorig,
+            file = path_dat_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
+            col.names = TRUE)
+
+############################################
+### vst transformed gene expression data set
+############################################
 
 
-  # export
-  write.table(dat_vst_phenorig,
-              file = path_dat_vst_phenorig,
-              quote = FALSE,
-              row.names = TRUE,
-              col.names = TRUE)
+# default pre-process pickrell data
+dat_vst_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>% # default pre-filtering (manual filtering with threshold 10)
+  variancetransform(phenotype_labels = pickrell.eset$gender )
+
+# generate path
+path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Original/exprdat_vst_phen_original.txt")
+
+
+# export
+write.table(dat_vst_phenorig,
+            file = path_dat_vst_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
+            col.names = TRUE)
 
 
 

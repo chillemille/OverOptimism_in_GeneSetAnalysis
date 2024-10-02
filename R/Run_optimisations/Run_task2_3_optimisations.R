@@ -663,11 +663,11 @@ save(optimP_cP_ORA_tCell_Bottomly_originalphenotype,
 
 # 10 random phenotype permutations
 optimP_cP_ORA_tCell_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim,
-                                                                        geneset = "GO:0002456",
-                                                                        metric = "p_adj",
-                                                                        expression_data = Biobase::exprs(bottomly.eset),
-                                                                        geneset_database = "GO",
-                                                                        X = phen_bottomly_list)
+                                                             geneset = "GO:0002456",
+                                                             metric = "p_adj",
+                                                             expression_data = Biobase::exprs(bottomly.eset),
+                                                             geneset_database = "GO",
+                                                             X = phen_bottomly_list)
 
 # save results
 save(optimP_cP_ORA_tCell_Bottomly_phenotypepermutations,
@@ -692,11 +692,11 @@ save(optimP_cP_ORA_Demethylation_Bottomly_originalphenotype,
 
 # 10 random phenotype permutations
 optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim,
-                                                                       geneset = "GO:0070988",
-                                                                       metric = "p_adj",
-                                                                       expression_data = Biobase::exprs(bottomly.eset),
-                                                                       geneset_database = "GO",
-                                                                       X = phen_bottomly_list)
+                                                                     geneset = "GO:0070988",
+                                                                     metric = "p_adj",
+                                                                     expression_data = Biobase::exprs(bottomly.eset),
+                                                                     geneset_database = "GO",
+                                                                     X = phen_bottomly_list)
 # save results
 save(optimP_cP_ORA_Demethylation_Bottomly_Phenotypepermutations,
      file = "./Results/Intermediate_results/optimP_ORA_Demethylation_Bottomly_PhenotypePermutations.RData")
@@ -791,11 +791,11 @@ save(optimRank_cP_ORA_tCell_Bottomly_originalphenotype,
 
 # 10 random phenotype permutations
 optimRank_cP_ORA_tCell_Bottomly_phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim,
-                                                                           geneset = "GO:0002456",
-                                                                           metric = "rank",
-                                                                           expression_data = Biobase::exprs(bottomly.eset),
-                                                                           geneset_database = "GO",
-                                                                           X = phen_bottomly_list)
+                                                                geneset = "GO:0002456",
+                                                                metric = "rank",
+                                                                expression_data = Biobase::exprs(bottomly.eset),
+                                                                geneset_database = "GO",
+                                                                X = phen_bottomly_list)
 
 # save results
 save(optimRank_cP_ORA_tCell_Bottomly_phenotypepermutations,
@@ -820,11 +820,11 @@ save(optimRank_cP_ORA_Demethylation_Bottomly_originalphenotype,
 
 # 10 random phenotype permutations
 optimRank_cP_ORA_Demethylation_Bottomly_Phenotypepermutations <- lapply(FUN = ORA_rank_pvalue_optim,
-                                                                          geneset = "GO:0070988",
-                                                                          metric = "rank",
-                                                                          expression_data = Biobase::exprs(bottomly.eset),
-                                                                          geneset_database = "GO",
-                                                                          X = phen_bottomly_list)
+                                                                        geneset = "GO:0070988",
+                                                                        metric = "rank",
+                                                                        expression_data = Biobase::exprs(bottomly.eset),
+                                                                        geneset_database = "GO",
+                                                                        X = phen_bottomly_list)
 # save results
 save(optimRank_cP_ORA_Demethylation_Bottomly_Phenotypepermutations,
      file = "./Results/Intermediate_results/optimRank_ORA_Demethylation_Bottomly_PhenotypePermutations.RData")
