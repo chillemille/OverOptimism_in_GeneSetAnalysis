@@ -9,6 +9,19 @@
 if(!dir.exists("./Results/Intermediate_results")){dir.create(path = "./Results/Intermediate_results")}
 
 
+# get gene expression datasets, phenotype assignments and random phenotype permutations
+source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
+
+# load required pre-processing functions
+source("./R/Help_functions/PreProcessing_Functions.R")
+
+# load functions to perform RNA-Seq transformation for (approximate) alignment with the normal distribution
+# (for PADOG)
+source("./R/Help_functions/RNASeq_Transformation.R")
+
+
+
+
 ################################################################################
 ### GOSeq ######################################################################
 ################################################################################

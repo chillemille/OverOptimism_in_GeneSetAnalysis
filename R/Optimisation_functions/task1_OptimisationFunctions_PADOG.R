@@ -7,17 +7,6 @@ library(org.Hs.eg.db)
 library(org.Mm.eg.db)
 library(edgeR) # for pre-filtering function filterByExpr()
 
-
-# load gene expression data set with true phenotype randomly permuted phenotype assignments
-source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
-
-# load require pre-processing functions
-source("./R/Help_functions/PreProcessing_Functions.R")
-
-# load functions to perform RNA-Seq transformation for (approximate) alignment with the normal distribution
-source("./R/Help_functions/RNASeq_Transformation.R")
-
-
 ####################################################################################
 ###phenotype label preparation######################################################
 ####################################################################################

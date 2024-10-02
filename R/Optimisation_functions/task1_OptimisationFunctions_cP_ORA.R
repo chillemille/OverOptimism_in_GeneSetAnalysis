@@ -8,14 +8,6 @@ library(DESeq2)
 library(dplyr)
 library(edgeR)
 
-# get gene expression datasets, phenotype assignments and random phenotype permutations
-source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
-
-# load required pre-processing functions
-source("./R/Help_functions/PreProcessing_Functions.R")
-
-
-
 
 #introduction of  necessary functions to perform optimization of GSA results
 
