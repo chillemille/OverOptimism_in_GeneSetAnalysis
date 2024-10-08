@@ -19,7 +19,7 @@ as used in the original experiments. This is straightforward for the *R*-based m
 
 **Note 2:**
 
-The *R* results can be reproduced using *R* package *renv* command *renv::restore()*. See https://rstudio.github.io/renv/articles/renv.html for information on how to use *renv*. 
+The *R* results can be reproduced using *R* package *renv* command *renv::restore()*. See https://rstudio.github.io/renv/articles/renv.html [last accessed on 08 Oct 2024 09:40am] for information on how to use *renv*. 
 
 Note: After installing and activating renv, there may be packages that are indicated by the renv.lock but are not installed on your system yet. These packages should be installed using command `renv::install("package")`, where "package" indicates the affected package that needs to be installed. 
 
@@ -71,7 +71,7 @@ Note that for the over-optimism analysis of the web-applications, we strongly re
 - task 2: minimise adjusted p-value of a specific gene set
 
 ### DAVID
-The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/.
+The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/ [last accessed: 08 Oct 2024 09:30am].
 Our analysis was performed with *DAVID* version 6.8 and the DAVID Knowledgebase v2023q3.
 
 #### 1. Generation of input data sets (folder `R/Optimisation_functions`)
@@ -86,7 +86,7 @@ and in there, in subfolders that corresponds to the given phenotypes (original p
 Note that for the Pickrell and the Bottomly data set respectively, the input objects for the web application are identical across both tasks 1 and 2 since the individual optimisation steps are (almost) identical. 
 
 #### 2. Run DAVID optimisation 
-Access the link https://david.ncifcrf.gov/. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the input gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. 
+Access the link https://david.ncifcrf.gov/ [last accessed: 08 Oct 2024 09:30am]. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the input gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. 
 
 The optimisation steps are the following (see corresponding screenshots for more detailed illustrations): 
 
@@ -117,7 +117,7 @@ could **never** be decreased for their default value of 1.
 ***
 ### GSEA (web-based application)
 
-The application can be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp, for which an account must be created. I performed the experiment on versions 4.2.2/4.2.3 (the exact version can be found on the corresponding screenshot). 
+The application can be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp [last accessed on 08 Oct 2024 09:42am], for which an account must be created. I performed the experiment on versions 4.2.2/4.2.3 (the exact version can be found on the corresponding screenshot). 
 
 #### 1. Generation of inputs in *R* (folder `R/Optimisation_functions/GSEA_Web`)
 For the Pickrell and the Bottomly data set each, you will find the following three *R* scripts:
@@ -130,7 +130,7 @@ The input data generated from each of the scripts is stored in folder `Results/I
 
 #### 2. Further preprocessing in Excel
 
-These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require further processing according to https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats. For this, inspect Sections 
+These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require further processing according to https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats [last accessed 08 Oct 2024 09:43am]. For this, inspect Sections 
 
 - **GCT: Gene Cluster Text file format (*.gct)** for the preprocessing of the gene expression data set in Excel.
 - **CLS: Categorical (e.g. tumor vs normal) class file format (*.cls)** for the preprocessing of the corresponding phenotype assignments.
@@ -138,10 +138,9 @@ These files stored in `Results/Intermediate_results/GSEA_Web/...Raw` require fur
 The corresponding preprocessed files are then stored in subfolder `Prep`.
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
-The application must be downloaded from https://www.gsea-msigdb.org/gsea/index.jsp. In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. Note that in each step, the random seed is set to **149**. 
+In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. Note that in each step, the random seed is set to **149**. 
 
-
-Optimisation steps for tasks 1 and 2 : 
+Optimisation steps for tasks 1 and 2: 
 
 1. Upload pre-processed gene expression data set and phenotype assignments: upload **exprdat_default_... .gct**
 2. Change RNA-Seq transformation method: upload **exprdat_vst_... .gct**
@@ -173,7 +172,7 @@ In addition to the screenshots, the optimisation processes are documented in the
 ***
 ### GSEAPreranked
 
-*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp). The experiment was performed on versions 4.2.2 and 4.2.3
+*GSEAPreranked* is a variant of the above-described web-based method GSEA and can therefore be accessed via the same application (download from https://www.gsea-msigdb.org/gsea/index.jsp [last accessed on 08 Oct 2024 09:39am]). The experiment was performed on versions 4.2.2 and 4.2.3
 
 
 #### 1. Generation of inputs (folder `R/Optimisation_functions/GSEAPreranked`)
@@ -184,7 +183,7 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 
 #### 2. Further preprocessing in Excel 
 
-**Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in https://www.gsea-msigdb.org/gsea/index.jsp. 
+**Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats [last accessed on 08 Oct 2024 09:37am]. 
 
 #### 3. Upload data and make optimisations according to task 1 or 2 
 The required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. Note that in each step, the random seed is set to **149**. 
