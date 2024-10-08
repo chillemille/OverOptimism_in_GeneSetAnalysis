@@ -15,7 +15,7 @@ Reproducing all results **from scratch** is possible when using
 - identical *R* package versions/ versions of the web applications
 - identical gene set database versions
   
-as used in the original experiments. This is straightforward for the *R*-based methods (using renv), however, it might take up more memory than available and cause your system to crash. For the web-based methods, reproducing the results requires several intermediate steps (see note 4) and is very time-consuming; detailed descriptions are provided below. 
+as used in the original experiments. This is straightforward for the *R*-based methods (using renv), however, it may consume a notable amount of memory. For the web-based methods, reproducing the results requires several intermediate steps (see note 4) and is **very** time-consuming (it took several weeks for our analysis); detailed descriptions are provided below. 
 
 **Note 2:**
 
@@ -74,8 +74,8 @@ Note that for the over-optimism analysis of the web-applications, we strongly re
 The web-based application *DAVID* can be accessed via the following link: https://david.ncifcrf.gov/ [last accessed: 08 Oct 2024 09:30am].
 Our analysis was performed with *DAVID* version 6.8 and the DAVID Knowledgebase v2023q3.
 
-#### 1. Generation of input data sets (folder `R/Optimisation_functions`)
-The *R* script to generate the input data sets for the Pickrell **and** the Bottomly data set is stored in the file  **generate_Inputs_DAVID.R**. 
+#### 1. Generation of input data sets (folder `R/Optimisation_functions/DAVID`)
+The *R* script to generate the input files for the Pickrell **and** the Bottomly data set is stored in the file  **generate_Inputs_DAVID.R**. These input files either contain lists of differentially expressed genes (.txt files "DEGs_..._.txt") or an alternative universe (i.e. list of background genes; .txt files "universe_..._.txt"). Note that input files containing lists of differentially expressed genes can sometimes be empty if **no genes are detected as differentially expressed** by the given method). No differentially expressed genes logically lead to no differentially enriched gene sets, so that these empty files **do not** have to be updated to the web application and 0 differentially enriched gene sets can be concluded automatically.  
   
 The generated input data sets are then stored in the folders
 - `Results/Intermediate_results/DAVID/Pickrell`
@@ -88,7 +88,7 @@ Note that for the Pickrell and the Bottomly data set respectively, the input obj
 #### 2. Run DAVID optimisation 
 Access the link https://david.ncifcrf.gov/ [last accessed: 08 Oct 2024 09:30am]. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the input gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. 
 
-The optimisation steps are the following (see corresponding screenshots for more detailed illustrations): 
+The optimisation steps are the following (see corresponding screenshots in folder `Results/Screenshots_WebApplications`) for more detailed illustrations: 
 
 1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt**
 2. Change method to detect differentially expressed genes: upload **DEGs_limma_... .txt**
