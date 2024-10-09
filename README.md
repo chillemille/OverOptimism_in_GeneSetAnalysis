@@ -4,6 +4,13 @@ Repository for code and documentation for analysis on over-optimism in GSA.
 =======
 This repository allows you to reproduce the results from our over-optimism analysis on four *R*-based and three web-based GSA methods. 
 
+### Content: 
+This repository contains instructions on how to 
+
+- **reproduce figures based on intermediate results**: based on the available analysis results for all methods ("intermediate results"), the figures from the main manuscript are be reproduced 
+- **reproduce figures from scratch**: for the *R*-based methods, the analysis is performed from scratch while for the web-based methods, the intermediate results are used. Finally, the figures from the manuscript are reproduced. 
+- **reproduce analysis for web-based methods *DAVID*, *GSEA*, *GSEAPreranked***: detailed descriptions on how to reproduce the intermediate results for the three web-based methods. 
+
 ### Important notes
 
 **Note 1:** 
@@ -36,7 +43,7 @@ The web-based applications were performed by hand (and documented with screensho
 3. Data is uploaded to the respective web application and optimisations are performed
 4. Results of the optimisation processes are entered manually in *R* (scripts in `R/Code_figures`) for the generation of the results graphs
 
-**Fully reproducing this process would take weeks!**
+**Important: fully reproducing this process would take weeks!**
 
 *** 
 ## Reproduce figures based on intermediate results
