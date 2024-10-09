@@ -7,9 +7,9 @@ This repository allows you to reproduce the results from our over-optimism analy
 ### Content: 
 This repository contains instructions on how to 
 
-- **reproduce figures based on intermediate results**: based on the available analysis results for all methods ("intermediate results"), the figures from the main manuscript are be reproduced 
+- **reproduce figures based on intermediate results**: based on the available analysis results for all methods ("intermediate results"), the figures from the main manuscript are be reproduced.
 - **reproduce figures from scratch**: for the *R*-based methods, the analysis is performed from scratch while for the web-based methods, the intermediate results are used. Finally, the figures from the manuscript are reproduced. 
-- **reproduce analysis for web-based methods *DAVID*, *GSEA*, *GSEAPreranked***: detailed descriptions on how to reproduce the intermediate results for the three web-based methods. 
+- **reproduce analysis for web-based methods *DAVID*, *GSEA*, *GSEAPreranked***: detailed instructions on how to reproduce the intermediate results for the three web-based methods. 
 
 ### Important notes
 
@@ -108,7 +108,33 @@ In each step, you compare the results w.r.t. the given task to the results from 
 For task 1, you find the documentation screenshots (and Excel results files) in the folder 
 
 - **Screenshots_DAVID_Pickrell** for the Pickrell data set 
-- **Screenshots_DAVID_Bottomly** for the Bottomly data set 
+- **Screenshots_DAVID_Bottomly** for the Bottomly data set
+
+The screenshots are numbered according to the optimisation step. 
+
+- **optim. step 1**: DAVID results are generated using all options in default configuration
+  - **01Load_Default_GeneList**: DEGs_DESeq2_... .txt is uploaded (**note** configurations for step 2 and step 3 on blue sidebar) 
+  - **01Param_Default**: Geneset database is set to "GO_BP_direct" while "Check Defaults" is unchecked 
+  - **01Results_Default**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
+- **optim. step 2**: method to detect differentially expressed genes is changed to limma and new DAVID results are generated 
+  - **02Load_limma_GeneList**: DEGs_limma_... .text is uploaded (note configurations for step 2 and step 3 on blue sidebar) 
+  - **02Param_limma**: Geneset database is set to "GO_BP_direct" while "Check Defaults" is unchecked 
+  - **02Results_limma**: DAVID results table is inspected and number of differentially enriched gene sets is counted (Excel file offers better visuability)
+ 
+  -> depending on whether step 1 or step 2 leads to better results, one proceeds with DEGs_DESeq2_... .txt or with DEGs_limma_... .txt in the following steps 
+
+- **optim. step 3**: gene set database is changed to KEGG and new DAVID results are generated (**for optimisation task 1 only**)
+  - **03Param_KEGG**: Geneset database is set to "KEGG_PATHWAY" while "Check Defaults" is unchecked 
+  - **03Results_KEGG**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the   specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
+ 
+  -> depending on whether this new configuration leads to better results w.r.t the given optimisation task, the changes are adopted 
+  
+- **optim. step 4**: universe is set changed (to all genes investigated for differential expression) and new DAVID results are generated 
+  - **04Load_alternativeUniverse**: the .txt file containing the alternative universe (based on DESeq2 or limma depending on optim. step 2) is uploaded (**note** configurations for step 2 and step 3 on blue sidebar)
+  - **04Param_alternativeUniverse**: the gene set database is specified based on optim. step 3 while "Check defaults" is unchecked 
+  - **04Results_alternativeUniverse**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
+
+
 
 **Important:**
 The documentation shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
