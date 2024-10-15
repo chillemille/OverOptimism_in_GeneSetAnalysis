@@ -2,6 +2,10 @@
 ### Functions to generate the results illustration plots goal 2 and 3 ##########
 ################################################################################
 
+# these help functions are relevant for
+# - Figures 4 and 5, in the main manuscript
+# - Figures S3 and S4 in the supplement
+
 library(ggplot2)
 library(dplyr)
 
@@ -152,6 +156,7 @@ prep_data_for_ggplot_pvaluerank  <- function(default_to_optim_geneset1, default_
 
   }
 
+  # return data set containing analysis results for BOTH gene sets
   return(default_to_optim_allgenesets)
 
 
@@ -222,7 +227,7 @@ create_results_illustration_pvalue_rank  <- function(default_to_optim_geneset1, 
                                col="gray", linetype = "dashed")
   }
 
-
+  # return ggplot
   return(plot)
 
 }

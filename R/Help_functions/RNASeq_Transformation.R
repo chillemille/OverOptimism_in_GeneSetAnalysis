@@ -75,6 +75,7 @@ variancetransform <- function(expression_data,   phenotype_labels){
                        fitType = "parametric") %>%
     assay()
 
+  # return transformed gene expression data set
   return(dds_transform)
 
 }

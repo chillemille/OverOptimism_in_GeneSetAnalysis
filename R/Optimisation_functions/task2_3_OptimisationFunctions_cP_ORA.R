@@ -126,7 +126,7 @@ pvalue_rank_ORA  <- function(term, ora_results, metric){
       #identify row number of respective gene set
       ind_row  <- grep(term, ora_results$ID)
 
-      #return respective adjusted p-value
+      #return adjusted p-value of gene set in ORA results table
       return(ifelse(!is.integer0(ind_row),
                     ora_results$p.adjust[ind_row],
                     1))
@@ -161,6 +161,7 @@ cP_ORA_input_preparation  <- function(DE_results){
   #DEG_vec serves as input vector for ORA performed by clusterProfiler
   DEG_vec  <- rownames(DE_results[(DE_results$p_adj<0.05) & (!is.na(DE_results$p_adj)), ])
 
+  # return vector of differentially expressed genes
   return(DEG_vec)
 
 }
@@ -213,6 +214,7 @@ ORA_pipeline_default  <- function(DE_results, geneset_database, organism){
 
   }
 
+  # return ORA results table
   return(ORA_results)
 }
 
@@ -619,9 +621,10 @@ ORA_rank_pvalue_optim  <- function(geneset, metric, expression_data, phenotype_l
 
 
 
-  return(list(default_ORA = ORA_results_deseq2, #default ORA result
-              optim_ORA = ORA_final, #optimal DE result
-              documentation = doc)) #documentation frame
+  return(list(default_ORA = ORA_results_deseq2, # default ORA result
+              optim_ORA = ORA_final, # optimal ORA results
+              documentation = doc)) # documentation of ALL optimisation steps performed
+                                    # and resulting adjusted p-values/ ranks
 
 }
 

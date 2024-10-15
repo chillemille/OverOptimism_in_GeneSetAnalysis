@@ -32,10 +32,10 @@ dir.create("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw
 
 for(i in 1:10){
 
-  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation", 
+  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
                      i)
 
-  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Prep/Phenotype_Permutation", 
+  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Prep/Phenotype_Permutation",
                       i)
 
   dir.create(path_raw)
@@ -97,11 +97,11 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
   #this step is independent of sample IDs
   #merge by row names of expression data set and ENSEMBL ID of conversion data set
-  expression_data <- merge(expression_data, 
-                           bitr_enstoentr, 
-                           by.x=0, 
-                           by.y="ENSEMBL", 
-                           all.y=TRUE, 
+  expression_data <- merge(expression_data,
+                           bitr_enstoentr,
+                           by.x=0,
+                           by.y="ENSEMBL",
+                           all.y=TRUE,
                            sort=TRUE)
   dim(expression_data)
 
@@ -278,7 +278,9 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #dim(exprdat_dupl)
   }
 
-  #store resulting gene expression data sets in list
+  # store resulting gene expression data sets in list (each gene expression expression
+  # data set has converted gene IDs and results from a different manner of removing
+  # duplicated gene IDs)
   return(exprdat_dupl)
 
 
@@ -293,6 +295,15 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 #rankby must be in c("p_value", "lfc") to perform ranking based on
 #(i) p-value (rank=sign(lfc)*(-1)*log10(unadjusted_pvalue)
 #(ii) log fold changes
+
+# function arguments
+# - DE_results: results table of differential expression analysis
+# - rankby: metric by which the genes from DE_results are ranked:
+#           "p_value": rank=sign(lfc)*(-1)*log10(unadjusted_pvalue)
+#           "lfc": rank by log fold changes
+# - method: DE method by which results of differential expression analysis (DE_method)
+#           are generated
+
 rankedList_cP <- function(DE_results, rankby, method){
 
   if(method == "DESeq2"){#create ranking based on DESeq2 results table
@@ -383,10 +394,10 @@ DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 1
 path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
-write.table(DESeq2_ranking_phenorig, 
-            file = path_DESeq2_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(DESeq2_ranking_phenorig,
+            file = path_DESeq2_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = FALSE)
 
 
@@ -413,10 +424,10 @@ path_limma_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Pickrell/Da
 
 
 # export
-write.table(limma_ranking_phenorig, 
-            file = path_limma_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(limma_ranking_phenorig,
+            file = path_limma_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = FALSE)
 
 
@@ -438,17 +449,17 @@ for(i in 1:ncol(phen_pickrell)){
     rankedList_cP(rankby = "p_value", method = "DESeq2")
 
   # create path for storage of DESeq2 ranking
-  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation", 
-                                 i, 
-                                 "/DESeq2_ranking_permutation", 
-                                 i, 
+  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
+                                 i,
+                                 "/DESeq2_ranking_permutation",
+                                 i,
                                  ".txt")
 
   # export
-  write.table(DESeq2_ranking_phenperm, 
-              file = path_DESeq2_phenperm, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(DESeq2_ranking_phenperm,
+              file = path_DESeq2_phenperm,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = FALSE)
 
 
@@ -471,18 +482,18 @@ for(i in 1:ncol(phen_pickrell)){
     rankedList_cP(rankby= "p_value", method="limma")
 
   # Create path for storage of limma ranking
-  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation", 
-                                i, 
-                                "/limma_ranking_permutation", 
-                                i, 
+  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
+                                i,
+                                "/limma_ranking_permutation",
+                                i,
                                 ".txt")
 
 
   # export
-  write.table(limma_ranking_phenperm, 
-              file = path_limma_phenperm, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(limma_ranking_phenperm,
+              file = path_limma_phenperm,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = FALSE)
 
 }

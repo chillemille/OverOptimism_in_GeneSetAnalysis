@@ -406,7 +406,7 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #dim(exprdat_dupl)
   }
 
-  #store resulting gene expression data sets in list
+  #store resulting gene expression data sets (with converted gene IDs) in list
   return(exprdat_dupl)
 
 
@@ -456,7 +456,8 @@ conversion_mouseEnsembl_HumanSymbol <- function(expression_data, dupl_removal_me
   ### make use of previously defined function geneID_conversion_SYMBOL
   exprdat_humanSymbol <- geneID_conversion_SYMBOL( exprdat_humanEnsembl,   dupl_removal_method = 1)
 
-  # return expression data with human gene symbols
+  # return expression data with human gene symbols (and duplicates removed according to function argument
+  # dupl_removal_method)
   return(exprdat_humanSymbol)
 
 

@@ -34,10 +34,10 @@ dir.create("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw
 
 for(i in 1:10){
 
-  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation", 
+  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
                      i)
 
-  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Prep/Phenotype_Permutation", 
+  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Prep/Phenotype_Permutation",
                       i)
 
   dir.create(path_raw)
@@ -54,75 +54,78 @@ for(i in 1:10){
 ##create ranked list from DE results##############################################
 ##################################################################################
 
-#for DESeq2 (method="DESeq2") and edgeR (method="edgeR")
+#for DESeq2 (method = "DESeq2") and edgeR (method = "edgeR")
 #rankby must be in c("p_value", "lfc") to perform ranking based on
-#(i) p-value (rank=sign(lfc)*(-1)*log10(unadjusted_pvalue)
+#(i) p-value (rank = sign(lfc)*(-1)*log10(unadjusted_pvalue)
 #(ii) log fold changes
 
 rankedList_cP <- function(DE_results, rankby, method){
 
-  if(method == "DESeq2"){#create ranking based on DESeq2 results table
+  if(method  ==  "DESeq2"){#create ranking based on DESeq2 results table
 
     # first step: replace p-values of 0 with the smallest representable positive number
     # in R (necessary since one term of ranking metric is equal to log10(p-value))
 
-    DE_results$pvalue[ DE_results$pvalue == 0] <- min(DE_results$pvalue[ DE_results$pvalue > 0 ]) / 10
+    DE_results$pvalue[ DE_results$pvalue  ==  0] <- min(DE_results$pvalue[ DE_results$pvalue > 0 ]) / 10
 
     #DE_results <- edgeR_results
-    if(rankby == "lfc"){ #ranking by log2 fold change
+    if(rankby  ==  "lfc"){ #ranking by log2 fold change
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
       rankvec <- as.vector(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)
       names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
-      rankvec <- sort(rankvec, decreasing = TRUE)
+      rankvec <- sort(rankvec, decreasing  =  TRUE)
 
-    }else if (rankby == "p_value"){#ranking by p-value
+    }else if (rankby  ==  "p_value"){#ranking by p-value
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
       rankvec <- as.vector(sign(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)*(-1)*log10(DE_results[!is.na(DE_results$pvalue), ]$pvalue))
       names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
-      rankvec <- sort(rankvec, decreasing = TRUE)
+      rankvec <- sort(rankvec, decreasing  =  TRUE)
     }
   }
 
 
-  else if(method == "edgeR"){#create ranking based on edgeR results table
+  else if(method  ==  "edgeR"){#create ranking based on edgeR results table
 
     # first step: replace p-values of 0 with the smallest representable positive number
     # in R (necessary since one term of ranking metric is equal to log10(p-value))
 
-    DE_results$table$PValue[ DE_results$table$PValue  ==  0 ] <- min(DE_results$table$PValue[ DE_results$table$PValue > 0 ]) /10
+    DE_results$table$PValue[ DE_results$table$PValue == 0 ] <- min(DE_results$table$PValue[ DE_results$table$PValue > 0 ]) /10
 
-    if(rankby == "lfc"){#ranking based on log2 fold change
+    if(rankby  ==  "lfc"){#ranking based on log2 fold change
       rankvec <- as.vector(DE_results$table$logFC)
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing = TRUE)
+      rankvec <- sort(rankvec, decreasing  =  TRUE)
     }
 
-    else if(rankby == "p_value"){#ranking based on p-value
+    else if(rankby  ==  "p_value"){#ranking based on p-value
       rankvec <- as.vector(sign(DE_results$table$logFC)*(-1)*log10(DE_results$table$PValue))
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing = TRUE)
+      rankvec <- sort(rankvec, decreasing  =  TRUE)
     }
   }
 
-  else if(method == "limma"){#create ranking based on edgeR results table
+  else if(method  ==  "limma"){#create ranking based on edgeR results table
 
     # first step: replace p-values of 0 with the smallest representable positive number
     # in R (necessary since one term of ranking metric is equal to log10(p-value))
 
-    DE_results$P.Value[ DE_results$P.Value == 0 ] <- min(DE_results$P.Value[ DE_results$P.Value > 0 ]) / 10
+    DE_results$P.Value[ DE_results$P.Value  ==  0 ] <- min(DE_results$P.Value[ DE_results$P.Value > 0 ]) / 10
 
-    if(rankby == "lfc"){#ranking based on log2 fold change
+    if(rankby  ==  "lfc"){#ranking based on log2 fold change
       rankvec <- as.vector(DE_results$logFC)
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing = TRUE)
+      rankvec <- sort(rankvec, decreasing  =  TRUE)
     }
 
-    else if(rankby == "p_value"){#ranking based on p-value
+    else if(rankby  ==  "p_value"){#ranking based on p-value
       rankvec <- as.vector(sign(DE_results$logFC)*(-1)*log10(DE_results$P.Value))
       names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing = TRUE)
+      rankvec <- sort(rankvec, decreasing  =  TRUE)
     }
   }
+
+  # return gene ranking (vector of all genes from differential expression experiment
+  # ranked according to the ranking metric)
   return(rankvec)
 }
 
@@ -139,23 +142,23 @@ rankedList_cP <- function(DE_results, rankby, method){
 ################
 
 # create DESeq2 results and rank by p-value
-DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) %>%
-  conversion_mouseEnsembl_HumanSymbol(dupl_removal_method = 1) %>%
+DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold  =  10) %>%
+  conversion_mouseEnsembl_HumanSymbol(dupl_removal_method  =  1) %>%
   deseq_preprocess(phenotype_labels = bottomly.eset$strain ) %>%
   DESeq() %>%
-  lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
+  lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>%
   as.data.frame() %>%
-  rankedList_cP(rankby = "p_value", method = "DESeq2")
+  rankedList_cP(rankby = "p_value", method  = "DESeq2")
 
 # create path for storage of DESeq2 ranking
 path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
-write.table(DESeq2_ranking_phenorig, 
-            file = path_DESeq2_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
-            col.names = FALSE)
+write.table(DESeq2_ranking_phenorig,
+            file  =  path_DESeq2_phenorig,
+            quote  =  FALSE,
+            row.names  =  TRUE,
+            col.names  =  FALSE)
 
 
 ##############
@@ -163,30 +166,30 @@ write.table(DESeq2_ranking_phenorig,
 ##############
 
 # filtering indicator
-keep_phenorig <- DGEList(Biobase::exprs(bottomly.eset), group = bottomly.eset$strain) %>%
+keep_phenorig <- DGEList(Biobase::exprs(bottomly.eset), group  =  bottomly.eset$strain) %>%
   filterByExpr()
 
 # design matrix
 mm_phenorig <- model.matrix( ~ bottomly.eset$strain)
 
 # create limma results and rank by p-value
-limma_ranking_phenorig <- conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenorig, ], dupl_removal_method = 1) %>%
-  DGEList(group = bottomly.eset$strain) %>%
+limma_ranking_phenorig <- conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenorig, ], dupl_removal_method  =  1) %>%
+  DGEList(group  =  bottomly.eset$strain) %>%
   calcNormFactors() %>%
-  voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>%
-  eBayes() %>% topTable(coef=ncol(mm_phenorig), number=100000) %>%
-  rankedList_cP(rankby= "p_value", method="limma")
+  voom(design = mm_phenorig) %>% lmFit(design = mm_phenorig) %>%
+  eBayes() %>% topTable(coef = ncol(mm_phenorig), number = 100000) %>%
+  rankedList_cP(rankby =  "p_value", method = "limma")
 
 # Create path for storage of limma ranking
 path_limma_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Original_Phenotype/limma_ranking_phenOrig.txt"
 
 
 # export
-write.table(limma_ranking_phenorig, 
-            file = path_limma_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
-            col.names = FALSE)
+write.table(limma_ranking_phenorig,
+            file  =  path_limma_phenorig,
+            quote  =  FALSE,
+            row.names  =  TRUE,
+            col.names  =  FALSE)
 
 
 
@@ -199,24 +202,24 @@ for(i in 1:ncol(phen_bottomly)){
   ################
 
   # create DESeq2 results and rank by p-value
-  DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10)  %>%
-    conversion_mouseEnsembl_HumanSymbol(dupl_removal_method = 1) %>%
-    deseq_preprocess(phenotype_labels = phen_bottomly[, i] ) %>% DESeq() %>%
-    lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
+  DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(bottomly.eset), threshold  =  10)  %>%
+    conversion_mouseEnsembl_HumanSymbol(dupl_removal_method  =  1) %>%
+    deseq_preprocess(phenotype_labels  =  phen_bottomly[, i] ) %>% DESeq() %>%
+    lfcShrink(coef = "condition_treated_vs_untreated", type = "apeglm") %>%
     as.data.frame() %>%
-    rankedList_cP(rankby = "p_value", method = "DESeq2")
+    rankedList_cP(rankby  =  "p_value", method  =  "DESeq2")
 
   # create path for storage of DESeq2 ranking
-  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation", 
-                                 i, 
+  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
+                                 i,
                                  "/DESeq2_ranking_permutation", i, ".txt")
 
   # export
-  write.table(DESeq2_ranking_phenperm, 
-              file = path_DESeq2_phenperm, 
-              quote = FALSE, 
-              row.names = TRUE, 
-              col.names = FALSE)
+  write.table(DESeq2_ranking_phenperm,
+              file  =  path_DESeq2_phenperm,
+              quote  =  FALSE,
+              row.names  =  TRUE,
+              col.names  =  FALSE)
 
 
   ##############
@@ -224,33 +227,33 @@ for(i in 1:ncol(phen_bottomly)){
   ##############
 
   # filtering indicator
-  keep_phenperm <- DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, i]) %>%
+  keep_phenperm <- DGEList(Biobase::exprs(bottomly.eset), group  =  phen_bottomly[, i]) %>%
     filterByExpr()
 
   # design matrix
   mm_phenperm <- model.matrix( ~ phen_bottomly[, i])
 
   # create limma results and rank by p-value
-  limma_ranking_phenperm <-  conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
-    DGEList(group = phen_bottomly[, i]) %>% calcNormFactors() %>%
-    voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>%
-    eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
-    rankedList_cP(rankby= "p_value", method="limma")
+  limma_ranking_phenperm <-  conversion_mouseEnsembl_HumanSymbol(Biobase::exprs(bottomly.eset)[keep_phenperm, ], dupl_removal_method  =  1) %>%
+    DGEList(group  =  phen_bottomly[, i]) %>% calcNormFactors() %>%
+    voom(design = mm_phenperm) %>% lmFit(design = mm_phenperm) %>%
+    eBayes() %>% topTable(coef = ncol(mm_phenperm), number = 100000) %>%
+    rankedList_cP(rankby =  "p_value", method = "limma")
 
   # Create path for storage of limma ranking
-  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation", 
-                                i, 
-                                "/limma_ranking_permutation", 
-                                i, 
+  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task1/Raw/Phenotype_Permutation",
+                                i,
+                                "/limma_ranking_permutation",
+                                i,
                                 ".txt")
 
 
   # export
-  write.table(limma_ranking_phenperm, 
-              file = path_limma_phenperm, 
-              quote = FALSE, 
-              row.names = TRUE, 
-              col.names = FALSE)
+  write.table(limma_ranking_phenperm,
+              file  =  path_limma_phenperm,
+              quote  =  FALSE,
+              row.names  =  TRUE,
+              col.names  =  FALSE)
 
 
 }
@@ -293,7 +296,7 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 ->  16 + 24 = 40 DEGS
+# alternative 1: exponent 0 ->  16 + 24  =  40 DEGS
 # alternative 2: exponent 1.5 -> 0 DEGS
 # alternative 3: exponent 2 ->
 
@@ -341,9 +344,9 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 148 + 60 = 208 DEGS
-# alternative 2: exponent 1.5 -> 20 + 4 = 24 DEGS
-# alternative 3: exponent 2 -> 43 + 1 = 44 DEGS
+# alternative 1: exponent 0 -> 148 + 60  =  208 DEGS
+# alternative 2: exponent 1.5 -> 20 + 4  =  24 DEGS
+# alternative 3: exponent 2 -> 43 + 1  =  44 DEGS
 
 # final results: 225 DEGS
 # achieved with ALTERNATIVE ranking metric limma
@@ -402,14 +405,14 @@ for(i in 1:ncol(phen_bottomly)){
 # 1. step: Default
 #########
 
-# -> 17 + 1 = 18 DEGS
+# -> 17 + 1  =  18 DEGS
 
 
 #########
 # 2. step: change method to generate ranking
 #########
 
-# alternative : limma -> 24 + 9 = 33 DEGS
+# alternative : limma -> 24 + 9  =  33 DEGS
 # ->> proceed with alternative gene ranking generated with limma
 
 
@@ -425,8 +428,8 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 77 + 91 = 168 DEGS
-# alternative 2: exponent 1.5 -> 11 + 36 = 47 DEGS
+# alternative 1: exponent 0 -> 77 + 91  =  168 DEGS
+# alternative 2: exponent 1.5 -> 11 + 36  =  47 DEGS
 # alternative 3: exponent 2 -> 5 DEGS
 
 ### -> final results: 168 DEGS
@@ -469,7 +472,7 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 3 + 32 = 35 DEGS
+# alternative 1: exponent 0 -> 3 + 32  =  35 DEGS
 # alternative 2: exponent 1.5 -> 1 DEGS
 # alternative 3: exponent 2 -> 0 DEGS
 
@@ -482,14 +485,14 @@ for(i in 1:ncol(phen_bottomly)){
 # 1. step: Default
 #########
 
-# -> 239 + 41 = 280 DEGS
+# -> 239 + 41  =  280 DEGS
 
 
 #########
 # 2. step: change method to generate ranking
 #########
 
-# alternative : limma -> 52 + 56 = 108 DEGS
+# alternative : limma -> 52 + 56  =  108 DEGS
 # return to default ranking generated with DESeq2
 
 
@@ -505,9 +508,9 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 239 + 142 = 381 DEGS
-# alternative 2: exponent 1.5 -> 14 + 3 = 17 DEGS
-# alternative 3: exponent 2 -> 104+ 4 = 108 DEGS
+# alternative 1: exponent 0 -> 239 + 142  =  381 DEGS
+# alternative 2: exponent 1.5 -> 14 + 3  =  17 DEGS
+# alternative 3: exponent 2 -> 104+ 4  =  108 DEGS
 
 ### -> final results: 381 DEGS
 # achieved with ALTERNATIVE exponent 0
@@ -562,14 +565,14 @@ for(i in 1:ncol(phen_bottomly)){
 # 1. step: Default
 #########
 
-# -> 114 + 17 = 131 DEGS
+# -> 114 + 17  =  131 DEGS
 
 
 #########
 # 2. step: change method to generate ranking
 #########
 
-# alternative : limma -> 146 + 56 = 202 DEGS
+# alternative : limma -> 146 + 56  =  202 DEGS
 # ->> proceed with alternative ranking generated using limma
 
 
@@ -585,7 +588,7 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 382 + 117 = 499 DEGS
+# alternative 1: exponent 0 -> 382 + 117  =  499 DEGS
 # alternative 2: exponent 1.5 -> 24 DEGS
 # alternative 3: exponent 2 -> 8 DEGS
 
@@ -606,13 +609,13 @@ for(i in 1:ncol(phen_bottomly)){
 # 1. step: Default
 #########
 
-# -> 7 + 1 = 8 DEGS
+# -> 7 + 1  =  8 DEGS
 
 #########
 # 2. step: change method to generate ranking
 #########
 
-# alternative : limma -> 273 + 1 = 274 DEGS
+# alternative : limma -> 273 + 1  =  274 DEGS
 # ->> proceed with alternative gene ranking generated using limma
 
 
@@ -628,8 +631,8 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 246 + 70 = 316 DEGS
-# alternative 2: exponent 1.5 -> 8 + 5 = 13 DEGS
+# alternative 1: exponent 0 -> 246 + 70  =  316 DEGS
+# alternative 2: exponent 1.5 -> 8 + 5  =  13 DEGS
 # alternative 3: exponent 2 -> 119 DEGS
 
 
@@ -652,7 +655,7 @@ for(i in 1:ncol(phen_bottomly)){
 # 2. step: change method to generate ranking
 #########
 
-# alternative : limma -> 238 + 2 = 240 DEGS
+# alternative : limma -> 238 + 2  =  240 DEGS
 # return to default gene ranking generated with DESeq2
 
 
@@ -668,7 +671,7 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 535 + 19 = 554 DEGS
+# alternative 1: exponent 0 -> 535 + 19  =  554 DEGS
 # alternative 2: exponent 1.5 -> 1 DEGS
 # alternative 3: exponent 2 -> 17 DEGS
 
@@ -685,14 +688,14 @@ for(i in 1:ncol(phen_bottomly)){
 # 1. step: Default
 #########
 
-# -> 63 + 661 = 724 DEGS
+# -> 63 + 661  =  724 DEGS
 
 
 #########
 # 2. step: change method to generate ranking
 #########
 
-# alternative : limma -> 52 + 651 = 703 DEGS
+# alternative : limma -> 52 + 651  =  703 DEGS
 # ->> return to default gene ranking generated with DESeq2
 
 
@@ -700,7 +703,7 @@ for(i in 1:ncol(phen_bottomly)){
 # 3. step: change geneset database to KEGG
 #########
 
-# -> 4 + 23 = 27 DEGS
+# -> 4 + 23  =  27 DEGS
 # ->> return to default geneset database GP (BP)
 
 
@@ -708,9 +711,9 @@ for(i in 1:ncol(phen_bottomly)){
 # 4. step: change exponent
 #########
 
-# alternative 1: exponent 0 -> 198 + 764 = 962 DEGS
-# alternative 2: exponent 1.5 -> 757 + 7 = 764 DEGS
-# alternative 3: exponent 2 -> 12 + 474 = 486 DEGS
+# alternative 1: exponent 0 -> 198 + 764  =  962 DEGS
+# alternative 2: exponent 1.5 -> 757 + 7  =  764 DEGS
+# alternative 3: exponent 2 -> 12 + 474  =  486 DEGS
 
 # final results: 962 DEGS
 # -> achieved with ALTERNATIVE exponent 0

@@ -1,6 +1,9 @@
 ################################################################################
-### Functions to generate the results illustration plots goal 1 ################
+### Functions to generate the results illustration plots goal 1  ###############
 ################################################################################
+
+# These help functions are relevant for Figure 3 in the main manuscript and Figure
+# S2 in the supplement
 
 library(ggplot2)
 library(plyr)
@@ -89,7 +92,7 @@ prep_data_for_ggplot_n_DEGS  <- function(default_to_optim, sample_labels){
                                       levels = levels)
 
 
-
+  # return processed data set
   return(default_to_optim)
 
 
@@ -169,7 +172,7 @@ create_results_illustration_n_DEGS  <- function(default_to_optim, sample_labels,
     theme(panel.grid.minor = element_blank()) +
     scale_y_continuous(label = labels_sq)
 
-
+  # return ggplot
   return(plot)
 
 }

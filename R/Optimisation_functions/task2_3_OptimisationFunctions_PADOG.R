@@ -52,6 +52,7 @@ pre_filt  <- function(expression_data, threshold){
 
   expression_data_filt  <- expression_data[rowSums(expression_data) >= threshold, ]
 
+  # return filtered gene expression data set
   return(expression_data_filt)
 
 
@@ -95,13 +96,14 @@ is.integer0  <- function(x){
 #           "p_adj": extract a gene's adjusted p-value from the PADOG results table
 #           "rank": extract a gene's rank among all remaining gene sets from the PADOG
 #                   results table
+
 pvalue_rank_padog  <- function(term, padog_results, metric){
 
 
   #check whether there are any gene sets reported in the results
   if (nrow(padog_results) == 0){ #if there are no gene sets then the value 1 shall be returned
-    #-> no gene sets also means that the gene set of interest does not contain any
-    #of the DE genes
+    # -> no gene sets also means that the gene set of interest does not contain any
+    # of the DE genes
 
     return(1)
 
@@ -128,9 +130,9 @@ pvalue_rank_padog  <- function(term, padog_results, metric){
                     rank,
                     1))
 
-      #note: in the case that a gene set is not reported in the results table of padog_results,
-      #ifelse() in combination with !is.integer0() then ensures that a rank of Inf is returned,
-      #meaning that each adaption leading to any infinite rank is considered an improvement
+      # note: in the case that a gene set is not reported in the results table of padog_results,
+      # ifelse() in combination with !is.integer0() then ensures that a rank of Inf is returned,
+      # meaning that each adaption leading to any infinite rank is considered an improvement
 
     }else if(metric == "p_adj"){
 
@@ -142,9 +144,9 @@ pvalue_rank_padog  <- function(term, padog_results, metric){
                     padog_results$p_adj[ind_row],
                     1))
 
-      #note: in the case that a gene set is not reported in the results table of padog_results,
-      #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
-      #meaning that each adaption leading to a an adjusted p-value in (0, 1] is considered an improvement
+      # note: in the case that a gene set is not reported in the results table of padog_results,
+      # ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
+      # meaning that each adaption leading to a an adjusted p-value in (0, 1] is considered an improvement
     }
   }
 }
@@ -168,6 +170,7 @@ pvalue_rank_padog  <- function(term, padog_results, metric){
 #           "p_adj": extract a gene's adjusted p-value from the PADOG results table
 #           "rank": extract a gene's rank among all remaining gene sets from the PADOG
 #                   results table
+
 PADOG_rankp_optim  <- function(geneset, expression_data, phenotype_labels, metric){
 
 
@@ -374,9 +377,10 @@ PADOG_rankp_optim  <- function(geneset, expression_data, phenotype_labels, metri
 
 
   #return optimal documentation frame
-  return(list(default = PADOG_prefilt_list[[1]], #default results
-              optim = PADOG_opt, #optimal results
-              documentation = doc)) # documentation frame
+  return(list(default = PADOG_prefilt_list[[1]], # default PADOG results
+              optim = PADOG_opt, # optimal PADOG results
+              documentation = doc)) # documentation of ALL optimisation steps performed
+                                    # and resulting adjusted p-values/ ranks
 
 
 

@@ -24,7 +24,7 @@ lossfunction_GOSeq <- function(gsa_results){
   #according to the adjusted p-value of over-representation
   n_DEGS <- sum(gsa_results$p_adj_overrep < 0.05)
 
-
+  # return number of differentially enriched gene sets
   return(n_DEGS)
 
 }
@@ -49,7 +49,7 @@ GOSeq_input_preparation <- function(DE_results){
   DEG_vec_bin <- ifelse((DE_results_nona$p_adj < 0.05) & (!is.na(DE_results_nona$p_adj)), 1, 0)
   names(DEG_vec_bin) <- rownames(DE_results_nona)
 
-  # return binary names vector
+  # return binary names vector (indicating for each gene whether is is differentially enriched or not)
   return(DEG_vec_bin)
 
 }
@@ -86,7 +86,7 @@ GOSeq_pipeline <- function(DE_results, geneset_database = "GO:BP", bias = NULL,
     as.data.frame() %>%
     mutate(p_adj_overrep = p.adjust(over_represented_pvalue)) # external conduct of multiple test adjustment
 
-
+  # return GOSeq results table
   return(GOSeq_results)
 
 
@@ -343,7 +343,8 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
   return(list(default_GOSeq = GOSeq_results_deseq2[GOSeq_results_deseq2$p_adj_overrep < 0.05, ], #default results table
               optim_GOSeq = optim_GOSeq_results , #optimal results table
               optim_DE_results = optim_DE_results, # optimal differential expression analysis results
-              documentation = doc)) #documentation frame
+              documentation = doc)) #documentation of all optimisation steps performed
+                                    # in this function with resulting number of differentially enriched gene sets
 
 }
 
@@ -550,7 +551,8 @@ GOSeq_optim <- function(DE_results, expression_data){
   #return optimal result with only those gene sets detected as differetially enriched
   return(list(default_GOSeq =GOSeq_default[GOSeq_default$p_adj_overrep< 0.05, ], # default GOSeq results
               optim_GOSeq =GOSeq_final[GOSeq_final$p_adj_overrep< 0.05, ], # optimal GOSeq results
-              documentation=doc))
+              documentation=doc)) # documentation of all optimisation steps performed in this function
+                                  # and resultig number of differentialle enriched gene sets
 
 }
 
@@ -577,7 +579,8 @@ GOSeq_joint_optimization <- function(expression_data, phenotype_labels){
 
   return(list(default_GOSeq = optim_preprocess$default_GOSeq, # default GOSeq results
               optim_GOSeq = optim_internalparam$optim_GOSeq, # optimal GOSeq results
-              documentation = doc)) # documentation frame
+              documentation = doc)) # documentation frame of ALL optimisation steps performed
+                                    # with resulting number of differentially enriched gene sets
 
 }
 

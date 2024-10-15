@@ -37,6 +37,7 @@ deseq_preprocess <- function(data, phenotype_labels){
             colData = coldata, #as generated above
             design = ~ condition)
 
+  # return gene expression data in correct format for DESeq2
   return(dds)
 
 }
@@ -57,6 +58,7 @@ pre_filt <- function(expression_data, threshold){
 
   expression_data_filt <- expression_data[rowSums(expression_data) >= threshold, ]
 
+  # return filtered gene expression data set
   return(expression_data_filt)
 
 
@@ -247,7 +249,8 @@ geneID_conversion <- function(expression_data, dupl_removal_method){
 
   }
 
-  #store resulting gene expression data sets in list
+  #store resulting gene expression data sets in list (with converted gene IDs and
+  # duplicates removed according to function argument dupl_removal_method)
   return(exprdat_dupl)
 
 

@@ -68,6 +68,8 @@ rankedList_cP  <- function(DE_results, rankby, method){
       rankvec  <- sort(rankvec, decreasing = TRUE)
     }
   }
+  # return ranking vectos (all genes from differential expression experiment
+  # ranked by metric of choice)
   return(rankvec)
 }
 
@@ -136,16 +138,16 @@ pvalue_rank_GSEA  <- function(term, GSEA_results, metric){
 
   }else if(metric == "p_adj"){
 
-    #identify row number of respective gene set
+    # identify row number of respective gene set
     ind_row  <- grep(term, GSEA_results$ID)
 
-    #return respective adjusted p-value
+    # return respective adjusted p-value of gene
     return(ifelse(!is.integer0(ind_row),
                   GSEA_results$p.adjust[ind_row],
                   1))
-    #note: in the case that a gene set is not reported in the results table of GSEA_results,
-    #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
-    #meaning that each adaption leading to a an adjusted p-value in (0, 1] is considered an improvement
+    # note: in the case that a gene set is not reported in the results table of GSEA_results,
+    # ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
+    # meaning that each adaption leading to a an adjusted p-value in (0, 1] is considered an improvement
   }
 }
 
@@ -191,7 +193,7 @@ GSEA_pipeline_default  <- function(gene_ranking, geneset_database, exp = 1, orga
   }
 
 
-  # return GSEA results
+  # return GSEA results table
   return(GSEA %>% as.data.frame())
 
 
@@ -591,7 +593,8 @@ cP_GSEA_rankp_optim  <- function(geneset, geneset_database, expression_data, phe
 
   return(list(default = GSEA_results_DESeq2ranking, #default results
               optim = as.data.frame(GSEA_results_exp_list[[ind_exp_opt]]), #optimal results
-              documentation = doc))
+              documentation = doc)) # documentation of ALL optimisation steps performed
+                                    # with corresponding results in terms of adjusted p-values or ranks
 
 
 }

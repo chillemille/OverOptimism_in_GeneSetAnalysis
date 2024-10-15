@@ -59,13 +59,17 @@ rankedList_cP_GSEA <- function(DE_results, rankby, method){
     }
 
     else if (rankby == "p_value") {
+
       #ranking based on p-value
       rankvec  <-
         as.vector(sign(DE_results$logFC) * (-1) * log10(DE_results$P.Value))
       names(rankvec) <- rownames(DE_results)
       rankvec <- sort(rankvec, decreasing = TRUE)
+
     }
   }
+  # return gene ranking (all genes from differential expression experiment ranked
+  # by metric of choice)
   return(rankvec)
 }
 
@@ -81,6 +85,7 @@ lossfunction_cP_GSEA <- function(gsa_result){
   #count number of gene sets with adjusted p-value smaller than 0.05
   n_DEGS <- sum(as.data.frame(gsa_result)$p.adjust < 0.05)
 
+  # return number of differentially enriched gene sets
   return(n_DEGS)
 }
 
@@ -125,7 +130,7 @@ GSEA_pipeline_default <- function(gene_ranking, geneset_database, exp = 1, organ
   }
 
 
-  # return GSEA results
+  # return GSEA results table
   return(GSEA %>% as.data.frame())
 
 
@@ -145,6 +150,7 @@ GSEA_pipeline_default <- function(gene_ranking, geneset_database, exp = 1, organ
 #                     with subontology "Biological processes")
 # - phenotype_labels: vector of binary labels indicating the status of each sample
 #                     in the gene expression data set
+
 cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotype_labels){
 
   # identify organism for which gene expression is measured from the format of the gene IDs (all are Ensembl)
@@ -482,9 +488,9 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
 
   return(list(default_GSEA = gsea_results_rankmetrics[[1]], #default GSEA results
               optim_GSEA = GSEA_results_convID_list[[ind_convID_opt]], #optimal GSEA results
-              optim_ranking = ranked_lists_convID[[ind_convID_opt]], # optimal ranking
+              optim_ranking = ranked_lists_convID[[ind_convID_opt]], # optimal ranking for GSEA
               ind_organism = ind_organism, # indicate organism
-              documentation = doc))
+              documentation = doc)) # documentation of all optimisation steps and results
 
 
 }
@@ -573,8 +579,8 @@ cP_GSEA_go_optim <- function(ranking, organism_GO){
                     seed = TRUE)
 
   #return optimal result GSEA and optimal parameters
-  return(list(optim_gsea = as.data.frame(go_final),
-              documentation = doc))
+  return(list(optim_gsea = as.data.frame(go_final), # optimal GSEA results table (gene set database GO)
+              documentation = doc)) # documentation of all optimisation steps performed in this function and corresp. results
 }
 
 
@@ -592,8 +598,8 @@ cP_GSEA_go_optim <- function(ranking, organism_GO){
 # optimize internal parameters of function gseKEGG()
 
 # function arguments:
-# ranking: gene_ranking generated using function rankedList_cP_GSEA
-# organism_KEGG: organism for which the analysis is performed
+# - ranking: gene_ranking generated using function rankedList_cP_GSEA
+# - organism_KEGG: organism for which the analysis is performed
 #             "has" for human
 #             "mmu" for mouse
 
@@ -665,8 +671,8 @@ cP_GSEA_kegg_optim <- function(ranking, organism_KEGG){
                         seed = TRUE)
 
   #return optimal result GSEA and optimal parameters
-  return(list(optim_gsea = as.data.frame(kegg_final),
-              documentation = doc))
+  return(list(optim_gsea = as.data.frame(kegg_final), # optimal GSEA results table (gene set database KEGG)
+              documentation = doc)) # documentation of all optimisation steps performed in this function with corresp. results
 }
 
 
@@ -771,7 +777,7 @@ cP_GSEA_internparam_optim <- function(ranking, ind_organism){
   #return optimal GSEA result and optimal parameters
   return(list(default_GSEA = gsea_go, #default GSEA
               optimal_GSEA = optim_GSEA_results$optim_gsea, #optimal GSEA
-              optim_ranking = optim_GSEA_results$optim_ranking,
+              optim_ranking = optim_GSEA_results$optim_ranking, # optimal gene ranking
               documentation = doc_complete)) #optimal GSEA parameters
 
 }
@@ -779,6 +785,12 @@ cP_GSEA_internparam_optim <- function(ranking, ind_organism){
 ##################################################################################
 ### Joint optimization of pre-processing and internal parameters #################
 ##################################################################################
+
+# function inputs:
+# - expression_data:  gene expression data to be processed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
+
 
 cP_GSEA_joint_optimization <- function(expression_data, phenotype_labels){
 
@@ -794,9 +806,9 @@ cP_GSEA_joint_optimization <- function(expression_data, phenotype_labels){
                optim_internalparam$documentation[optim_internalparam$documentation$step != "Default", ])
 
 
-  return(list(default_GSEA = optim_preprocess$default_GSEA,
-              optim_GSEA = optim_internalparam$optimal_GSEA,
-              documentation = doc))
+  return(list(default_GSEA = optim_preprocess$default_GSEA, # default GSEA results
+              optim_GSEA = optim_internalparam$optimal_GSEA, # optimal GSEA results
+              documentation = doc)) # documentation of ALL optimisation steps performed (over all functions) and corresp. results
 
 
 }

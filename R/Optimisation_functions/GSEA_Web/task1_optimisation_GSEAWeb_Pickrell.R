@@ -43,6 +43,7 @@ pre_filt <- function(expression_data, threshold){
 
   expression_data_filt<-expression_data[rowSums(expression_data)>=threshold, ]
 
+  # return filtered gene expression data set
   return(expression_data_filt)
 
 
@@ -75,10 +76,10 @@ phen_orig[ pickrell.eset$gender == levels(pickrell.eset$gender)[[2]]] <- 1
 
 path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phenotypes/Phenotype_original.txt")
 
-write.table(phen_orig, 
-            file = path_phen, 
-            quote = FALSE, 
-            row.names = FALSE, 
+write.table(phen_orig,
+            file = path_phen,
+            quote = FALSE,
+            row.names = FALSE,
             col.names = FALSE)
 
 
@@ -94,10 +95,10 @@ dat_default_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) 
 path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Original/exprdat_default_phen_original.txt")
 
 ### export
-write.table(dat_default_phenorig, 
-            file = path_dat_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(dat_default_phenorig,
+            file = path_dat_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 ############################################
@@ -114,10 +115,10 @@ path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrel
 
 
 # export
-write.table(dat_vst_phenorig, 
-            file = path_dat_vst_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(dat_vst_phenorig,
+            file = path_dat_vst_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -194,10 +195,10 @@ for(i in 1:ncol(phen_pickrell)){
 
   path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phenotypes/Phenotype_Permutation", i, ".txt")
 
-  write.table(phen, 
-              file = path_phen, 
-              quote = FALSE, 
-              row.names = FALSE, 
+  write.table(phen,
+              file = path_phen,
+              quote = FALSE,
+              row.names = FALSE,
               col.names = FALSE)
 
 
@@ -213,10 +214,10 @@ for(i in 1:ncol(phen_pickrell)){
   path_dat <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_default_phen_permutation", i, ".txt")
 
   ### export
-  write.table(dat_default, 
-              file = path_dat, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(dat_default,
+              file = path_dat,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = TRUE)
 
   ############################################
@@ -233,10 +234,10 @@ for(i in 1:ncol(phen_pickrell)){
 
 
   # export
-  write.table(dat_vst, 
-              file = path_dat_vst, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(dat_vst,
+              file = path_dat_vst,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = TRUE)
 
 }
@@ -269,17 +270,17 @@ i <- 1
 ########
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen1 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[, 1]) %>% filterByExpr()
+prefilt_ind_phen1 <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[, 1]) %>% filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen1 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_phen1, ], phenotype_labels = phen_pickrell[, 1])
 
 ### export
 path_filterByExpr_phen1 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen1, 
-            file = path_filterByExpr_phen1, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen1,
+            file = path_filterByExpr_phen1,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 3 DEGS
@@ -353,10 +354,10 @@ exprdat_prefilt_phen2 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen2 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen2, 
-            file = path_filterByExpr_phen2, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen2,
+            file = path_filterByExpr_phen2,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 3 DEGS
@@ -426,17 +427,17 @@ i <- 3
 
 
 # generate pre-filtering indicator using filterByExpr()
-prefilt_ind_phen3 <-  DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[, 3]) %>% filterByExpr()
+prefilt_ind_phen3 <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[, 3]) %>% filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
 exprdat_prefilt_phen3 <- variancetransform(Biobase::exprs(pickrell.eset)[prefilt_ind_phen3, ], phenotype_labels = phen_pickrell[, 3])
 
 ### export
 path_filterByExpr_phen3 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen3, 
-            file = path_filterByExpr_phen3, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen3,
+            file = path_filterByExpr_phen3,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS
@@ -511,10 +512,10 @@ exprdat_prefilt_phen4 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen4 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen4, 
-            file = path_filterByExpr_phen4, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen4,
+            file = path_filterByExpr_phen4,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS
@@ -589,10 +590,10 @@ exprdat_prefilt_phen5 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen5 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen5, 
-            file = path_filterByExpr_phen5, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen5,
+            file = path_filterByExpr_phen5,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 2 DEGS
@@ -663,10 +664,10 @@ exprdat_prefilt_phen6 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen6 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen6, 
-            file = path_filterByExpr_phen6, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen6,
+            file = path_filterByExpr_phen6,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -741,10 +742,10 @@ exprdat_prefilt_phen7 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen7 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen7, 
-            file = path_filterByExpr_phen7, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen7,
+            file = path_filterByExpr_phen7,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 # -> 5 DEGS
 # ->> return to manual pre-filtering using threshold 10 (voom- transformed expression data set )
@@ -815,10 +816,10 @@ exprdat_prefilt_phen8 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen8 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen8, 
-            file = path_filterByExpr_phen8, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen8,
+            file = path_filterByExpr_phen8,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS
@@ -889,10 +890,10 @@ exprdat_prefilt_phen9 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_ph
 ### export
 path_filterByExpr_phen9 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen9, 
-            file = path_filterByExpr_phen9, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen9,
+            file = path_filterByExpr_phen9,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS
@@ -968,10 +969,10 @@ exprdat_prefilt_phen10 <- voom_trans(Biobase::exprs(pickrell.eset)[prefilt_ind_p
 ### export
 path_filterByExpr_phen10 <- paste0("./Results/Intermediate_results/GSEA_Web/Pickrell/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen10, 
-            file = path_filterByExpr_phen10, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen10,
+            file = path_filterByExpr_phen10,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS

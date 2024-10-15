@@ -62,10 +62,10 @@ phen_orig[ bottomly.eset$strain == levels(bottomly.eset$strain)[[2]]] <- 1
 
 path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phenotypes/Phenotype_original.txt")
 
-write.table(phen_orig, 
-            file = path_phen, 
-            quote = FALSE, 
-            row.names = FALSE, 
+write.table(phen_orig,
+            file = path_phen,
+            quote = FALSE,
+            row.names = FALSE,
             col.names = FALSE)
 
 
@@ -81,10 +81,10 @@ dat_default_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) 
 path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_default_phen_original.txt")
 
 ### export
-write.table(dat_default_phenorig, 
-            file = path_dat_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(dat_default_phenorig,
+            file = path_dat_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 ############################################
@@ -101,10 +101,10 @@ path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottoml
 
 
 # export
-write.table(dat_vst_phenorig, 
-            file = path_dat_vst_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(dat_vst_phenorig,
+            file = path_dat_vst_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -141,10 +141,10 @@ exprdat_prefilt_phenorig <- variancetransform(Biobase::exprs(bottomly.eset)[pref
 ### export
 path_filterByExpr_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Original/exprdat_filterByExpr_phenorig.txt")
 
-write.table(exprdat_prefilt_phenorig, 
-            file = path_filterByExpr_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phenorig,
+            file = path_filterByExpr_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -194,14 +194,14 @@ for(i in 1:ncol(phen_bottomly)){
   phen[phen_bottomly[, i] == levels(bottomly.eset$strain)[[1]]] <- 0
   phen[phen_bottomly[, i] == levels(bottomly.eset$strain)[[2]]] <- 1
 
-  path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phenotypes/Phenotype_Permutation", 
-                      i, 
+  path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phenotypes/Phenotype_Permutation",
+                      i,
                       ".txt")
 
-  write.table(phen, 
-              file = path_phen, 
-              quote = FALSE, 
-              row.names = FALSE, 
+  write.table(phen,
+              file = path_phen,
+              quote = FALSE,
+              row.names = FALSE,
               col.names = FALSE)
 
 
@@ -214,17 +214,17 @@ for(i in 1:ncol(phen_bottomly)){
     voom_trans(phenotype_labels = phen_bottomly[, i])
 
   # generate path
-  path_dat <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                     i, 
-                     "/exprdat_default_phen_permutation", 
-                     i, 
+  path_dat <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                     i,
+                     "/exprdat_default_phen_permutation",
+                     i,
                      ".txt")
 
   ### export
-  write.table(dat_default, 
-              file = path_dat, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(dat_default,
+              file = path_dat,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = TRUE)
 
   ############################################
@@ -237,18 +237,18 @@ for(i in 1:ncol(phen_bottomly)){
     variancetransform(phenotype_labels = phen_bottomly[, i])
 
   # generate path
-  path_dat_vst <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                         i, 
-                         "/exprdat_vst_phen_permutation", 
-                         i, 
+  path_dat_vst <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                         i,
+                         "/exprdat_vst_phen_permutation",
+                         i,
                          ".txt")
 
 
   #export
-  write.table(dat_vst, 
-              file = path_dat_vst, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(dat_vst,
+              file = path_dat_vst,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = TRUE)
 
 }
@@ -288,16 +288,16 @@ prefilt_ind_phen1 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottom
 exprdat_prefilt_phen1 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen1, ], phenotype_labels = phen_bottomly[, 1])
 
 ### export
-path_filterByExpr_phen1 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen1 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen1, 
-            file = path_filterByExpr_phen1, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen1,
+            file = path_filterByExpr_phen1,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.6134048
@@ -364,16 +364,16 @@ prefilt_ind_phen2 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottom
 exprdat_prefilt_phen2 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen2, ], phenotype_labels = phen_bottomly[, 2])
 
 ### export
-path_filterByExpr_phen2 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen2 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen2, 
-            file = path_filterByExpr_phen2, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen2,
+            file = path_filterByExpr_phen2,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.85839516
@@ -442,16 +442,16 @@ prefilt_ind_phen3 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottom
 exprdat_prefilt_phen3 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen3, ], phenotype_labels = phen_bottomly[, 3])
 
 ### export
-path_filterByExpr_phen3 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen3 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen3, 
-            file = path_filterByExpr_phen3, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen3,
+            file = path_filterByExpr_phen3,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value =1
@@ -512,20 +512,20 @@ i <- 4
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen4 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 4]) %>% filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen4 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen4, ], 
+exprdat_prefilt_phen4 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen4, ],
                                     phenotype_labels = phen_bottomly[, 4])
 
 ### export
-path_filterByExpr_phen4 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen4 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen4, 
-            file = path_filterByExpr_phen4, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen4,
+            file = path_filterByExpr_phen4,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.65209365
@@ -590,18 +590,18 @@ i <- 5
 prefilt_ind_phen5 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 5]) %>%
   filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen5 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen5, ], 
+exprdat_prefilt_phen5 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen5, ],
                                            phenotype_labels = phen_bottomly[, 5])
 
 ### export
-path_filterByExpr_phen5 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
+path_filterByExpr_phen5 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
                                   "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen5, 
-            file = path_filterByExpr_phen5, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen5,
+            file = path_filterByExpr_phen5,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.8857586
@@ -664,18 +664,18 @@ i <- 6
 prefilt_ind_phen6 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 6]) %>%
   filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen6 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen6, ], 
+exprdat_prefilt_phen6 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen6, ],
                                            phenotype_labels = phen_bottomly[, 6])
 
 ### export
-path_filterByExpr_phen6 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
+path_filterByExpr_phen6 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
                                   "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen6, 
-            file = path_filterByExpr_phen6, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen6,
+            file = path_filterByExpr_phen6,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -741,20 +741,20 @@ i <- 7
 prefilt_ind_phen7 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 7]) %>%
   filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen7 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen7, ], 
+exprdat_prefilt_phen7 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen7, ],
                                            phenotype_labels = phen_bottomly[, 7])
 
 ### export
-path_filterByExpr_phen7 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen7 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen7, 
-            file = path_filterByExpr_phen7, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen7,
+            file = path_filterByExpr_phen7,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # ->  adj. p-value = 0.9836634
@@ -817,20 +817,20 @@ i <- 8
 prefilt_ind_phen8 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 8]) %>%
   filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen8 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen8, ], 
+exprdat_prefilt_phen8 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen8, ],
                                            phenotype_labels = phen_bottomly[, 8])
 
 ### export
-path_filterByExpr_phen8 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen8 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen8, 
-            file = path_filterByExpr_phen8, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen8,
+            file = path_filterByExpr_phen8,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.6223146
@@ -892,20 +892,20 @@ i <- 9
 prefilt_ind_phen9 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 9]) %>%
   filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen9 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen9, ], 
+exprdat_prefilt_phen9 <- variancetransform(Biobase::exprs(bottomly.eset)[prefilt_ind_phen9, ],
                                            phenotype_labels = phen_bottomly[, 9])
 
 ### export
-path_filterByExpr_phen9 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                  i, 
-                                  "/exprdat_filterByExpr_phen_permutation", 
-                                  i, 
+path_filterByExpr_phen9 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                  i,
+                                  "/exprdat_filterByExpr_phen_permutation",
+                                  i,
                                   ".txt")
 
-write.table(exprdat_prefilt_phen9, 
-            file = path_filterByExpr_phen9, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen9,
+            file = path_filterByExpr_phen9,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.8224765
@@ -974,20 +974,20 @@ i <- 10
 prefilt_ind_phen10 <-  DGEList(Biobase::exprs(bottomly.eset), group = phen_bottomly[, 10]) %>%
   filterByExpr()
 # perform voom-transformation on accordingly pre-filtered pickrell data set
-exprdat_prefilt_phen10 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen10, ], 
+exprdat_prefilt_phen10 <- voom_trans(Biobase::exprs(bottomly.eset)[prefilt_ind_phen10, ],
                                      phenotype_labels = phen_bottomly[, 10])
 
 ### export
-path_filterByExpr_phen10 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation", 
-                                   i, 
-                                   "/exprdat_filterByExpr_phen_permutation", 
-                                   i, 
+path_filterByExpr_phen10 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task2_tCell/Raw/Phen_Permutation",
+                                   i,
+                                   "/exprdat_filterByExpr_phen_permutation",
+                                   i,
                                    ".txt")
 
-write.table(exprdat_prefilt_phen10, 
-            file = path_filterByExpr_phen10, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen10,
+            file = path_filterByExpr_phen10,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> adj. p-value = 0.85818964

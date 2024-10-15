@@ -50,6 +50,7 @@ lossfunction_padog  <- function(gsa_padog_result){
   #count number of differentially enriched gene sets by adjusted p-value
   n_DEGS  <- sum(gsa_padog_result$p_adj < 0.05)
 
+  # return number of differentially enriched gene sets
   return(n_DEGS)
 }
 
@@ -112,7 +113,7 @@ PADOG_optim  <- function(expression_data, phenotype_labels){
   exprdat_list_prefilt  <- list(exprdat_prefilt_alt,
                                expression_data[ind_genes1, ])
 
-  # Run Padog with both approaches to pre-filtering
+  # Run PADOG with both approaches to pre-filtering
   PADOG_prefilt_list  <- list()
   for(i in 1:length(exprdat_list_prefilt)){
 
@@ -251,7 +252,8 @@ PADOG_optim  <- function(expression_data, phenotype_labels){
   #return optimal documentation frame
   return(list(default = PADOG_prefilt_list[[1]], #default results
               optim = PADOG_opt, #optimal results
-              documentation = doc)) # documentation frame
+              documentation = doc)) # documentation of ALL optimisation steps performed
+                                    # and resulting number of differentially enriched gene sets
 
 
 

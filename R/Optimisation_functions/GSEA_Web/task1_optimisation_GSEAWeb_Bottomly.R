@@ -38,8 +38,9 @@ for(i in 1:10){
 
 pre_filt<-function(expression_data, threshold){
 
-  expression_data_filt<-expression_data[rowSums(expression_data)>=threshold, ]
+  expression_data_filt <- expression_data[rowSums(expression_data)>=threshold, ]
 
+  # pre-filtered gene expression data set
   return(expression_data_filt)
 
 
@@ -77,10 +78,10 @@ phen_orig[bottomly.eset$strain == levels(bottomly.eset$strain)[2]] <- 1
 
 path_phen_orig <- "./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phenotypes/Phenotype_Original.txt"
 
-write.table(phen_orig, 
-            file = path_phen_orig, 
-            quote = FALSE, 
-            row.names = FALSE, 
+write.table(phen_orig,
+            file = path_phen_orig,
+            quote = FALSE,
+            row.names = FALSE,
             col.names = FALSE)
 
 ####################################
@@ -95,10 +96,10 @@ dat_default_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 10) 
 path_dat_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Original/exprdat_default_phen_original.txt")
 
 ### export
-write.table(dat_default_phenorig, 
-            file = path_dat_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(dat_default_phenorig,
+            file = path_dat_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 ############################################
@@ -115,10 +116,10 @@ path_dat_vst_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottoml
 
 
 # export
-write.table(dat_vst_phenorig, 
-            file = path_dat_vst_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(dat_vst_phenorig,
+            file = path_dat_vst_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -153,10 +154,10 @@ exprdat_prefilt_phenorig <- voom_trans(bottomly.eset[prefilt_ind_phenorig, ], ph
 ### export
 path_filterByExpr_phenorig <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Original/exprdat_filterByExpr_phen_original.txt")
 
-write.table(exprdat_prefilt_phenorig, 
-            file = path_filterByExpr_phenorig, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phenorig,
+            file = path_filterByExpr_phenorig,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 5 DEGS
@@ -215,10 +216,10 @@ for(i in 1:ncol(phen_bottomly)){
 
   path_phen <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phenotypes/Phenotype_Permutation", i, ".txt")
 
-  write.table(phen, 
-              file = path_phen, 
-              quote = FALSE, 
-              row.names = FALSE, 
+  write.table(phen,
+              file = path_phen,
+              quote = FALSE,
+              row.names = FALSE,
               col.names = FALSE)
 
   ####################################
@@ -233,10 +234,10 @@ for(i in 1:ncol(phen_bottomly)){
   path_dat <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_default_phen_permutation", i, ".txt")
 
   ### export
-  write.table(dat_default, 
-              file = path_dat, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(dat_default,
+              file = path_dat,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = TRUE)
 
   ############################################
@@ -253,10 +254,10 @@ for(i in 1:ncol(phen_bottomly)){
 
 
   # export
-  write.table(dat_vst, 
-              file = path_dat_vst, 
-              quote = FALSE, 
-              row.names = TRUE, 
+  write.table(dat_vst,
+              file = path_dat_vst,
+              quote = FALSE,
+              row.names = TRUE,
               col.names = TRUE)
 
 
@@ -297,10 +298,10 @@ exprdat_prefilt_phen1 <- voom_trans(bottomly.eset[prefilt_ind_phen1, ], phenotyp
 ### export
 path_filterByExpr_phen1 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen1, 
-            file = path_filterByExpr_phen1, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen1,
+            file = path_filterByExpr_phen1,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -376,10 +377,10 @@ exprdat_prefilt_phen2 <- variancetransform(bottomly.eset[prefilt_ind_phen2, ], p
 ### export
 path_filterByExpr_phen2 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen2, 
-            file = path_filterByExpr_phen2, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen2,
+            file = path_filterByExpr_phen2,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 10 DEGS
@@ -452,10 +453,10 @@ exprdat_prefilt_phen3 <-voom_trans(bottomly.eset[prefilt_ind_phen3, ], phenotype
 ### export
 path_filterByExpr_phen3 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen3, 
-            file = path_filterByExpr_phen3, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen3,
+            file = path_filterByExpr_phen3,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -529,10 +530,10 @@ exprdat_prefilt_phen4 <- variancetransform(bottomly.eset[prefilt_ind_phen4, ], p
 ### export
 path_filterByExpr_phen4 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen4, 
-            file = path_filterByExpr_phen4, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen4,
+            file = path_filterByExpr_phen4,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 8 DEGS
@@ -606,10 +607,10 @@ exprdat_prefilt_phen5 <-voom_trans(bottomly.eset[prefilt_ind_phen5, ], phenotype
 ### export
 path_filterByExpr_phen5 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen5, 
-            file = path_filterByExpr_phen5, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen5,
+            file = path_filterByExpr_phen5,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -680,10 +681,10 @@ exprdat_prefilt_phen6 <- variancetransform(bottomly.eset[prefilt_ind_phen6, ], p
 ### export
 path_filterByExpr_phen6 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen6, 
-            file = path_filterByExpr_phen6, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen6,
+            file = path_filterByExpr_phen6,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 #-> 0 DEGS
@@ -754,10 +755,10 @@ exprdat_prefilt_phen7 <-voom_trans(bottomly.eset[prefilt_ind_phen7, ], phenotype
 ### export
 path_filterByExpr_phen7 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen7, 
-            file = path_filterByExpr_phen7, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen7,
+            file = path_filterByExpr_phen7,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS
@@ -833,10 +834,10 @@ exprdat_prefilt_phen8 <- variancetransform(bottomly.eset[prefilt_ind_phen8, ], p
 ### export
 path_filterByExpr_phen8 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen8, 
-            file = path_filterByExpr_phen8, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen8,
+            file = path_filterByExpr_phen8,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 42 DEGS
@@ -909,10 +910,10 @@ exprdat_prefilt_phen9 <-voom_trans(bottomly.eset[prefilt_ind_phen9, ], phenotype
 ### export
 path_filterByExpr_phen9 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen9, 
-            file = path_filterByExpr_phen9, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen9,
+            file = path_filterByExpr_phen9,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 
@@ -987,10 +988,10 @@ exprdat_prefilt_phen10 <-voom_trans(bottomly.eset[prefilt_ind_phen10, ], phenoty
 ### export
 path_filterByExpr_phen10 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")
 
-write.table(exprdat_prefilt_phen10, 
-            file = path_filterByExpr_phen10, 
-            quote = FALSE, 
-            row.names = TRUE, 
+write.table(exprdat_prefilt_phen10,
+            file = path_filterByExpr_phen10,
+            quote = FALSE,
+            row.names = TRUE,
             col.names = TRUE)
 
 # -> 0 DEGS
@@ -1032,7 +1033,7 @@ write.table(exprdat_prefilt_phen10,
 ### (II) Optimization of internal parameters of GSEA ###########################
 ################################################################################
 
-# for each phenotype assignment (i.e. original assignment and random permutations), 
+# for each phenotype assignment (i.e. original assignment and random permutations),
 # the optimization process is based on the gene expression data set pre-processed
 # in default manner
 # -> voom-transformation of RNA-Seq data and manual pre-filtering with threshold 10

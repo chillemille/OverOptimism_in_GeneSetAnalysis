@@ -713,9 +713,10 @@ cP_ORA_joint_optimization <- function(expression_data, phenotype_labels){
 
 
 
-  return(list(ORA_default = optim_preprocess$default,
-              ORA_optim = optim_internalparam$optim,
-              documentation = doc))
+  return(list(ORA_default = optim_preprocess$default, # default ORA results
+              ORA_optim = optim_internalparam$optim, # optimal ORA results
+              documentation = doc)) # documentation of ALL performed optimisation steps
+                                    # and resulting number of differentially enriched gene sets
 
 
 }

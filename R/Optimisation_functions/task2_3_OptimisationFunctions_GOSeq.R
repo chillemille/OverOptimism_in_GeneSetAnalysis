@@ -22,13 +22,13 @@ is.integer0  <- function(x){
 ##############
 
 
-#in the case that a gene's
-#(i) (adjusted) p-value is needed: enter "p_adj" in argument metric
-#(ii) relative rank among the remaining gene sets is needed: enter "rank" in argument metric
+# in the case that a gene's
+# (i) (adjusted) p-value is needed: enter "p_adj" in argument metric
+# (ii) relative rank among the remaining gene sets is needed: enter "rank" in argument metric
 
-#note: function works for GO as well as KEGG as results table
-#contains relevant information automatically
-#argument term must be in the form of a GO ID resp. KEGG ID
+# note: function works for GO as well as KEGG as results table
+# contains relevant information automatically
+# argument term must be in the form of a GO ID resp. KEGG ID
 
 # note that the GOSeq results are automatically ordered by over-representation
 # so that we do not have to perform any further ordering
@@ -66,13 +66,13 @@ pvalue_rank_goseq  <- function(term, goseq_results, metric){
 
 
 
-      #return row number of respective gene set
+      # return row number of respective gene set
       return(ifelse(!is.integer0(grep(term, goseq_results$category)),
                     rank,
                     1))
-      #note: in the case that a gene set is not reported in the results table of goseq_results,
-      #ifelse() in combination with !is.integer0() then ensures that a rank of 1.2 is returned,
-      #meaning that each adaption leading to any infinite rank is considered an improvement
+      # note: in the case that a gene set is not reported in the results table of goseq_results,
+      # ifelse() in combination with !is.integer0() then ensures that a rank of 1.2 is returned,
+      # meaning that each adaption leading to any infinite rank is considered an improvement
 
     }
 
@@ -85,16 +85,16 @@ pvalue_rank_goseq  <- function(term, goseq_results, metric){
 
     } else{ # case 2: GOSeq results table is NOT empty
 
-      #identify row number of respective gene set
+      # identify row number of respective gene set
       ind_row  <- grep(term, goseq_results$category)
 
-      #return respective adjusted p-value
+      # return respective adjusted p-value
       return(ifelse(!is.integer0(ind_row),
                     goseq_results$p_adj_overrep[ind_row],
                     1))
-      #note: in the case that a gene set is not reported in the results table of goseq_results,
-      #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value/rank of 1 is returned,
-      #meaning that each adaption leading to a an adjusted p-value/rank in (0, 1) is considered an improvement
+      # note: in the case that a gene set is not reported in the results table of goseq_results,
+      # ifelse() in combination with !is.integer0() then ensures that an adjusted p-value/rank of 1 is returned,
+      # meaning that each adaption leading to a an adjusted p-value/rank in (0, 1) is considered an improvement
     }
   }
 }
@@ -159,7 +159,7 @@ GOSeq_pipeline  <- function(DE_results, geneset_database, calc_method = "Walleni
     as.data.frame() %>%
     mutate(p_adj_overrep = p.adjust(over_represented_pvalue)) # external conduct of multiple test adjustment
 
-
+  # return GOSeq results table
   return(GOSeq_results)
 
 
@@ -595,7 +595,8 @@ goseq_rank_pvalue_optim  <- function(geneset, geneset_database, metric, expressi
 
   return(list(default = goseq_results_deseq2, #default DAVID result
               optim = GOSeq_calcmethods[[ind_opt_calcmethod]], # GOSeq results
-              documentation = doc)) #documentation frame
+              documentation = doc)) # documentation of ALL optimisation steps performed
+                                    # and resulting adjusted p-values/ ranks
 
 }
 
