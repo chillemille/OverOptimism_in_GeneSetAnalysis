@@ -200,7 +200,31 @@ Note that the optimisation of GSEA was carried out over several months and by ha
 - in the top left corner for the version of the overall web application
 - in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
 
-In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments. 
+
+The screenshots are numbered according to the optimisation step. 
+
+- **optim. step 1**: GSEA results are generated using all options in default configuration
+  - **01Param_Default**: The default parameters are specified, including
+      - the gene expression data set exprdat_default_ ... .gct (tab "Expression dataset") 
+      - gene set database GO with subontology Biological Processes (tab "Gene sets database")
+      - the exponent value p=1 in the computation of the enrichment score (tab "Enrichment statistic")
+      - the metric for ranking the genes (tab "Metric for ranking genes")
+      - the random seed ("Seed for permutation")
+  - **01Results_Default**: The overview of the results can be inspected. Obtain number of differentially enriched gene sets by adding up the numbers indicated in row "XX gene sets are significant at FDR < 25%" across
+      - "Enrichment in phenotype: 0" and
+      - "Enrichment in phenotype: 1" <br />
+  &rarr; note that the results can also be inspected in the Excel file of the same name 
+In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments.
+  - **02Param_vst**: Gene expression data set is changed to exprdat_vst_ ... .gct (see tab "Expression dataset")
+  - **02Results_vst**: Overview of results that result from changing gene expression data set to exprdat_vst_ ... .gct
+  - **03Param_filterByExpr**: Gene expression data set is changed to exprdat_filterByExpr_ ... .gct (see tab "Expression dataset")
+  - **03Results_filterByExpr**: Overview of results that result from changing gene expression data set to exprdat_filterByExpr_ ... .gct
+  - **04Param_KEGG**: Change gene set database to KEGG (see tab "Gene sets database"; **for task 1 only**)
+  - **04Results_KEGG**: Overview of results that result from changing the gene set database to KEGG (**for task 1 only**)
+  - **05Param_DoC**: Change ranking metric to "Diff_of_Classes" (see tab "Metric for ranking genes")
+  - **05Results_DoC**
+
+
 
 ***
 ### GSEAPreranked
