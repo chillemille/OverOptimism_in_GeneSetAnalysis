@@ -1,5 +1,5 @@
 ################################################################################
-### Run optimizations of the number of differentialla enriched gene sets #######
+### Run optimizations of the number of differentially enriched gene sets #######
 ### for GOSeq, PADOG, clusterProfiler's GSEA and ORA ###########################
 ################################################################################
 
@@ -91,7 +91,7 @@ phen_pickrell_list <- list()
 
 for(i in 1:ncol(phen_pickrell)){
 
-  phen_pickrell_list[[i]] <- phen_pickrell[,i]
+  phen_pickrell_list[[i]] <- phen_pickrell[, i]
 
 }
 
@@ -102,7 +102,7 @@ phen_bottomly_list <- list()
 
 for(i in 1:ncol(phen_bottomly)){
 
-  phen_bottomly_list[[i]] <- phen_bottomly[,i]
+  phen_bottomly_list[[i]] <- phen_bottomly[, i]
 
 }
 
@@ -218,7 +218,7 @@ phen_pickrell_list <- list()
 
 for(i in 1:ncol(phen_pickrell)){
 
-  phen_pickrell_list[[i]] <- phen_pickrell[,i]
+  phen_pickrell_list[[i]] <- phen_pickrell[, i]
 
 }
 
@@ -226,7 +226,7 @@ phen_bottomly_list <- list()
 
 for(i in 1:ncol(phen_bottomly)){
 
-  phen_bottomly_list[[i]] <- phen_bottomly[,i]
+  phen_bottomly_list[[i]] <- phen_bottomly[, i]
 
 }
 

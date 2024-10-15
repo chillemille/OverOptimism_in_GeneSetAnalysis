@@ -32,10 +32,10 @@ dir.create("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw
 
 for(i in 1:10){
 
-  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
+  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation", 
                      i)
 
-  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Prep/Phenotype_Permutation",
+  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Prep/Phenotype_Permutation", 
                       i)
 
   dir.create(path_raw)
@@ -84,7 +84,7 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
 
   #Gene ID conversion via clusterProfiler::bitr()
-  bitr_enstoentr <- bitr(rownames(expression_data) ,fromType = "ENSEMBL", toType = "SYMBOL", OrgDb = organism)
+  bitr_enstoentr <- bitr(rownames(expression_data) , fromType = "ENSEMBL", toType = "SYMBOL", OrgDb = organism)
   #note: not all ENSEMBL IDs could be converted to a corresponding ENTREZ Gene ID
   dim(bitr_enstoentr)
 
@@ -97,11 +97,11 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
   #this step is independent of sample IDs
   #merge by row names of expression data set and ENSEMBL ID of conversion data set
-  expression_data <- merge(expression_data,
-                           bitr_enstoentr,
-                           by.x=0,
-                           by.y="ENSEMBL",
-                           all.y=TRUE,
+  expression_data <- merge(expression_data, 
+                           bitr_enstoentr, 
+                           by.x=0, 
+                           by.y="ENSEMBL", 
+                           all.y=TRUE, 
                            sort=TRUE)
   dim(expression_data)
 
@@ -185,9 +185,9 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
         #determine all rows whose ENTREZ IDs correspond to current ENTREZ ID
         counts_dupl <- expression_data[expression_data$SYMBOL %in% unique(dupl_entrez)[i], ]
         #for rows duplicated ENTREZ ID compute (rounded) mean expression value
-        dupl_id <- round(colMeans(counts_dupl[,c(2:(ncol(expression_data)-1))]))
+        dupl_id <- round(colMeans(counts_dupl[, c(2:(ncol(expression_data)-1))]))
         #store rounded mean expression value in matrix
-        mean_entrez <- rbind(mean_entrez,dupl_id)
+        mean_entrez <- rbind(mean_entrez, dupl_id)
       }
     }
 
@@ -224,7 +224,7 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #set ENTREZ ID as rownames
     rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #remove any columns containing IDs
-    exprdat_dupl <- subset(exprdat_dupl, select= -c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, select= -c(Row.names, SYMBOL))
     #add rows to data set that contain mean expression values of duplicate ENTREZ IDs
     exprdat_dupl <- rbind(exprdat_dupl, mean_entrez)
     #dimension of remaining expression data set:
@@ -274,7 +274,7 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
     #Set ENTREZ IDs as rownames remove all columns containing any ID info and
     rownames(exprdat_dupl) <- exprdat_dupl$SYMBOL
     #Remove any column that contains gene IDs
-    exprdat_dupl <- subset(exprdat_dupl, select=-c(Row.names,SYMBOL))
+    exprdat_dupl <- subset(exprdat_dupl, select=-c(Row.names, SYMBOL))
     #dim(exprdat_dupl)
   }
 
@@ -383,10 +383,10 @@ DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 1
 path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
-write.table(DESeq2_ranking_phenorig,
-            file = path_DESeq2_phenorig,
-            quote = FALSE,
-            row.names = TRUE,
+write.table(DESeq2_ranking_phenorig, 
+            file = path_DESeq2_phenorig, 
+            quote = FALSE, 
+            row.names = TRUE, 
             col.names = FALSE)
 
 
@@ -413,10 +413,10 @@ path_limma_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Pickrell/Da
 
 
 # export
-write.table(limma_ranking_phenorig,
-            file = path_limma_phenorig,
-            quote = FALSE,
-            row.names = TRUE,
+write.table(limma_ranking_phenorig, 
+            file = path_limma_phenorig, 
+            quote = FALSE, 
+            row.names = TRUE, 
             col.names = FALSE)
 
 
@@ -431,24 +431,24 @@ for(i in 1:ncol(phen_pickrell)){
   # create DESeq2 results and rank by p-value
   DESeq2_ranking_phenperm <- pre_filt(Biobase::exprs(pickrell.eset), threshold = 10) %>%
     geneID_conversion_SYMBOL(dupl_removal_method = 1) %>%
-    deseq_preprocess(phenotype_labels = phen_pickrell[,i] ) %>%
+    deseq_preprocess(phenotype_labels = phen_pickrell[, i] ) %>%
     DESeq() %>%
     lfcShrink(coef="condition_treated_vs_untreated", type="apeglm") %>%
     as.data.frame() %>%
     rankedList_cP(rankby = "p_value", method = "DESeq2")
 
   # create path for storage of DESeq2 ranking
-  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
-                                 i,
-                                 "/DESeq2_ranking_permutation",
-                                 i,
+  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation", 
+                                 i, 
+                                 "/DESeq2_ranking_permutation", 
+                                 i, 
                                  ".txt")
 
   # export
-  write.table(DESeq2_ranking_phenperm,
-              file = path_DESeq2_phenperm,
-              quote = FALSE,
-              row.names = TRUE,
+  write.table(DESeq2_ranking_phenperm, 
+              file = path_DESeq2_phenperm, 
+              quote = FALSE, 
+              row.names = TRUE, 
               col.names = FALSE)
 
 
@@ -457,32 +457,32 @@ for(i in 1:ncol(phen_pickrell)){
   ##############
 
   # filtering indicator
-  keep_phenperm <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[,i]) %>%
+  keep_phenperm <- DGEList(Biobase::exprs(pickrell.eset), group = phen_pickrell[, i]) %>%
     filterByExpr()
 
   # design matrix
-  mm_phenperm <- model.matrix( ~ phen_pickrell[,i])
+  mm_phenperm <- model.matrix( ~ phen_pickrell[, i])
 
   # create limma results and rank by p-value
   limma_ranking_phenperm <- geneID_conversion_SYMBOL(Biobase::exprs(pickrell.eset)[keep_phenperm, ], dupl_removal_method = 1) %>%
-    DGEList(group = phen_pickrell[,i]) %>% calcNormFactors() %>%
+    DGEList(group = phen_pickrell[, i]) %>% calcNormFactors() %>%
     voom(design=mm_phenperm) %>% lmFit(design=mm_phenperm) %>%
     eBayes() %>% topTable(coef=ncol(mm_phenperm), number=100000) %>%
     rankedList_cP(rankby= "p_value", method="limma")
 
   # Create path for storage of limma ranking
-  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation",
-                                i,
-                                "/limma_ranking_permutation",
-                                i,
+  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Pickrell/Data_task1/Raw/Phenotype_Permutation", 
+                                i, 
+                                "/limma_ranking_permutation", 
+                                i, 
                                 ".txt")
 
 
   # export
-  write.table(limma_ranking_phenperm,
-              file = path_limma_phenperm,
-              quote = FALSE,
-              row.names = TRUE,
+  write.table(limma_ranking_phenperm, 
+              file = path_limma_phenperm, 
+              quote = FALSE, 
+              row.names = TRUE, 
               col.names = FALSE)
 
 }

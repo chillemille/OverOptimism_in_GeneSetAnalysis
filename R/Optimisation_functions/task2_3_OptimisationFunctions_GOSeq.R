@@ -16,7 +16,7 @@ library(goseq)
 
 ###function used to detect whether gene set is not containted in the GOSeq
 # results
-is.integer0  <-  function(x){
+is.integer0  <- function(x){
   is.integer(x) && length(x) == 0L
 }
 ##############
@@ -32,10 +32,10 @@ is.integer0  <-  function(x){
 
 # note that the GOSeq results are automatically ordered by over-representation
 # so that we do not have to perform any further ordering
-pvalue_rank_goseq <- function(term, goseq_results, metric){
+pvalue_rank_goseq  <- function(term, goseq_results, metric){
 
   #remove the letters hsa from the gene set ID
-  term  <-  gsub("hsa", "", term)
+  term  <- gsub("hsa", "", term)
 
   if(metric == "rank"){
 
@@ -54,10 +54,10 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
       # We divide by the maximum rank such that those gene sets with the highest
       # adjusted p-values are given the (relative) rank 1, which is the worst rank
 
-      goseq_results$ranks <- rank(goseq_results$p_adj_overrep) / max(rank(goseq_results$p_adj_overrep))
+      goseq_results$ranks  <- rank(goseq_results$p_adj_overrep) / max(rank(goseq_results$p_adj_overrep))
 
       # get the relative rank of the gene set of interest
-      rank <- goseq_results$ranks[grep(term, goseq_results$category)]
+      rank  <- goseq_results$ranks[grep(term, goseq_results$category)]
 
 
       # if the gene set is not contained in the results, return the rank 1.2
@@ -86,7 +86,7 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
     } else{ # case 2: GOSeq results table is NOT empty
 
       #identify row number of respective gene set
-      ind_row <- grep(term, goseq_results$category)
+      ind_row  <- grep(term, goseq_results$category)
 
       #return respective adjusted p-value
       return(ifelse(!is.integer0(ind_row),
@@ -94,7 +94,7 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
                     1))
       #note: in the case that a gene set is not reported in the results table of goseq_results,
       #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value/rank of 1 is returned,
-      #meaning that each adaption leading to a an adjusted p-value/rank in (0,1) is considered an improvement
+      #meaning that each adaption leading to a an adjusted p-value/rank in (0, 1) is considered an improvement
     }
   }
 }
@@ -103,16 +103,21 @@ pvalue_rank_goseq <- function(term, goseq_results, metric){
 #######################################################################################
 ###generate necessary input for GOSeq #################################################
 #######################################################################################
-goseq_input_preparation  <-  function(DE_results){
+
+# prepare required input for GOSeq
+
+# function argument:
+# - DE_results: results table of differential expression analysis
+goseq_input_preparation  <- function(DE_results){
 
   # prepare required input vector for DE results generated with DESeq2, or limma (default)
 
 
   #remove all genes with adjusted p-value set to NA in DE analysis -> especially concerns DE results generated with DESeq2
-  DE_results_nona  <-  DE_results[!is.na(DE_results$p_adj),]
+  DE_results_nona  <- DE_results[!is.na(DE_results$p_adj), ]
   #create named binary vector for all genes with adjusted p-value NOT set to NA
-  DEG_vec_bin  <-  ifelse((DE_results_nona$p_adj < 0.05) & (!is.na(DE_results_nona$p_adj)), 1,0)
-  names(DEG_vec_bin) <- rownames(DE_results_nona)
+  DEG_vec_bin  <- ifelse((DE_results_nona$p_adj < 0.05) & (!is.na(DE_results_nona$p_adj)), 1, 0)
+  names(DEG_vec_bin)  <- rownames(DE_results_nona)
 
 
 
@@ -124,14 +129,24 @@ goseq_input_preparation  <-  function(DE_results){
 ### default GOSeq pipeline #####################################################
 ################################################################################
 
-GOSeq_pipeline  <-  function(DE_results, geneset_database, calc_method = "Wallenius",
+# run GOSeq
+
+# function arguments (all derived from function calls nullp() or goseq() from package goseq)
+# - DEgenes: named binary vector indicating indicating for each gene whether it is differentially
+#            expressed or not (value 1 or 0, resp.)
+# - geneset_database: gene set database; here, we use values
+#                     "GO:BP" for GO with subontology biological processes
+#                     "KEGG" for gene set database KEGG
+# - bias: numeric vector containing data on which differential expression may depend
+
+GOSeq_pipeline  <- function(DE_results, geneset_database, calc_method = "Wallenius",
                              bias = NULL, genes_wocat = FALSE, geneID, organism){
 
   # create input vector of required format of DESeq2/ limma results
-  input_vector  <-  goseq_input_preparation(DE_results)
+  input_vector  <- goseq_input_preparation(DE_results)
 
   # run GOSeq pipeline with input vector
-  GOSeq_results  <-  nullp(DEgenes = input_vector,
+  GOSeq_results  <- nullp(DEgenes = input_vector,
                            genome = organism,
                            id = geneID,
                            plot.fit = FALSE,
@@ -160,7 +175,19 @@ GOSeq_pipeline  <-  function(DE_results, geneset_database, calc_method = "Wallen
 #to ensure that ALL gene sets (whether significantly differentially enriched or not)
 #are reported
 
-goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expression_data,
+# function arguments:
+# - geneset: gene set (i.e., its ID) whose adjusted p-value or rank is to be minimized
+# - geneset_database: gene set database; here, we use values
+#                     "GO:BP" for GO with subontology biological processes
+#                     "KEGG" for gene set database KEGG
+# - metric: metric by which the results for the gene set are optimized
+#           "p_adj": minimize gene set's adjusted p-value in the GOSeq results
+#           "rank": minimize gene set's rank among all other gene sets in the GOSeq results
+# - expression_data: gene expression data set
+# -  phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
+
+goseq_rank_pvalue_optim  <- function(geneset, geneset_database, metric, expression_data,
                                       phenotype_labels){
 
 
@@ -173,7 +200,7 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
 
 
   #identification of gene ID format
-  gene_ID  <-  ifelse(grepl("ENS",
+  gene_ID  <- ifelse(grepl("ENS",
                             rownames(expression_data)[1]),
                       "ensGene",
                       "knownGene")
@@ -185,25 +212,25 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   # mouse (mus musculus): "ENSEMBL gene ID starts with "ENSMUSG" -> identifued by GOSeq as "mm9"
 
   # indicate which of the two strings can be found in the gene IDs of the expression data at hand
-  ind_organism  <-  sapply(FUN = grepl,
+  ind_organism  <- sapply(FUN = grepl,
                            X = c("ENSG", "ENSMUSG"),
                            x = rownames(expression_data)[1])
   # choose suitable organism (required for function bitr)
-  organism  <-  c("hg19", "mm9")[ind_organism][[1]]
+  organism  <- c("hg19", "mm9")[ind_organism][[1]]
 
 
   ###### generate documentation data frame to document development
   #we want the column names of the documentation frame to depend on the
   #metric value to optimize (i.e. rank vs. adjusted p-value)
   if(metric == "rank"){
-    doc <- data.frame(step = c("Default", "Differential Expression Technique", "Pre-filtering Threshold"),
+    doc  <- data.frame(step = c("Default", "Differential Expression Technique", "Pre-filtering Threshold"),
                       optimal_parameter = NA,
                       rank = NA)
 
 
 
   }else if(metric == "p_adj"){
-    doc <- data.frame(step = c("Default", "Differential Expression Technique", "Pre-filtering Threshold"),
+    doc  <- data.frame(step = c("Default", "Differential Expression Technique", "Pre-filtering Threshold"),
                       optimal_parameter = NA,
                       p_adj = NA)
 
@@ -216,8 +243,8 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   #############
 
   # differential expression techniques
-  DE_techniques  <-  c("DESeq2", "limma")
-  metricvalue_detechniques  <-  c()
+  DE_techniques  <- c("DESeq2", "limma")
+  metricvalue_detechniques  <- c()
 
 
   #############################################
@@ -225,25 +252,25 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   #############################################
 
   # (i) default DESeq2 pipeline (using default pre-filtering)
-  deseq2_results  <-  pre_filt(expression_data, threshold = 10) %>%
+  deseq2_results  <- pre_filt(expression_data, threshold = 10) %>%
     deseq_preprocess(phenotype_labels = phenotype_labels) %>%
     DESeq() %>% results() %>%
     as.data.frame() %>% dplyr::rename(p_adj = padj)
 
   # (ii) default GOSeq
-  goseq_results_deseq2  <-  GOSeq_pipeline(deseq2_results,
+  goseq_results_deseq2  <- GOSeq_pipeline(deseq2_results,
                                            geneset_database = geneset_database,
                                            geneID = gene_ID,
                                            organism = organism)
 
   # store metric value for comparison
-  metricvalue_detechniques[1]  <-  pvalue_rank_goseq(term = geneset,
+  metricvalue_detechniques[1]  <- pvalue_rank_goseq(term = geneset,
                                                      goseq_results_deseq2,
                                                      metric)
 
 
   # update documentation frame for default results
-  doc[1, metric]  <- metricvalue_detechniques[1]
+  doc[1, metric]   <- metricvalue_detechniques[1]
 
 
 
@@ -253,28 +280,28 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
 
 
   #(i.1) generate pre-filtering indicator using edgeR's builtin function filterByExpr()
-  keep  <-  DGEList(expression_data, group = phenotype_labels) %>%
+  keep  <- DGEList(expression_data, group = phenotype_labels) %>%
     filterByExpr()
 
   # (i.2) generate design matrix
-  mm  <-  model.matrix(~phenotype_labels)
+  mm  <- model.matrix(~phenotype_labels)
 
 
   # (i.3) run default limma pipeline (reuse filtering indicator keep from previous alternative edgeR)
-  limma_results  <-  DGEList(counts = expression_data[keep,], group = phenotype_labels) %>%
+  limma_results  <- DGEList(counts = expression_data[keep, ], group = phenotype_labels) %>%
     calcNormFactors() %>%
     voom(design = mm) %>% lmFit(design = mm) %>%
     eBayes() %>% topTable(coef = ncol(mm), number = 100000) %>%
     as.data.frame() %>% dplyr::rename(p_adj = adj.P.Val)
 
   # (ii) run GOseq
-  goseq_results_limma  <-  GOSeq_pipeline(limma_results,
+  goseq_results_limma  <- GOSeq_pipeline(limma_results,
                                           geneset_database,
                                           geneID = gene_ID,
                                           organism = organism)
 
   # store metric value for comparison
-  metricvalue_detechniques[2]  <-  pvalue_rank_goseq(term = geneset,
+  metricvalue_detechniques[2]  <- pvalue_rank_goseq(term = geneset,
                                                      goseq_results_limma,
                                                      metric)
 
@@ -282,14 +309,14 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
 
 
   # get index of optimal DE technique (choose lower index in case of ties)
-  ind_opt_detechnique  <-  min(which( metricvalue_detechniques == min(metricvalue_detechniques)))
+  ind_opt_detechnique  <- min(which( metricvalue_detechniques == min(metricvalue_detechniques)))
   # get optimal DE technique
-  opt_DE_technique  <-  DE_techniques[ind_opt_detechnique]
+  opt_DE_technique  <- DE_techniques[ind_opt_detechnique]
 
 
   #update documentation frame
-  doc[2, "optimal_parameter"]  <-  opt_DE_technique
-  doc[2, metric]  <-  min(metricvalue_detechniques)
+  doc[2, "optimal_parameter"]  <- opt_DE_technique
+  doc[2, metric]  <- min(metricvalue_detechniques)
 
 
 
@@ -309,49 +336,49 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   if(opt_DE_technique == "DESeq2"){
 
     # alternative pre-filtering thresholds of X read counts across all samples
-    filt_threshold_alt <- c(10,50)
+    filt_threshold_alt  <- c(10, 50)
     # perform pre-filtering according to the alternative thresholds
-    exprdat_list_prefilt <- lapply(X = filt_threshold_alt,
+    exprdat_list_prefilt  <- lapply(X = filt_threshold_alt,
                                    FUN = pre_filt,
                                    expression_data = expression_data)
 
 
     # (i) perform differential expression analysis with default parameters
 
-    DE_results_prefilt <- lapply(FUN = deseq_preprocess,
+    DE_results_prefilt  <- lapply(FUN = deseq_preprocess,
                                  X = exprdat_list_prefilt,
                                  phenotype_labels = phenotype_labels) %>%
       lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
       lapply(as.data.frame) %>% lapply(dplyr::rename, p_adj = padj)
 
     #(ii) run GOSeq with default parameters for each of the pre-filtered gene expression data sets
-    GOSeq_results_prefilt <-  lapply(FUN = GOSeq_pipeline,
+    GOSeq_results_prefilt <- lapply(FUN = GOSeq_pipeline,
                                      X = DE_results_prefilt,
                                      geneset_database = geneset_database,
                                      geneID = gene_ID,
                                      organism = organism)
 
     #count number of differentially enriched gene sets resulting from the alternative prefiltering thresholds
-    metricvalue_prefilt <- unlist(lapply(X = GOSeq_results_prefilt,
+    metricvalue_prefilt  <- unlist(lapply(X = GOSeq_results_prefilt,
                                          FUN = pvalue_rank_goseq,
                                          term = geneset,
                                          metric = metric))
 
     # get index of optimal pre-filtering threshold  (in case of ties choose lower index)
-    ind_opt_prefilt  <-  min(which(metricvalue_prefilt == min(metricvalue_prefilt)))
+    ind_opt_prefilt  <- min(which(metricvalue_prefilt == min(metricvalue_prefilt)))
     # get optimal pre-filtering threshold
-    opt_prefilt  <-   filt_threshold_alt[ind_opt_prefilt]
+    opt_prefilt  <-  filt_threshold_alt[ind_opt_prefilt]
 
     # get current optimal number of differentially enriched gene sets
-    metricvalue  <-  min(metricvalue_prefilt)
+    metricvalue  <- min(metricvalue_prefilt)
 
     # update documentation frame
-    doc[3, "optimal_parameter"]  <- opt_prefilt
-    doc[3, metric]  <-  metricvalue
+    doc[3, "optimal_parameter"]   <- opt_prefilt
+    doc[3, metric]  <- metricvalue
 
     ### get optimal pre-filtered gene expression data set
 
-    exprdat_prefilt_opt  <- exprdat_list_prefilt[[ind_opt_prefilt]]
+    exprdat_prefilt_opt   <- exprdat_list_prefilt[[ind_opt_prefilt]]
 
 
 
@@ -359,28 +386,28 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   } else if(opt_DE_technique  ==  "limma") { # for edgeR and limma, pre-filtering is performed differently, namely using filterByExpr (default) OR using cpm()
 
     # DEFAULT pre-filtering using filterByExpr
-    keep1  <-  DGEList(counts = expression_data,
+    keep1  <- DGEList(counts = expression_data,
                        group = phenotype_labels) %>%
       filterByExpr()
 
     # 1. ALTERNATIVE pre-filtering using cpm: keep those genes that have at least 1 count per million in at least 2 samples
-    keep2  <-  rowSums(cpm(expression_data) > 1) >= 2
+    keep2  <- rowSums(cpm(expression_data) > 1) >= 2
     # 2. ALTERNATIVE pre-filtering using cpm: keep those genes that have at least 2 count per million in at least 3 samples
 
 
-    filt_methods  <-  c("by FilterbyExpr()", "by cpm>1 in at least 2 samples")
+    filt_methods  <- c("by FilterbyExpr()", "by cpm>1 in at least 2 samples")
 
 
     # for all methods of pre-filtering: store resulting gene expression data sets in list
-    exprdat_list_prefilt  <-  list()
+    exprdat_list_prefilt  <- list()
     # pre-filtered gene expression data set using keep1
-    exprdat_list_prefilt[[1]]  <-   expression_data[keep1,]
+    exprdat_list_prefilt[[1]]  <-  expression_data[keep1, ]
     # pre-filtered gene expression data set using keep2
-    exprdat_list_prefilt[[2]]  <-   expression_data[keep2,]
+    exprdat_list_prefilt[[2]]  <-  expression_data[keep2, ]
 
 
     # run limma for each pre-filtered gene expression data set
-    DE_results_prefilt  <-  lapply(FUN = DGEList,
+    DE_results_prefilt  <- lapply(FUN = DGEList,
                                    X = exprdat_list_prefilt,
                                    group = phenotype_labels) %>%
       lapply(FUN = calcNormFactors) %>% lapply(FUN = voom, design = mm) %>%
@@ -390,48 +417,48 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
 
 
     # perform GOSeq for each of the pre-filtered gene expression data sets
-    GOSeq_results_prefilt <-  lapply(FUN = GOSeq_pipeline,
+    GOSeq_results_prefilt <- lapply(FUN = GOSeq_pipeline,
                                      X = DE_results_prefilt,
                                      geneset_database = geneset_database,
                                      geneID = gene_ID,
                                      organism = organism)
 
-    metricvalue_prefilt  <-  unlist(lapply(X = GOSeq_results_prefilt,
+    metricvalue_prefilt  <- unlist(lapply(X = GOSeq_results_prefilt,
                                            FUN = pvalue_rank_goseq,
                                            term = geneset,
                                            metric = metric))
 
     # get index optimal pre-filtering method (in case of tie, choose default filterByExpr)
-    ind_opt_prefilt  <-  min(which(metricvalue_prefilt == min( metricvalue_prefilt)))
+    ind_opt_prefilt  <- min(which(metricvalue_prefilt == min( metricvalue_prefilt)))
     # get optimal pre-filtering method
-    opt_prefilt  <-   filt_methods[ind_opt_prefilt ]
+    opt_prefilt  <-  filt_methods[ind_opt_prefilt ]
 
     # current optimal number of differentially enriched gene sets
-    metricvalue  <-  min(metricvalue_prefilt)
+    metricvalue  <- min(metricvalue_prefilt)
 
 
 
-    metricvalue_prefilt  <-  unlist(lapply(X = GOSeq_results_prefilt,
+    metricvalue_prefilt  <- unlist(lapply(X = GOSeq_results_prefilt,
                                            FUN = pvalue_rank_goseq,
                                            metric = metric,
                                            term = geneset))
 
     # get index optimal pre-filtering method (in case of tie, choose default filterByExpr)
-    ind_opt_prefilt  <-  min(which(metricvalue_prefilt == min(metricvalue_prefilt)))
+    ind_opt_prefilt  <- min(which(metricvalue_prefilt == min(metricvalue_prefilt)))
     # get optimal pre-filtering method
-    opt_prefilt  <-   filt_methods[ind_opt_prefilt ]
+    opt_prefilt  <-  filt_methods[ind_opt_prefilt ]
 
     # current optimal number of differentially enriched gene sets
-    metricvalue  <-  min(metricvalue_prefilt)
+    metricvalue  <- min(metricvalue_prefilt)
 
 
     # update documentation frame
-    doc[3, "optimal_parameter"]  <-  opt_prefilt
-    doc[3, metric]  <-   min(metricvalue_prefilt)
+    doc[3, "optimal_parameter"]  <- opt_prefilt
+    doc[3, metric]  <-  min(metricvalue_prefilt)
 
     ### get optimal pre-filtered gene expression data set
 
-    exprdat_prefilt_opt  <-  exprdat_list_prefilt[[ind_opt_prefilt]]
+    exprdat_prefilt_opt  <- exprdat_list_prefilt[[ind_opt_prefilt]]
 
   }
 
@@ -440,7 +467,7 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
 
 
   # set optimal DE results as those resulting from the optimal manner of duplicate gene ID removal
-  optim_DE  <-  DE_results_prefilt[[ind_opt_prefilt]]
+  optim_DE  <- DE_results_prefilt[[ind_opt_prefilt]]
 
 
 
@@ -450,12 +477,12 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   ############################################
 
   # get binary vector of ALL genes whose expression was measured
-  DEG_vec_bin  <-  goseq_input_preparation(optim_DE)
+  DEG_vec_bin  <- goseq_input_preparation(optim_DE)
 
 
   # generate documentation frame for internal parameters of GOSeq
   # this will be later on merged with the overall documentation frame doc
-  doc_intern  <-  data.frame(step = c("Bias", "Universe", "p-Value Calculation"),
+  doc_intern  <- data.frame(step = c("Bias", "Universe", "p-Value Calculation"),
                              optimal_parameter = NA)
 
 
@@ -466,12 +493,12 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   #account for all possible biases present in the data (i.e. read count bias),
   #not just length bias
   #calculate read count bias for all genes present in input vector DEG_vec_bin
-  countbias <- rowSums(expression_data[rownames(expression_data) %in% names(DEG_vec_bin),])
+  countbias  <- rowSums(expression_data[rownames(expression_data) %in% names(DEG_vec_bin), ])
   #note: non of the row sums are 0 since lowly expressed gened
   #were filtered out in "Step1_Preprocessing"
 
   # run GOSeq and considering all biases
-  GOSeq_allbias  <-  GOSeq_pipeline(optim_DE,
+  GOSeq_allbias  <- GOSeq_pipeline(optim_DE,
                                     bias = countbias,
                                     geneID = gene_ID,
                                     geneset_database = geneset_database,
@@ -482,14 +509,14 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   if(pvalue_rank_goseq(geneset, GOSeq_allbias, metric) < metricvalue){ #case 1: accounting for all biases leads to decreases metric
 
     # set bias to be accounted for as all biases in the gene expression data set
-    bias  <-  countbias
+    bias  <- countbias
 
     # update documentation frame
-    doc_intern[1, "optimal_parameter"]  <-  "All Biases"
-    doc_intern[1, metric]  <-  pvalue_rank_goseq(geneset,
+    doc_intern[1, "optimal_parameter"]  <- "All Biases"
+    doc_intern[1, metric]  <- pvalue_rank_goseq(geneset,
                                                  GOSeq_allbias, metric)
 
-    metricvalue  <-  pvalue_rank_goseq(geneset,
+    metricvalue  <- pvalue_rank_goseq(geneset,
                                        GOSeq_allbias,
                                        metric)
 
@@ -497,11 +524,11 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   } else{ # metric value remains unchanged
 
     # set bias to NULL, that way, only length bias is accounted for in the data set
-    bias  <-  NULL
+    bias  <- NULL
 
     # update documentation frame
-    doc_intern[1, "optimal_parameter"]  <-  "Length Bias Only"
-    doc_intern[1, metric]  <-  metricvalue
+    doc_intern[1, "optimal_parameter"]  <- "Length Bias Only"
+    doc_intern[1, metric]  <- metricvalue
 
 
 
@@ -512,7 +539,7 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
   ############
 
   # run GOSeq: Include ALL genes in the calculation of the p-value (genes_wocat = TRUE)
-  GOSeq_univ  <-  GOSeq_pipeline(optim_DE,
+  GOSeq_univ  <- GOSeq_pipeline(optim_DE,
                                  bias = bias,
                                  geneID = gene_ID,
                                  geneset_database = geneset_database,
@@ -522,22 +549,22 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
 
 
   # update parameter depending on whether the adapted universe leads to a decreased metric value
-  genes_wocat  <-  ifelse(pvalue_rank_goseq(geneset, GOSeq_univ, metric) < metricvalue, TRUE, FALSE)
+  genes_wocat  <- ifelse(pvalue_rank_goseq(geneset, GOSeq_univ, metric) < metricvalue, TRUE, FALSE)
 
-  metricvalue  <-  min(pvalue_rank_goseq(geneset, GOSeq_univ, metric), metricvalue)
+  metricvalue  <- min(pvalue_rank_goseq(geneset, GOSeq_univ, metric), metricvalue)
 
   # update documentation frame
-  doc_intern[2, "optimal_parameter"]  <-  ifelse(pvalue_rank_goseq(geneset, GOSeq_univ, metric) < metricvalue, "Adapted", "Default")
-  doc_intern[2, metric]  <-  metricvalue
+  doc_intern[2, "optimal_parameter"]  <- ifelse(pvalue_rank_goseq(geneset, GOSeq_univ, metric) < metricvalue, "Adapted", "Default")
+  doc_intern[2, metric]  <- metricvalue
 
 
   ############
   ### 6. step: change method for calculation of the p-value
   ############
 
-  calc_methods  <-  c("Wallenius", "Sampling")
+  calc_methods  <- c("Wallenius", "Sampling")
 
-  GOSeq_calcmethods  <-  lapply(FUN = GOSeq_pipeline,
+  GOSeq_calcmethods  <- lapply(FUN = GOSeq_pipeline,
                                 DE_results = optim_DE,
                                 geneset_database = geneset_database,
                                 X = calc_methods,
@@ -547,23 +574,23 @@ goseq_rank_pvalue_optim  <-  function(geneset, geneset_database, metric,expressi
                                 organism = organism)
 
   # get metricvalue resulting from both calculation methods
-  metricvalue_calcmethod  <-  sapply(FUN = pvalue_rank_goseq,
+  metricvalue_calcmethod  <- sapply(FUN = pvalue_rank_goseq,
                                      term = geneset,
                                      X = GOSeq_calcmethods,
                                      metric = metric)
 
   # index of optimal calculation method (in case of ties choose smaller index)
-  ind_opt_calcmethod  <-  min(which( metricvalue_calcmethod == min( metricvalue_calcmethod)))
+  ind_opt_calcmethod  <- min(which( metricvalue_calcmethod == min( metricvalue_calcmethod)))
 
   # optimal calculation method
-  opt_calcmethod  <-  calc_methods[ind_opt_calcmethod]
+  opt_calcmethod  <- calc_methods[ind_opt_calcmethod]
 
   # update documentation frame
-  doc_intern[3, "optimal_parameter"]  <-  opt_calcmethod
-  doc_intern[3, metric]  <-  min(metricvalue_calcmethod)
+  doc_intern[3, "optimal_parameter"]  <- opt_calcmethod
+  doc_intern[3, metric]  <- min(metricvalue_calcmethod)
 
   # merge documentation frames
-  doc  <-  rbind(doc, doc_intern)
+  doc  <- rbind(doc, doc_intern)
 
 
   return(list(default = goseq_results_deseq2, #default DAVID result

@@ -100,16 +100,16 @@ rel_rank_GOSeq_Demethylation_truephen_optim <-
 # Gene set t Cell mediated immunity
 
 # default rel_rank
-rel_rank_DAVID_tCell_truephen_default <- 1
-rel_rank_DAVID_tCell_truephen_optim <- 1
+rel_rank_DAVID_tCell_truephen_default  <- 1
+rel_rank_DAVID_tCell_truephen_optim  <- 1
 
 
 # Gene set Demethylation
 
 # default rel_rank
-rel_rank_DAVID_Demethylation_truephen_default <- 1
+rel_rank_DAVID_Demethylation_truephen_default  <- 1
 # optimal rel_rank
-rel_rank_DAVID_Demethylation_truephen_optim <- 1
+rel_rank_DAVID_Demethylation_truephen_optim  <- 1
 
 
 ################################################################################
@@ -208,7 +208,7 @@ rel_rank_cP_GSEA_Demethylation_truephen_default <-
 
 
 # (i) Random permutations of the random permutations of the sample conditions, first data set
-rel_rank_GeneSet1_truephen <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_truephen_default, rel_rank_cP_ORA_tCell_truephen_optim),
+rel_rank_GeneSet1_truephen  <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_truephen_default, rel_rank_cP_ORA_tCell_truephen_optim),
                                          GOSeq = c(rel_rank_GOSeq_tCell_truephen_default, rel_rank_GOSeq_tCell_truephen_optim),
                                          PADOG = c(rel_rank_PADOG_PrimImmun_truephen_default, rel_rank_PADOG_PrimImmun_truephen_optim),
                                          cP_GSEA = c(rel_rank_cP_GSEA_tCell_truephen_default, rel_rank_cP_GSEA_tCell_truephen_optim),
@@ -219,7 +219,7 @@ rel_rank_GeneSet1_truephen <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_trueph
 
 
 # (ii) Random permutations of the random permutations of the sample conditions, second data set
-rel_rank_GeneSet2_truephen <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demethylation_truephen_default, rel_rank_cP_ORA_Demethylation_truephen_optim),
+rel_rank_GeneSet2_truephen  <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demethylation_truephen_default, rel_rank_cP_ORA_Demethylation_truephen_optim),
                                          GOSeq = c(rel_rank_GOSeq_Demethylation_truephen_default, rel_rank_GOSeq_Demethylation_truephen_optim),
                                          PADOG = c(rel_rank_PADOG_GraftvsHost_truephen_default, rel_rank_PADOG_GraftvsHost_truephen_optim),
                                          cP_GSEA = c(rel_rank_cP_GSEA_Demethylation_truephen_default, rel_rank_cP_GSEA_Demethylation_truephen_optim),
@@ -290,16 +290,16 @@ load("./Results/Intermediate_results/optimRank_cP_GSEA_Demethylation_Pickrell_Ph
 # Gene set t Cell mediated immunity
 
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_GOSeq_tCell_phenpermutation_default <- c()
+rel_rank_GOSeq_tCell_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_GOSeq_tCell_phenpermutation_optim <- c()
+rel_rank_GOSeq_tCell_phenpermutation_optim  <- c()
 
 
 # Demethylation
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_GOSeq_Demethylation_phenpermutation_default <- c()
+rel_rank_GOSeq_Demethylation_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_GOSeq_Demethylation_phenpermutation_optim <- c()
+rel_rank_GOSeq_Demethylation_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -334,16 +334,16 @@ for(i in 1:10){
 # Gene set t Cell mediated immunity
 
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_ORA_tCell_phenpermutation_default <- c()
+rel_rank_cP_ORA_tCell_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_ORA_tCell_phenpermutation_optim <- c()
+rel_rank_cP_ORA_tCell_phenpermutation_optim  <- c()
 
 
 # Demethylation
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_ORA_Demethylation_phenpermutation_default <- c()
+rel_rank_cP_ORA_Demethylation_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_ORA_Demethylation_phenpermutation_optim <- c()
+rel_rank_cP_ORA_Demethylation_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -376,16 +376,16 @@ for(i in 1:10){
 # Gene set t Cell mediated immunity
 
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_PADOG_PrimImmun_phenpermutation_default <- c()
+rel_rank_PADOG_PrimImmun_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_PADOG_PrimImmun_phenpermutation_optim <- c()
+rel_rank_PADOG_PrimImmun_phenpermutation_optim  <- c()
 
 
 # Demethylation
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_PADOG_GraftvsHost_phenpermutation_default <- c()
+rel_rank_PADOG_GraftvsHost_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_PADOG_GraftvsHost_phenpermutation_optim <- c()
+rel_rank_PADOG_GraftvsHost_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -418,16 +418,16 @@ for(i in 1:10){
 # Gene set t Cell mediated immunity
 
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_GSEA_tCell_phenpermutation_default <- c()
+rel_rank_cP_GSEA_tCell_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_GSEA_tCell_phenpermutation_optim <- c()
+rel_rank_cP_GSEA_tCell_phenpermutation_optim  <- c()
 
 
 # Demethylation
 # store default rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_GSEA_Demethylation_phenpermutation_default <- c()
+rel_rank_cP_GSEA_Demethylation_phenpermutation_default  <- c()
 # store optimal rel_rank for the 10 permutations of the true sample labels
-rel_rank_cP_GSEA_Demethylation_phenpermutation_optim <- c()
+rel_rank_cP_GSEA_Demethylation_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -477,7 +477,7 @@ for(i in 1:10){
 
 
 # (i) Random permutations of the random permutations of the sample conditions, first data set
-rel_rank_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_phenpermutation_default, rel_rank_cP_ORA_tCell_phenpermutation_optim),
+rel_rank_GeneSet1_phenpermutation  <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_phenpermutation_default, rel_rank_cP_ORA_tCell_phenpermutation_optim),
                                                 GOSeq = c(rel_rank_GOSeq_tCell_phenpermutation_default, rel_rank_GOSeq_tCell_phenpermutation_optim),
                                                 PADOG = c(rel_rank_PADOG_PrimImmun_phenpermutation_default, rel_rank_PADOG_PrimImmun_phenpermutation_optim),
                                                 cP_GSEA = c(rel_rank_cP_GSEA_tCell_phenpermutation_default, rel_rank_cP_GSEA_tCell_phenpermutation_optim),
@@ -487,7 +487,7 @@ rel_rank_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell
 
 
 # (ii) Random permutations of the random permutations of the sample conditions, second data set
-rel_rank_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demethylation_phenpermutation_default, rel_rank_cP_ORA_Demethylation_phenpermutation_optim),
+rel_rank_GeneSet2_phenpermutation  <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demethylation_phenpermutation_default, rel_rank_cP_ORA_Demethylation_phenpermutation_optim),
                                                 GOSeq = c(rel_rank_GOSeq_Demethylation_phenpermutation_default, rel_rank_GOSeq_Demethylation_phenpermutation_optim),
                                                 PADOG = c(rel_rank_PADOG_GraftvsHost_phenpermutation_default, rel_rank_PADOG_GraftvsHost_phenpermutation_optim),
                                                 cP_GSEA = c(rel_rank_cP_GSEA_Demethylation_phenpermutation_default, rel_rank_cP_GSEA_Demethylation_phenpermutation_optim),
@@ -498,10 +498,10 @@ rel_rank_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demet
 ### Generate ggplots ###########################################################
 ################################################################################
 
-plot_truelabels <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_truephen, rel_rank_GeneSet2_truephen,
+plot_truelabels  <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_truephen, rel_rank_GeneSet2_truephen,
                                                            "rel_rank", "true_labels")
 
-plot_permutedlabels <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_phenpermutation, rel_rank_GeneSet2_phenpermutation,
+plot_permutedlabels  <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_phenpermutation, rel_rank_GeneSet2_phenpermutation,
                                                                "rel_rank", "random_permutations")
 
 plot_grid(plot_permutedlabels, plot_truelabels, labels=c("A", "B"), ncol = 1, nrow = 2)

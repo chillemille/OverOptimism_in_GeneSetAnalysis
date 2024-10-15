@@ -16,6 +16,9 @@ library(edgeR)
 ######################################################################################
 
 #generate lossfunction to count the number of differentially enriched gene sets
+
+# function arguments:
+# - gsa_results: results table genrated using clusterProfiler's ORA
 lossfunction_cPORA <- function(gsa_results){
 
   #number of Differentially Enriched Gene Sets
@@ -29,6 +32,9 @@ lossfunction_cPORA <- function(gsa_results){
 #############################################
 ###generate necessary input for ORA tool  ###
 #############################################
+
+# function argument:
+# - DE_results: results table of differential expression
 
 cP_ORA_input_preparation <- function(DE_results){
 
@@ -59,6 +65,10 @@ cP_ORA_input_preparation <- function(DE_results){
 ### optimization of pre-processing ####################################################
 #######################################################################################
 
+# function inputs:
+# - expression_data:  gene expression data to be processed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
 cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
   # indicate which of the two strings can be found in the gene IDs of the expression data at hand
@@ -150,8 +160,8 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
   n_DEGS <- max(n_DEGS_detechniques)
 
   # update documentation frame
-  doc[2,"optimal_parameter"] <- opt_DE_technique
-  doc[2,"n_DEGS"] <- n_DEGS
+  doc[2, "optimal_parameter"] <- opt_DE_technique
+  doc[2, "n_DEGS"] <- n_DEGS
 
 
 
@@ -189,7 +199,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
       lapply(as.data.frame) %>% lapply(dplyr::rename, p_adj = padj)
 
     #(ii) run clusterProfiler's ORA tool with default parameters
-    cP_ORA_results_prefilt <- lapply(X = deseq2_results_prefilt,FUN = cP_ORA_input_preparation) %>%
+    cP_ORA_results_prefilt <- lapply(X = deseq2_results_prefilt, FUN = cP_ORA_input_preparation) %>%
       lapply(FUN = enrichGO, OrgDb=organism, ont = "BP") %>%
       lapply(as.data.frame)
 
@@ -246,7 +256,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
       lapply(FUN = DGEList,
              group = phenotype_labels) %>%
       lapply(FUN = calcNormFactors) %>%
-      lapply(FUN = voom,design = mm) %>% lapply(FUN = lmFit,design = mm) %>% lapply(FUN = eBayes) %>%
+      lapply(FUN = voom, design = mm) %>% lapply(FUN = lmFit, design = mm) %>% lapply(FUN = eBayes) %>%
       lapply(FUN = topTable,
              coef = ncol(mm),
              number = 60000) %>%
@@ -256,7 +266,7 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
     # perform ORA
     cP_ORA_results_prefilt <- lapply(FUN=cP_ORA_input_preparation, X=limma_results) %>%
-      lapply(FUN=enrichGO,OrgDb=organism, ont = "BP") %>%
+      lapply(FUN=enrichGO, OrgDb=organism, ont = "BP") %>%
       lapply(FUN=as.data.frame)
 
     # get number of differentially enriched gene sets for each pre-filtering approach
@@ -297,13 +307,13 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 
     # run DESeq2 workflow for each of the three gene ID conversion schemes
     DE_results_convID_list <- lapply(FUN = geneID_conversion, X=1:2, expression_data = exprdat_prefilt_opt) %>%
-      lapply(FUN = deseq_preprocess,phenotype_labels = phenotype_labels) %>%
+      lapply(FUN = deseq_preprocess, phenotype_labels = phenotype_labels) %>%
       lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
-      lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = padj)
+      lapply(as.data.frame) %>% lapply(FUN = dplyr::rename, p_adj = padj)
 
     ### perform ORA for both DE results resulting from duplicate gene ID removal
     cP_ORA_results_convID <- lapply(FUN = cP_ORA_input_preparation, X = DE_results_convID_list) %>%
-      lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>%
+      lapply(FUN = enrichGO, OrgDb=organism, ont = "BP") %>%
       lapply(FUN = as.data.frame)
 
   } else if(opt_DE_technique == "limma"){
@@ -311,14 +321,14 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
     # perform edgeR workflow for each of the three gene ID conversion schemes
     DE_results_convID_list <- lapply(geneID_conversion, expression_data=exprdat_prefilt_opt, X = 1:2) %>%
       lapply(FUN = DGEList,  group = phenotype_labels) %>%
-      lapply(calcNormFactors) %>% lapply(FUN=voom,design= mm) %>%
-      lapply(FUN=lmFit,design= mm ) %>% lapply(FUN = eBayes) %>%
+      lapply(calcNormFactors) %>% lapply(FUN=voom, design= mm) %>%
+      lapply(FUN=lmFit, design= mm ) %>% lapply(FUN = eBayes) %>%
       lapply(FUN = topTable, coef=ncol(mm), number = 60000) %>%
-      lapply(as.data.frame) %>% lapply(FUN = dplyr::rename,p_adj = adj.P.Val)
+      lapply(as.data.frame) %>% lapply(FUN = dplyr::rename, p_adj = adj.P.Val)
 
     ### perform ORA for all of the 3 DE results resulting from duplicate gene ID removal
     cP_ORA_results_convID <- lapply(FUN = cP_ORA_input_preparation, X = DE_results_convID_list) %>%
-      lapply(FUN = enrichGO,OrgDb=organism, ont = "BP") %>%
+      lapply(FUN = enrichGO, OrgDb=organism, ont = "BP") %>%
       lapply(FUN = as.data.frame)
 
   }
@@ -372,6 +382,11 @@ cP_ORA_preprocess_optim <- function(expression_data, phenotype_labels){
 ### Create input for ORA in default manner ############################################
 #######################################################################################
 
+# function inputs:
+# - expression_data:  gene expression data to be processed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
+
 get_DEGs_default <- function(expression_data, phenotype_labels){
 
 
@@ -415,6 +430,12 @@ get_DEGs_default <- function(expression_data, phenotype_labels){
 
 #optimize number of differentially enriched DEG with regular (r) KEGG
 #input as provided by function global_DE_optim: results table from DE analysis
+
+# function arguments:
+# DE_results: results table of differential expression analysis
+# organism_kegg: organism for which analysis is performed
+#               "hsa" for human
+#               "mmu" for mouse
 cP_ORA_rkegg_optim <- function(DE_results, oragnism_kegg){
 
   # create vector of differentially expressed genes from DE results
@@ -449,10 +470,10 @@ cP_ORA_rkegg_optim <- function(DE_results, oragnism_kegg){
     # number of differentially enriched gene sets
 
     #update current number of differentially enriched gene sets
-    n_DEGS<-lossfunction_cPORA(cp_ora_kegg_univ)
+    n_DEGS <- lossfunction_cPORA(cp_ora_kegg_univ)
     #for documentation
-    n_DEGS_doc<-c(n_DEGS_doc, n_DEGS)
-    opt_arg_doc<-c(opt_arg_doc, "Adapted")
+    n_DEGS_doc <- c(n_DEGS_doc, n_DEGS)
+    opt_arg_doc <- c(opt_arg_doc, "Adapted")
 
 
 
@@ -469,9 +490,9 @@ cP_ORA_rkegg_optim <- function(DE_results, oragnism_kegg){
 
     # update documentation:
     # add current optimal (i.e. default) number of differentially enriched gene sets
-    n_DEGS_doc<-c(n_DEGS_doc, n_DEGS)
+    n_DEGS_doc <- c(n_DEGS_doc, n_DEGS)
     # add default universe as optimal choice of the universe
-    opt_arg_doc<-c(opt_arg_doc, "Default")
+    opt_arg_doc <- c(opt_arg_doc, "Default")
 
 
 
@@ -488,6 +509,12 @@ cP_ORA_rkegg_optim <- function(DE_results, oragnism_kegg){
 ### GO optimization ###################################################################
 #######################################################################################
 
+# function arguments:
+# DE_results: results table of differential expression analysis
+# organism_GO: organism for which the analysis is performed
+#             "org.Hs.eg.db" for human
+#             "org.Mm.eg.db" for mouse
+
 cPORA_GO_optim <- function(DE_results, organism_go){
 
   #obtain input vector for KEGG analysis with input preparation function
@@ -499,26 +526,26 @@ cPORA_GO_optim <- function(DE_results, organism_go){
 
 
   # adapted universe consists of all genes with a nonNA adjusted p-value
-  univ_adapt<-rownames(DE_results[!is.na(DE_results$p_adj), ])
+  univ_adapt <- rownames(DE_results[!is.na(DE_results$p_adj), ])
 
 
 
   #run function with default configuration
-  cp_ora_go_default<-enrichGO(DEG_vec,
+  cp_ora_go_default <- enrichGO(DEG_vec,
                               OrgDb= organism_go,
                               ont="BP")
 
 
 
   #current number of differentially enriched gene sets
-  n_DEGS<-lossfunction_cPORA(cp_ora_go_default)
+  n_DEGS <- lossfunction_cPORA(cp_ora_go_default)
   #store for documentation of optimization process
-  n_DEGS_doc<-lossfunction_cPORA(cp_ora_go_default)
-  opt_arg_doc<-"GO"
+  n_DEGS_doc <- lossfunction_cPORA(cp_ora_go_default)
+  opt_arg_doc <- "GO"
 
   ##############
   #change universe to all genes measured in the experiment
-  cp_ora_go_univ<-enrichGO(DEG_vec,
+  cp_ora_go_univ <- enrichGO(DEG_vec,
                            OrgDb= organism_go,
                            ont="BP",
                            universe = univ_adapt)
@@ -529,11 +556,11 @@ cPORA_GO_optim <- function(DE_results, organism_go){
   if(lossfunction_cPORA(cp_ora_go_univ) > n_DEGS){
 
     # count number of differentially enriched gene sets
-    n_DEGS<-lossfunction_cPORA(cp_ora_go_univ)
+    n_DEGS <- lossfunction_cPORA(cp_ora_go_univ)
 
     # update documentation frame
-    n_DEGS_doc<-c(n_DEGS_doc, n_DEGS)
-    opt_arg_doc<-c(opt_arg_doc, "Adapted")
+    n_DEGS_doc <- c(n_DEGS_doc, n_DEGS)
+    opt_arg_doc <- c(opt_arg_doc, "Adapted")
 
 
     return(list(optim=as.data.frame(cp_ora_go_univ),
@@ -570,7 +597,11 @@ cPORA_GO_optim <- function(DE_results, organism_go){
 #respective function
 
 #note: as initial gene expression data set is in Ensembl gene ID format,
-
+# function arguments
+# - DE_results: results table of differential expression analysis
+# - ind_organism: indicates from which organism the gene expression data originates
+#                 1: human
+#                 2: mouse
 cP_ORA_internparam_optim <- function(DE_results, ind_organism){
 
 
@@ -590,7 +621,7 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
 
 
   #prepare dataframe to document stepwise optimization
-  doc <- data.frame(step=c("Default", "Gene Set Database","Universe"),
+  doc <- data.frame(step=c("Default", "Gene Set Database", "Universe"),
                     optimal_parameter=NA,
                     n_DEGS=NA)
 
@@ -605,7 +636,7 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
                             ont="BP")
 
   #default result (incl. default unranked list)
-  doc[1,"n_DEGS"] <- lossfunction_cPORA(cP_default_go)
+  doc[1, "n_DEGS"] <- lossfunction_cPORA(cP_default_go)
 
 
 
@@ -621,7 +652,7 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
   n_DEGS_vec[1] <- lossfunction_cPORA(cP_default_go)
   n_DEGS_vec[2] <- lossfunction_cPORA(cP_default_kegg)
   #indicate which gene set database yields highest number of DEGS
-  ind_db  <- c("GO","KEGG")
+  ind_db  <- c("GO", "KEGG")
 
   #depending on which gene set database yields highest number of DEGS with default
   #configuration, perform optimization with function corresponding function
@@ -660,6 +691,10 @@ cP_ORA_internparam_optim <- function(DE_results, ind_organism){
 ### (III) Joint optimization of Pre-Processing and Internal Parameters #########
 ################################################################################
 
+# function inputs:
+# - expression_data:  gene expression data to be processed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
 cP_ORA_joint_optimization <- function(expression_data, phenotype_labels){
 
   # run optimization of pre-processing steps

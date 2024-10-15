@@ -12,16 +12,29 @@ library(dplyr)
 ### Prepare the data frame to be plotted in the ggplot #########################
 ################################################################################
 
-# sample_labels: c("true_labels", "random_permutations")
 
-prep_data_for_ggplot_n_DEGS <- function(default_to_optim, sample_labels){
+
+# function arguments:
+# - default_to_optim: a data frame containing
+#                     * ONE column for each method which contains first a vector of the default and then the optimized values
+#                       -> e.g. of the form DAVID = c(n_DEGS_DAVID_tCell_phenpermutation_default, n_DEGS_DAVID_tCell_phenpermutation_optim)
+#                     * column 'state' indicating for each value from the "method columns" whether it is a default or an optimized value
+#                       -> e.g. column state = c(rep("Default", 10), rep("Maximum", 10))
+#                     * column ID indicating the ID of the permutation (takes values 1 to 10; only needed for analysis on the random permutations)
+#                       -> e.g. colum ID = rep(c(1:10), 2))
+#
+# - sample_labels: one of "true_labels" or "random_permutations" to indicate
+#                  whether the analysis was performed for the true sample labels
+#                  or the ten random permutations
+
+prep_data_for_ggplot_n_DEGS  <- function(default_to_optim, sample_labels){
 
 
   # if the data contain the data for the permutations of the sample labels, add column "ID" which contains the
   # which indicates the number of the corresponding permutation
   if(sample_labels == "random_permutations"){
 
-    default_to_optim$ID <- rep(c(1:10),2)
+    default_to_optim$ID  <- rep(c(1:10),2)
 
   }
 
@@ -29,12 +42,12 @@ prep_data_for_ggplot_n_DEGS <- function(default_to_optim, sample_labels){
   # "state" is always contained, "ID" is contained if the data set contains
   # data on the random permutations
   # we need this indicator "column" to NOT pivot these columns to a longer format
-  columns <- c("state", "ID")[c("state", "ID") %in% colnames(default_to_optim)]
+  columns  <- c("state", "ID")[c("state", "ID") %in% colnames(default_to_optim)]
 
 
   # transform data frame such that each observed adjusted p-value value is in a separate column, additionally labelled by the
   # associated GSA tool and state
-  default_to_optim <- pivot_longer(default_to_optim,
+  default_to_optim  <- pivot_longer(default_to_optim,
                                    cols=!columns,
                                    names_to="GSA_tool",
                                    values_to = "n_DEGS")
@@ -45,12 +58,12 @@ prep_data_for_ggplot_n_DEGS <- function(default_to_optim, sample_labels){
   # - the gene set number for each tool (1 vs. 2)
   # - and the permutation ID, IF the data contains the permutations
   # -> this way, each value appears exactly twice and matches the default and optimal value for each tool in each permutation
-  default_to_optim$unique_ID <- default_to_optim$GSA_tool
+  default_to_optim$unique_ID  <- default_to_optim$GSA_tool
 
 
 
   if(sample_labels == "random_permutations"){
-    default_to_optim$unique_ID <- paste0(default_to_optim$unique_ID,
+    default_to_optim$unique_ID  <- paste0(default_to_optim$unique_ID,
                                          "_",
                                          default_to_optim$ID)
 
@@ -62,17 +75,17 @@ prep_data_for_ggplot_n_DEGS <- function(default_to_optim, sample_labels){
   ############################
 
   # the order of the methods in the results illustration shall be based on the following
-  allmethods <- c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "cP_GSEA", "GSEA", "GSEAPreranked")
+  allmethods  <- c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "cP_GSEA", "GSEA", "GSEAPreranked")
   # get the list of tools existent in the current data
-  currentmethods <- unique(default_to_optim$GSA_tool)
+  currentmethods  <- unique(default_to_optim$GSA_tool)
   # specify the order of the existent methods in the results illustrations
-  levels <- currentmethods[order(match(currentmethods,allmethods))]
+  levels  <- currentmethods[order(match(currentmethods,allmethods))]
 
 
 
   # transform GSA tools to factors
   # -> this way we can fix the order of the tools in the graphic
-  default_to_optim$GSA_tool <- factor(default_to_optim$GSA_tool,
+  default_to_optim$GSA_tool  <- factor(default_to_optim$GSA_tool,
                                       levels = levels)
 
 
@@ -91,36 +104,50 @@ prep_data_for_ggplot_n_DEGS <- function(default_to_optim, sample_labels){
 # we display the data on the sqrt-scale due to the different magnitudes of the
 # points
 
-# note: vpos_methodlabels determines the vertical position of the method labels
-# in function annotate() in the plot (this needs to be adjusted to each data since
-# of n_DEGS differs considerably between the magnitude settings)
-labels_sq <- function(x) {
+labels_sq  <- function(x) {
   paste(x^2)
 }
 
 
-## ggplot
-create_results_illustration_n_DEGS <- function(default_to_optim, sample_labels, vpos_methodlabels){
+## function arguments:
+# function arguments:
+# - default_to_optim: a data frame containing
+#                     * ONE column for each method which contains first the default and then the optimized values
+#                       -> e.g. of the form DAVID = c(n_DEGS_DAVID_pickrell_phenpermutation_default, n_DEGS_DAVID_pickrell_phenpermutation_optim)
+#                     * column 'state' indicating for each value from the "method columns" whether it is a default or an optimized value
+#                       -> e.g. column state = c(rep("Default", 10), rep("Maximum", 10))
+#                     * column ID indicating the ID of the permutation (takes values 1 to 10; only needed for analysis on the random permutations)
+#                       -> e.g. colum ID = rep(c(1:10), 2))
+#
+# - sample labels: one of "true_labels" or "random_permutations" to indicate
+#                  whether the analysis was performed for the true sample labels
+#                  or the ten random permutations
+#
+# - vpos_methodlabels: determines the vertical position of the method labels
+#                     in function annotate() in the plot (this needs to be adjusted
+#                     to each data set individually since the magnitude of n_DEGS
+#                     differs considerably between the magnitude settings)
+create_results_illustration_n_DEGS  <- function(default_to_optim, sample_labels, vpos_methodlabels){
 
 
-  data_prep <- prep_data_for_ggplot_n_DEGS(default_to_optim, sample_labels)
+  data_prep  <- prep_data_for_ggplot_n_DEGS(default_to_optim, sample_labels)
 
 
   # Replace "GSEAPreranked" by "GSEA- \n Preranked" (line break makes plot easier to understand)
-  add_labels_xaxis <- levels(data_prep$GSA_tool)
-  add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
+  add_labels_xaxis  <- levels(data_prep$GSA_tool)
+  add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"]  <- "GSEA- \n Preranked"
 
 
   # Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
-  add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
+  add_labels_xaxis[add_labels_xaxis == "cP_GSEA"]  <- "clusterProfiler's \n GSEA"
 
 
   # Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
-  add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
+  add_labels_xaxis[add_labels_xaxis == "cP_ORA"]  <- "clusterProfiler's \n ORA"
 
 
 
-  plot <- ggplot(data = data_prep,
+  plot  <- ggplot(data = data_prep,
                  aes(x = interaction(GSA_tool, state, lex.order = TRUE),
                      y = sqrt(n_DEGS), group = 1)) +
     geom_line(aes(group=unique_ID), size=0.4,  col ="#F8766D") +

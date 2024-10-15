@@ -60,23 +60,23 @@ load("./Results/Intermediate_results/PADOG_Results_Pickrell_PhenotypePermutation
 # true sample labels
 
 # optimal n_DEGS
-n_DEGS_GOSeq_pickrell_truephen_optim <- optim_GOSeq_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_GOSeq_results_Pickrell_originalphenotype$documentation$n_DEGS)]
+n_DEGS_GOSeq_pickrell_truephen_optim  <- optim_GOSeq_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_GOSeq_results_Pickrell_originalphenotype$documentation$n_DEGS)]
 # default n_DEGS
-n_DEGS_GOSeq_pickrell_truephen_default <- optim_GOSeq_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
+n_DEGS_GOSeq_pickrell_truephen_default  <- optim_GOSeq_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
 
 # permuted sample labels
 
 # store optimal n_DEGS for the 10 permutations of the true sample labels
-n_DEGS_GOSeq_pickrell_phenpermutation_optim <- c()
+n_DEGS_GOSeq_pickrell_phenpermutation_optim  <- c()
 # store default n_DEGS for the 10 permutations of the true sample labels
-n_DEGS_GOSeq_pickrell_phenpermutation_default <- c()
+n_DEGS_GOSeq_pickrell_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
   # store the optimal number of differentially enriched gene sets
-  n_DEGS_GOSeq_pickrell_phenpermutation_optim[i] <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
+  n_DEGS_GOSeq_pickrell_phenpermutation_optim[i]  <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
   # store the default number of differentially enriched gene sets
-  n_DEGS_GOSeq_pickrell_phenpermutation_default[i] <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
+  n_DEGS_GOSeq_pickrell_phenpermutation_default[i]  <- optim_GOSeq_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
 
 
 }
@@ -89,16 +89,16 @@ for(i in 1:10){
 # true conditions
 
 # optimal n_DEGS
-n_DEGS_DAVID_pickrell_truephen_default <- 0
+n_DEGS_DAVID_pickrell_truephen_default  <- 0
 # default n_DEGS
-n_DEGS_DAVID_pickrell_truephen_optim <- 0
+n_DEGS_DAVID_pickrell_truephen_optim  <- 0
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_DAVID_pickrell_phenpermutation_default <- rep(0, times = 10)
+n_DEGS_DAVID_pickrell_phenpermutation_default  <- rep(0, times = 10)
 # true n_DEGS
-n_DEGS_DAVID_pickrell_phenpermutation_optim <- rep(0, times = 10)
+n_DEGS_DAVID_pickrell_phenpermutation_optim  <- rep(0, times = 10)
 
 
 #######################
@@ -108,22 +108,22 @@ n_DEGS_DAVID_pickrell_phenpermutation_optim <- rep(0, times = 10)
 # true sample labels
 
 # optimal n_DEGS
-n_DEGS_cP_ORA_pickrell_truephen_optim <- optim_ORA_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_ORA_results_Pickrell_originalphenotype$documentation$n_DEGS)]
+n_DEGS_cP_ORA_pickrell_truephen_optim  <- optim_ORA_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_ORA_results_Pickrell_originalphenotype$documentation$n_DEGS)]
 # default n_DEGS
-n_DEGS_cP_ORA_pickrell_truephen_default <- optim_ORA_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
+n_DEGS_cP_ORA_pickrell_truephen_default  <- optim_ORA_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
 
 # permuted sample labels
 
 # optimal n_DEGS
-n_DEGS_cP_ORA_pickrell_phenpermutation_optim <- c()
+n_DEGS_cP_ORA_pickrell_phenpermutation_optim  <- c()
 # true n_DEGS
-n_DEGS_cP_ORA_pickrell_phenpermutation_default <- c()
+n_DEGS_cP_ORA_pickrell_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
-  n_DEGS_cP_ORA_pickrell_phenpermutation_optim[i] <- optim_ORA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_ORA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
+  n_DEGS_cP_ORA_pickrell_phenpermutation_optim[i]  <- optim_ORA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_ORA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
 
-  n_DEGS_cP_ORA_pickrell_phenpermutation_default[i] <- optim_ORA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
+  n_DEGS_cP_ORA_pickrell_phenpermutation_default[i]  <- optim_ORA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
 
 
 }
@@ -136,23 +136,23 @@ for(i in 1:10){
 # true sample labels
 
 # optimal n_DEGS
-n_DEGS_cP_GSEA_pickrell_truephen_optim <- optim_cP_GSEA_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_cP_GSEA_results_Pickrell_originalphenotype$documentation$n_DEGS)]
+n_DEGS_cP_GSEA_pickrell_truephen_optim  <- optim_cP_GSEA_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_cP_GSEA_results_Pickrell_originalphenotype$documentation$n_DEGS)]
 # default n_DEGS
-n_DEGS_cP_GSEA_pickrell_truephen_default <- optim_cP_GSEA_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
+n_DEGS_cP_GSEA_pickrell_truephen_default  <- optim_cP_GSEA_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
 
 
 # permuted sample labels
 
 # optimal n_DEGS
-n_DEGS_cP_GSEA_pickrell_phenpermutation_optim <- c()
+n_DEGS_cP_GSEA_pickrell_phenpermutation_optim  <- c()
 # default n_DEGS
-n_DEGS_cP_GSEA_pickrell_phenpermutation_default <- c()
+n_DEGS_cP_GSEA_pickrell_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
-  n_DEGS_cP_GSEA_pickrell_phenpermutation_optim[i] <- optim_cP_GSEA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_cP_GSEA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
+  n_DEGS_cP_GSEA_pickrell_phenpermutation_optim[i]  <- optim_cP_GSEA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_cP_GSEA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
 
-  n_DEGS_cP_GSEA_pickrell_phenpermutation_default[i] <- optim_cP_GSEA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
+  n_DEGS_cP_GSEA_pickrell_phenpermutation_default[i]  <- optim_cP_GSEA_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
 
 
 }
@@ -164,22 +164,22 @@ for(i in 1:10){
 # true sample labels
 
 # optimal n_DEGS
-n_DEGS_PADOG_pickrell_truephen_optim <- optim_PADOG_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_PADOG_results_Pickrell_originalphenotype$documentation$n_DEGS)]
+n_DEGS_PADOG_pickrell_truephen_optim  <- optim_PADOG_results_Pickrell_originalphenotype$documentation$n_DEGS[length(optim_PADOG_results_Pickrell_originalphenotype$documentation$n_DEGS)]
 # default n_DEGS
-n_DEGS_PADOG_pickrell_truephen_default <- optim_PADOG_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
+n_DEGS_PADOG_pickrell_truephen_default  <- optim_PADOG_results_Pickrell_originalphenotype$documentation$n_DEGS[1]
 
 # permuted sample labels
 
 # optimal n_DEGS
-n_DEGS_PADOG_pickrell_phenpermutation_optim <- c()
+n_DEGS_PADOG_pickrell_phenpermutation_optim  <- c()
 # default n_DEGS
-n_DEGS_PADOG_pickrell_phenpermutation_default <- c()
+n_DEGS_PADOG_pickrell_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
-  n_DEGS_PADOG_pickrell_phenpermutation_optim[i] <- optim_PADOG_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_PADOG_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
+  n_DEGS_PADOG_pickrell_phenpermutation_optim[i]  <- optim_PADOG_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[length(optim_PADOG_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS)]
 
-  n_DEGS_PADOG_pickrell_phenpermutation_default[i] <- optim_PADOG_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
+  n_DEGS_PADOG_pickrell_phenpermutation_default[i]  <- optim_PADOG_results_Pickrell_phenotypepermutation[[i]]$documentation$n_DEGS[1]
 
 
 }
@@ -192,16 +192,16 @@ for(i in 1:10){
 # true conditions
 
 # optimal n_DEGS
-n_DEGS_GSEA_pickrell_truephen_optim <- 41
+n_DEGS_GSEA_pickrell_truephen_optim  <- 41
 # default n_DEGS
-n_DEGS_GSEA_pickrell_truephen_default <- 6
+n_DEGS_GSEA_pickrell_truephen_default  <- 6
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_GSEA_pickrell_phenpermutation_default <- c(1, 79, 0, 2, 3, 0, 155, 0, 20, 0)
+n_DEGS_GSEA_pickrell_phenpermutation_default  <- c(1, 79, 0, 2, 3, 0, 155, 0, 20, 0)
 # default n_DEGS
-n_DEGS_GSEA_pickrell_phenpermutation_optim <- c(18, 80, 2, 3, 3, 1, 155, 40, 20, 0)
+n_DEGS_GSEA_pickrell_phenpermutation_optim  <- c(18, 80, 2, 3, 3, 1, 155, 40, 20, 0)
 
 
 ###############
@@ -209,16 +209,16 @@ n_DEGS_GSEA_pickrell_phenpermutation_optim <- c(18, 80, 2, 3, 3, 1, 155, 40, 20,
 ###############
 
 # optimal n_DEGS
-n_DEGS_GSEAPreranked_pickrell_truephen_default <- 194
+n_DEGS_GSEAPreranked_pickrell_truephen_default  <- 194
 # default n_DEGS
-n_DEGS_GSEAPreranked_pickrell_truephen_optim <- 541
+n_DEGS_GSEAPreranked_pickrell_truephen_optim  <- 541
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_GSEAPreranked_pickrell_phenpermutation_default <- c(48, 251, 38, 48, 12, 1, 110, 1, 29, 25)
+n_DEGS_GSEAPreranked_pickrell_phenpermutation_default  <- c(48, 251, 38, 48, 12, 1, 110, 1, 29, 25)
 # default n_DEGS
-n_DEGS_GSEAPreranked_pickrell_phenpermutation_optim <- c(351, 639, 133, 710, 196, 10, 352, 9, 173, 125)
+n_DEGS_GSEAPreranked_pickrell_phenpermutation_optim  <- c(351, 639, 133, 710, 196, 10, 352, 9, 173, 125)
 
 
 
@@ -234,7 +234,7 @@ n_DEGS_GSEAPreranked_pickrell_phenpermutation_optim <- c(351, 639, 133, 710, 196
 # data frame
 
 # (i) True sample conditions
-dat_overview_n_DEGS_pickrell_truephen <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pickrell_truephen_default, n_DEGS_cP_ORA_pickrell_truephen_optim),
+dat_overview_n_DEGS_pickrell_truephen  <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pickrell_truephen_default, n_DEGS_cP_ORA_pickrell_truephen_optim),
                                                     GOSeq = c(n_DEGS_GOSeq_pickrell_truephen_default, n_DEGS_GOSeq_pickrell_truephen_optim),
                                                     DAVID = c(n_DEGS_DAVID_pickrell_truephen_default, n_DEGS_DAVID_pickrell_truephen_optim),
                                                     PADOG = c(n_DEGS_PADOG_pickrell_truephen_default, n_DEGS_PADOG_pickrell_truephen_optim),
@@ -246,7 +246,7 @@ dat_overview_n_DEGS_pickrell_truephen <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pic
 
 
 # (ii) Random permutations of the true sample conditions (Pickrell data set)
-dat_overview_n_DEGS_pickrell_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pickrell_phenpermutation_default, n_DEGS_cP_ORA_pickrell_phenpermutation_optim),
+dat_overview_n_DEGS_pickrell_phenpermutation  <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_pickrell_phenpermutation_default, n_DEGS_cP_ORA_pickrell_phenpermutation_optim),
                                                            GOSeq = c(n_DEGS_GOSeq_pickrell_phenpermutation_default, n_DEGS_GOSeq_pickrell_phenpermutation_optim),
                                                            DAVID = c(n_DEGS_DAVID_pickrell_phenpermutation_default, n_DEGS_DAVID_pickrell_phenpermutation_optim),
                                                            PADOG = c(n_DEGS_PADOG_pickrell_phenpermutation_default, n_DEGS_PADOG_pickrell_phenpermutation_optim),
@@ -262,9 +262,9 @@ dat_overview_n_DEGS_pickrell_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_
 ### Generate ggplots ###########################################################
 ################################################################################
 
-plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_truephen, "true_labels", -10)
+plot_truelabels  <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_truephen, "true_labels", -10)
 
-plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_phenpermutation,
+plot_permutedlabels  <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_pickrell_phenpermutation,
                                                           "random_permutations", -12)
 
 plot_grid(plot_permutedlabels, plot_truelabels, labels=c("A", "B"), ncol = 1, nrow = 2)

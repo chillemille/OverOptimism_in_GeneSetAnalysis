@@ -15,6 +15,9 @@ library(goseq)
 ######################################################################################
 
 #generate lossfunction to count the number of differentially enriched gene sets
+
+# function arguments:
+# gsa_results: GSA results table generated with GOSeq
 lossfunction_GOSeq <- function(gsa_results){
 
   #count number of differentially expressed gene sets which are over-represented
@@ -31,16 +34,20 @@ lossfunction_GOSeq <- function(gsa_results){
 #######################################################################################
 ###generate necessary input for GOSeq #################################################
 #######################################################################################
+
+# function argument:
+# - DE_results: results table of differential expression analysis (generated with
+#               DESeq2 or limma)
 GOSeq_input_preparation <- function(DE_results){
 
   # prepare required input vector for DE results generated with DESeq2 or limma
 
 
   #remove all genes with adjusted p-value set to NA in DE analysis -> especially concerns DE results generated with DESeq2
-  DE_results_nona <- DE_results[!is.na(DE_results$p_adj),]
+  DE_results_nona <- DE_results[!is.na(DE_results$p_adj), ]
   #create named binary vector for all genes with adjusted p-value NOT set to NA
-  DEG_vec_bin <- ifelse((DE_results_nona$p_adj < 0.05) & (!is.na(DE_results_nona$p_adj)), 1,0)
-  names(DEG_vec_bin)<-rownames(DE_results_nona)
+  DEG_vec_bin <- ifelse((DE_results_nona$p_adj < 0.05) & (!is.na(DE_results_nona$p_adj)), 1, 0)
+  names(DEG_vec_bin) <- rownames(DE_results_nona)
 
   # return binary names vector
   return(DEG_vec_bin)
@@ -51,6 +58,17 @@ GOSeq_input_preparation <- function(DE_results){
 ########################################################################################
 ### GOSeq pipeline #####################################################################
 ########################################################################################
+
+# run GOSeq
+
+# function arguments (all derived from function calls nullp() or goseq() from package goseq)
+# - DEgenes: named binary vector indicating indicating for each gene whether it is differentially
+#            expressed or not (value 1 or 0, resp.)
+# - geneset_database: gene set database; here, we use values
+#                     "GO:BP" for GO with subontology biological processes
+#                     "KEGG" for gene set database KEGG
+# - bias: numeric vector containing data on which differential expression may depend
+
 
 GOSeq_pipeline <- function(DE_results, geneset_database = "GO:BP", bias = NULL,
                            extended_universe = FALSE, calc_method = "Wallenius", geneID, organism){
@@ -90,6 +108,9 @@ GOSeq_pipeline <- function(DE_results, geneset_database = "GO:BP", bias = NULL,
 ###optimization of pre-processing #####################################################
 #######################################################################################
 
+# - expression_data:  gene expression data to be processed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
 GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 
 
@@ -141,7 +162,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
                                          organism = organism)
 
   # (iii) update documentation frame
-  doc[1,"n_DEGS"] <- lossfunction_GOSeq(GOSeq_results_deseq2)
+  doc[1, "n_DEGS"] <- lossfunction_GOSeq(GOSeq_results_deseq2)
 
   # count number of differentially enriched gene sets
   n_DEGS_detechniques[1] <- lossfunction_GOSeq(GOSeq_results_deseq2)
@@ -162,7 +183,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 
   # (i.3) run standard limma workflow
   # for pre-filtering: reuse indicator keep from preceding alternative edgeR
-  limma_results_default <- DGEList(expression_data[keep,], group=phenotype_labels) %>%
+  limma_results_default <- DGEList(expression_data[keep, ], group=phenotype_labels) %>%
     calcNormFactors() %>% voom(design=mm) %>% lmFit(design=mm) %>%
     eBayes() %>% topTable(coef=ncol(mm), number=100000) %>%
     as.data.frame() %>% rename(p_adj=adj.P.Val)
@@ -187,7 +208,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 
   # update documentation frame
   doc[2, "optimal_parameter"] <- opt_DE_technique
-  doc[2,"n_DEGS"] <- max( n_DEGS_detechniques )
+  doc[2, "n_DEGS"] <- max( n_DEGS_detechniques )
 
 
 
@@ -264,22 +285,22 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
     # for all methods of pre-filtering: store resulting gene expression data sets in list
     exprdat_list_prefilt <- list()
     # pre-filtered gene expression data set using keep1
-    exprdat_list_prefilt[[1]] <- expression_data[keep1,]
+    exprdat_list_prefilt[[1]] <- expression_data[keep1, ]
     # pre-filtered gene expression data set using keep2
-    exprdat_list_prefilt[[2]] <- expression_data[keep2,]
+    exprdat_list_prefilt[[2]] <- expression_data[keep2, ]
 
 
 
 
-    DE_results_prefilt <- lapply(FUN=DGEList,X= exprdat_list_prefilt,  group=phenotype_labels) %>%
-      lapply(FUN=calcNormFactors) %>% lapply(FUN=voom,design=mm) %>%
-      lapply(FUN=lmFit,design=mm) %>% lapply(FUN=eBayes) %>%
+    DE_results_prefilt <- lapply(FUN=DGEList, X= exprdat_list_prefilt,  group=phenotype_labels) %>%
+      lapply(FUN=calcNormFactors) %>% lapply(FUN=voom, design=mm) %>%
+      lapply(FUN=lmFit, design=mm) %>% lapply(FUN=eBayes) %>%
       lapply(FUN=topTable, coef=ncol(mm), number=100000) %>%
-      lapply(FUN=as.data.frame) %>% lapply(FUN=rename,p_adj=adj.P.Val)
+      lapply(FUN=as.data.frame) %>% lapply(FUN=rename, p_adj=adj.P.Val)
 
 
     # perform GOSeq for each of the pre-filtered gene expression data sets
-    GOSeq_results_prefilt<- lapply(FUN = GOSeq_pipeline,
+    GOSeq_results_prefilt <-  lapply(FUN = GOSeq_pipeline,
                                    X = DE_results_prefilt,
                                    geneID = gene_ID,
                                    organism = organism)
@@ -342,6 +363,10 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 # -> choose method yielding highest number of DEGS and perform optimization with
 # respective function
 
+# function arguments:
+# DE_results: results table of differential expression analysis
+# expression_data: gene expression data set
+
 GOSeq_optim <- function(DE_results, expression_data){
 
   # obtain default input vector for GOSeq in required format
@@ -374,7 +399,7 @@ GOSeq_optim <- function(DE_results, expression_data){
 
 
   # prepare dataframe to document stepwise optimization
-  doc<-data.frame(step=c("Default", "Bias", "Gene Set Database","Universe: Use Genes w/o Gene Set", "p-Value Calculation"),
+  doc <- data.frame(step=c("Default", "Bias", "Gene Set Database", "Universe: Use Genes w/o Gene Set", "p-Value Calculation"),
                   optimal_parameter=NA,
                   n_DEGS=NA)
 
@@ -382,7 +407,7 @@ GOSeq_optim <- function(DE_results, expression_data){
   ### step 1: Default GOSeq results
   #################################
 
-  GOSeq_default<- GOSeq_pipeline(DE_results,
+  GOSeq_default <-  GOSeq_pipeline(DE_results,
                                  geneset_database = "GO:BP",
                                  geneID = gene_ID,
                                  organism = organism)
@@ -390,7 +415,7 @@ GOSeq_optim <- function(DE_results, expression_data){
 
   #count number of differentially enriched gene sets
   n_DEGS <- lossfunction_GOSeq(GOSeq_default)
-  doc[1,"n_DEGS"] <- lossfunction_GOSeq(GOSeq_default)
+  doc[1, "n_DEGS"] <- lossfunction_GOSeq(GOSeq_default)
 
 
   #######################
@@ -400,7 +425,7 @@ GOSeq_optim <- function(DE_results, expression_data){
   # account for all possible biases present in the data (i.e. read count bias),
   # not just length bias
   # calculate read count bias for all genes present in input vector DEG_vec_bin
-  countbias <- rowSums(expression_data[rownames(expression_data) %in% names(DEG_vec_bin),])
+  countbias <- rowSums(expression_data[rownames(expression_data) %in% names(DEG_vec_bin), ])
   # note: non of the row sums are 0 since lowly expressed gened
   # were filtered out in "Step1_Preprocessing"
 
@@ -420,7 +445,7 @@ GOSeq_optim <- function(DE_results, expression_data){
     #count current number of DEGS
     n_DEGS <- lossfunction_GOSeq(GOSeq_allbias)
     #define parameter which will indicate in the results whether bias has been updated
-    doc[2,"optimal_parameter"] <- "All Biases"
+    doc[2, "optimal_parameter"] <- "All Biases"
     doc[2, "n_DEGS"] <- lossfunction_GOSeq(GOSeq_allbias)
 
 
@@ -430,7 +455,7 @@ GOSeq_optim <- function(DE_results, expression_data){
 
     bias <- NULL
     #define parameter which will indicate in the results whether bias has been updated
-    doc[2,"optimal_parameter"] <-"Length Bias Only"
+    doc[2, "optimal_parameter"]  <- "Length Bias Only"
     doc[2, "n_DEGS"] <- n_DEGS
 
   }
@@ -451,7 +476,7 @@ GOSeq_optim <- function(DE_results, expression_data){
   #update current number of differentiallys enriched gene sets
   n_DEGS <- max(lossfunction_GOSeq(GOSeq_kegg), n_DEGS)
   #for documentation
-  doc[3,"optimal_parameter"] <- gene_set_db
+  doc[3, "optimal_parameter"] <- gene_set_db
   doc[3, "n_DEGS"] <- n_DEGS
 
 
@@ -464,7 +489,7 @@ GOSeq_optim <- function(DE_results, expression_data){
   # change background: genes without category shall now be counted towards the total number of
   # genes outside a category (are otherwise excluded from analysis by default)
 
-  GOSeq_genesnocat<- GOSeq_pipeline(DE_results,
+  GOSeq_genesnocat <-  GOSeq_pipeline(DE_results,
                                     geneset_database = gene_set_db,
                                     bias = bias,
                                     geneID = gene_ID,
@@ -478,7 +503,7 @@ GOSeq_optim <- function(DE_results, expression_data){
   #update current number of differentially enriched gene sets
   n_DEGS <- max(lossfunction_GOSeq(GOSeq_genesnocat), n_DEGS)
   #for documentation
-  doc[4,"optimal_parameter"] <- genes_wio_cat
+  doc[4, "optimal_parameter"] <- genes_wio_cat
   doc[4, "n_DEGS"] <- n_DEGS
 
 
@@ -503,7 +528,7 @@ GOSeq_optim <- function(DE_results, expression_data){
   method <- ifelse(lossfunction_GOSeq(GOSeq_calcmethod) > n_DEGS, "Sampling", "Wallenius")
   n_DEGS <- max(lossfunction_GOSeq(GOSeq_calcmethod), n_DEGS)
   #for documentation
-  doc[5,"optimal_parameter"] <- method
+  doc[5, "optimal_parameter"] <- method
   doc[5, "n_DEGS"] <- n_DEGS
 
 
@@ -523,8 +548,8 @@ GOSeq_optim <- function(DE_results, expression_data){
 
 
   #return optimal result with only those gene sets detected as differetially enriched
-  return(list(default_GOSeq =GOSeq_default[GOSeq_default$p_adj_overrep< 0.05,], # default GOSeq results
-              optim_GOSeq =GOSeq_final[GOSeq_final$p_adj_overrep< 0.05,], # optimal GOSeq results
+  return(list(default_GOSeq =GOSeq_default[GOSeq_default$p_adj_overrep< 0.05, ], # default GOSeq results
+              optim_GOSeq =GOSeq_final[GOSeq_final$p_adj_overrep< 0.05, ], # optimal GOSeq results
               documentation=doc))
 
 }
@@ -546,7 +571,7 @@ GOSeq_joint_optimization <- function(expression_data, phenotype_labels){
                                      expression_data)
 
   # for control purposes
-  doc <- rbind(optim_preprocess$documentation, optim_internalparam$documentation[optim_internalparam$documentation$step != "Default",])
+  doc <- rbind(optim_preprocess$documentation, optim_internalparam$documentation[optim_internalparam$documentation$step != "Default", ])
 
 
 

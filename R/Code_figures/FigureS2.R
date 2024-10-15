@@ -69,9 +69,9 @@ n_DEGS_GOSeq_bottomly_truephen_default <-
 # permuted sample labels
 
 # store optimal n_DEGS for the 10 random permutations
-n_DEGS_GOSeq_bottomly_phenpermutation_optim <- c()
+n_DEGS_GOSeq_bottomly_phenpermutation_optim  <- c()
 # store default n_DEGS for the 10 random permutations
-n_DEGS_GOSeq_bottomly_phenpermutation_default <- c()
+n_DEGS_GOSeq_bottomly_phenpermutation_default  <- c()
 
 
 for(i in 1:10){
@@ -93,16 +93,16 @@ for(i in 1:10){
 # true conditions
 
 # optimal n_DEGS
-n_DEGS_DAVID_bottomly_truephen_default <- 2
+n_DEGS_DAVID_bottomly_truephen_default  <- 2
 # default n_DEGS
-n_DEGS_DAVID_bottomly_truephen_optim <- 2
+n_DEGS_DAVID_bottomly_truephen_optim  <- 2
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_DAVID_bottomly_phenpermutation_default <- rep(0, times = 10)
+n_DEGS_DAVID_bottomly_phenpermutation_default  <- rep(0, times = 10)
 # true n_DEGS
-n_DEGS_DAVID_bottomly_phenpermutation_optim <- rep(0, times = 10)
+n_DEGS_DAVID_bottomly_phenpermutation_optim  <- rep(0, times = 10)
 
 
 
@@ -125,9 +125,9 @@ n_DEGS_cP_ORA_bottomly_truephen_default  <-
 # permuted sample labels
 
 # optimal n_DEGS
-n_DEGS_cP_ORA_bottomly_phenpermutation_optim <- c()
+n_DEGS_cP_ORA_bottomly_phenpermutation_optim  <- c()
 # default n_DEGS
-n_DEGS_cP_ORA_bottomly_phenpermutation_default <- c()
+n_DEGS_cP_ORA_bottomly_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
@@ -159,9 +159,9 @@ n_DEGS_cP_GSEA_bottomly_truephen_default <-
 # permuted sample labels
 
 # optimal n_DEGS
-n_DEGS_cP_GSEA_bottomly_phenpermutation_optim <- c()
+n_DEGS_cP_GSEA_bottomly_phenpermutation_optim  <- c()
 # default n_DEGS
-n_DEGS_cP_GSEA_bottomly_phenpermutation_default <- c()
+n_DEGS_cP_GSEA_bottomly_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
@@ -190,9 +190,9 @@ n_DEGS_PADOG_bottomly_truephen_default <-
 # permuted sample labels
 
 # optimal n_DEGS
-n_DEGS_PADOG_bottomly_phenpermutation_optim <- c()
+n_DEGS_PADOG_bottomly_phenpermutation_optim  <- c()
 # default n_DEGS
-n_DEGS_PADOG_bottomly_phenpermutation_default <- c()
+n_DEGS_PADOG_bottomly_phenpermutation_default  <- c()
 
 for(i in 1:10){
 
@@ -214,16 +214,16 @@ for(i in 1:10){
 # true conditions
 
 # optimal n_DEGS
-n_DEGS_GSEA_bottomly_truephen_default <- 2
+n_DEGS_GSEA_bottomly_truephen_default  <- 2
 # default n_DEGS
-n_DEGS_GSEA_bottomly_truephen_optim <- 265
+n_DEGS_GSEA_bottomly_truephen_optim  <- 265
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_GSEA_bottomly_phenpermutation_default <- c(3,1,0,1,0,1,0,10,7,0)
+n_DEGS_GSEA_bottomly_phenpermutation_default  <- c(3,1,0,1,0,1,0,10,7,0)
 # true n_DEGS
-n_DEGS_GSEA_bottomly_phenpermutation_optim <- c(4,10,0,13,1,8,5,42,17,0)
+n_DEGS_GSEA_bottomly_phenpermutation_optim  <- c(4,10,0,13,1,8,5,42,17,0)
 
 
 
@@ -233,16 +233,16 @@ n_DEGS_GSEA_bottomly_phenpermutation_optim <- c(4,10,0,13,1,8,5,42,17,0)
 
 
 # optimal n_DEGS
-n_DEGS_GSEAPreranked_bottomly_truephen_default <- 0
+n_DEGS_GSEAPreranked_bottomly_truephen_default  <- 0
 # default n_DEGS
-n_DEGS_GSEAPreranked_bottomly_truephen_optim <- 40
+n_DEGS_GSEAPreranked_bottomly_truephen_optim  <- 40
 
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_GSEAPreranked_bottomly_phenpermutation_default <- c(65, 0, 18, 0, 280, 124, 131, 8, 262, 724)
+n_DEGS_GSEAPreranked_bottomly_phenpermutation_default  <- c(65, 0, 18, 0, 280, 124, 131, 8, 262, 724)
 # default n_DEGS
-n_DEGS_GSEAPreranked_bottomly_phenpermutation_optim <- c(225, 30, 168, 35, 381, 124, 499, 316, 554, 962)
+n_DEGS_GSEAPreranked_bottomly_phenpermutation_optim  <- c(225, 30, 168, 35, 381, 124, 499, 316, 554, 962)
 
 
 ################################################################################
@@ -254,7 +254,7 @@ n_DEGS_GSEAPreranked_bottomly_phenpermutation_optim <- c(225, 30, 168, 35, 381, 
 # data frame
 
 # (i) True sample conditions
-dat_overview_n_DEGS_bottomly_truephen <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bottomly_truephen_default, n_DEGS_cP_ORA_bottomly_truephen_optim),
+dat_overview_n_DEGS_bottomly_truephen  <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bottomly_truephen_default, n_DEGS_cP_ORA_bottomly_truephen_optim),
                                                     GOSeq = c(n_DEGS_GOSeq_bottomly_truephen_default, n_DEGS_GOSeq_bottomly_truephen_optim),
                                                     DAVID = c(n_DEGS_DAVID_bottomly_truephen_default, n_DEGS_DAVID_bottomly_truephen_optim),
                                                     PADOG = c(n_DEGS_PADOG_bottomly_truephen_default, n_DEGS_PADOG_bottomly_truephen_optim),
@@ -267,7 +267,7 @@ dat_overview_n_DEGS_bottomly_truephen <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bot
 
 
 # (ii) Random permutations of the true sample conditions (bottomly data set)
-dat_overview_n_DEGS_bottomly_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bottomly_phenpermutation_default, n_DEGS_cP_ORA_bottomly_phenpermutation_optim),
+dat_overview_n_DEGS_bottomly_phenpermutation  <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bottomly_phenpermutation_default, n_DEGS_cP_ORA_bottomly_phenpermutation_optim),
                                                            GOSeq = c(n_DEGS_GOSeq_bottomly_phenpermutation_default, n_DEGS_GOSeq_bottomly_phenpermutation_optim),
                                                            DAVID = c(n_DEGS_DAVID_bottomly_phenpermutation_default,n_DEGS_DAVID_bottomly_phenpermutation_optim),
                                                            PADOG = c(n_DEGS_PADOG_bottomly_phenpermutation_default, n_DEGS_PADOG_bottomly_phenpermutation_optim),
@@ -284,9 +284,9 @@ dat_overview_n_DEGS_bottomly_phenpermutation <- data.frame(cP_ORA = c(n_DEGS_cP_
 ### Generate ggplots ###########################################################
 ################################################################################
 
-plot_truelabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_truephen, "true_labels", -8)
+plot_truelabels  <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_truephen, "true_labels", -8)
 
-plot_permutedlabels <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_phenpermutation,
+plot_permutedlabels  <- create_results_illustration_n_DEGS(dat_overview_n_DEGS_bottomly_phenpermutation,
                                                           "random_permutations", -14)
 
 plot_grid(plot_permutedlabels, plot_truelabels, labels=c("A", "B"), ncol = 1, nrow = 2)

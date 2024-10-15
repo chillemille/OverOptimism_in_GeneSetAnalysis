@@ -14,13 +14,17 @@ library(org.Mm.eg.db)
 #padog requires character vector with class labels of the samples
 #-> can only contain "c" for control samples or "d" for disease samples
 
-phenotype_prep <- function(phenotype_labels){
+# function argument:
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#       in the gene expression data set
+
+phenotype_prep  <- function(phenotype_labels){
 
   if(class(phenotype_labels) == "factor"){
 
     # change the levels to required format "c" and "d"
-    levels(phenotype_labels)  <-  c("c", "d")
-    phenotype_labels <- as.character(phenotype_labels)
+    levels(phenotype_labels)  <- c("c", "d")
+    phenotype_labels  <- as.character(phenotype_labels)
 
     return(phenotype_labels)
 
@@ -28,8 +32,8 @@ phenotype_prep <- function(phenotype_labels){
 
     # from initial phenotype labels, create vector with levels "c" and "d"
     return(factor(phenotype_labels,
-                  levels = c(0,1),
-                  labels = c("c","d")))
+                  levels = c(0, 1),
+                  labels = c("c", "d")))
 
   }
 }
@@ -39,9 +43,14 @@ phenotype_prep <- function(phenotype_labels){
 ###pre-filtering function #############################################################
 #######################################################################################
 
-pre_filt <- function(expression_data, threshold){
+# function arguments
+# - expression_data: gene expression data
+# - threshold: filtering threshold, i.e. minimum number of read counts a gene must
+#             have across all samples to NOT be removed from the data set
 
-  expression_data_filt <- expression_data[rowSums(expression_data) >= threshold, ]
+pre_filt  <- function(expression_data, threshold){
+
+  expression_data_filt  <- expression_data[rowSums(expression_data) >= threshold, ]
 
   return(expression_data_filt)
 
@@ -65,7 +74,7 @@ pre_filt <- function(expression_data, threshold){
 
 
 ###detect whether gene set does not contain any genes from the input list of differentially expressed genes
-is.integer0 <- function(x){
+is.integer0  <- function(x){
   is.integer(x) && length(x) == 0L
 }
 ##############
@@ -78,7 +87,15 @@ is.integer0 <- function(x){
 #note: function works for GO as well as KEGG as results table "padog_results"
 #contains relevant information automatically
 #argument term must be in the form of a GO ID resp. KEGG ID
-pvalue_rank_padog <- function(term, padog_results, metric){
+
+# function arguments:
+# - term: gene set whose adjusted p-value or rank is to be extracted
+# - padog_results: PADOG results table
+# - metric: one of the values "p_adj" or "rank"
+#           "p_adj": extract a gene's adjusted p-value from the PADOG results table
+#           "rank": extract a gene's rank among all remaining gene sets from the PADOG
+#                   results table
+pvalue_rank_padog  <- function(term, padog_results, metric){
 
 
   #check whether there are any gene sets reported in the results
@@ -98,10 +115,10 @@ pvalue_rank_padog <- function(term, padog_results, metric){
       # We divide by the maximum rank such that those gene sets with the highest
       # adjusted p-values are given the (relative) rank 1, which is the worst rank
 
-      padog_results$ranks <- rank(padog_results$p_adj) /max(rank(padog_results$p_adj))
+      padog_results$ranks  <- rank(padog_results$p_adj) /max(rank(padog_results$p_adj))
 
       # get the relative rank of the gene set of interest
-      rank <- padog_results$ranks[grep(term, padog_results$ID)]
+      rank  <- padog_results$ranks[grep(term, padog_results$ID)]
 
 
       # if the gene set is not contained in the results, return the rank 1.2
@@ -118,7 +135,7 @@ pvalue_rank_padog <- function(term, padog_results, metric){
     }else if(metric == "p_adj"){
 
       #identify row number of respective gene set
-      ind_row <- grep(term, padog_results$ID)
+      ind_row  <- grep(term, padog_results$ID)
 
       #return respective adjusted p-value
       return(ifelse(!is.integer0(ind_row),
@@ -127,7 +144,7 @@ pvalue_rank_padog <- function(term, padog_results, metric){
 
       #note: in the case that a gene set is not reported in the results table of padog_results,
       #ifelse() in combination with !is.integer0() then ensures that an adjusted p-value of 1.2 is returned,
-      #meaning that each adaption leading to a an adjusted p-value in (0,1] is considered an improvement
+      #meaning that each adaption leading to a an adjusted p-value in (0, 1] is considered an improvement
     }
   }
 }
@@ -142,7 +159,16 @@ pvalue_rank_padog <- function(term, padog_results, metric){
 
 #expression data sets must be provided in list
 #default transformation: voom
-PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric){
+
+# function arguments
+# - geneset: gene set whose adjusted p-value or rank is to be minimized
+# - expression_data: gene expression data set
+# - phenotype_labels: phenotype labels
+# - metric: one of the values "p_adj" or "rank"
+#           "p_adj": extract a gene's adjusted p-value from the PADOG results table
+#           "rank": extract a gene's rank among all remaining gene sets from the PADOG
+#                   results table
+PADOG_rankp_optim  <- function(geneset, expression_data, phenotype_labels, metric){
 
 
   #####################################
@@ -150,14 +176,14 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   #####################################
 
   # indicate which of the two strings can be found in the gene IDs of the expression data at hand
-  ind_organism  <-  sapply(FUN = grepl,
+  ind_organism  <- sapply(FUN = grepl,
                            X = c("ENSG", "ENSMUSG"),
                            x = rownames(expression_data)[1])
 
   # (ii) specification of organism for KEGG
   # hsa: homo sapiens (human)
   # mmu: mus musculus (mouse)
-  organism  <-  (c("hsa", "mmu"))[ind_organism][[1]]
+  organism  <- (c("hsa", "mmu"))[ind_organism][[1]]
 
 
 
@@ -167,13 +193,13 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
 
   if(metric == "rank"){
 
-    doc <- data.frame(step = c("Default", "Pre-Filtering Threshold", "Duplicate Gene ID removal", "RNA-Seq Data Transformation Method"),
+    doc  <- data.frame(step = c("Default", "Pre-Filtering Threshold", "Duplicate Gene ID removal", "RNA-Seq Data Transformation Method"),
                       optimal_parameter = NA,
                       rank = NA)
 
   }else if(metric == "p_adj"){
 
-    doc <- data.frame(step = c("Default", "Pre-Filtering Threshold", "Duplicate Gene ID removal", "RNA-Seq Data Transformation Method"),
+    doc  <- data.frame(step = c("Default", "Pre-Filtering Threshold", "Duplicate Gene ID removal", "RNA-Seq Data Transformation Method"),
                       optimal_parameter = NA,
                       p_adj = NA)
 
@@ -183,7 +209,7 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   ###########################
   # transform phenotype labels to format required by function padog()
   ###########################
-  phen_prep <- phenotype_prep(phenotype_labels)
+  phen_prep  <- phenotype_prep(phenotype_labels)
 
 
   ##########
@@ -193,9 +219,9 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   #default threshold: 10 read counts across all samples
   #alternatives: pre-filtering performed using edgeR's builtin function filterByExpr
 
-  filt_threshold_alt <- 10
+  filt_threshold_alt  <- 10
 
-  exprdat_list_prefilt <- lapply(X = filt_threshold_alt,
+  exprdat_list_prefilt  <- lapply(X = filt_threshold_alt,
                                  FUN = pre_filt,
                                  expression_data = expression_data)
 
@@ -203,18 +229,18 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   #large counts to be retained
 
   #pre-filtering using edgeR's builtin function filterByExprs()
-  ind_genes1 <- filterByExpr(expression_data,
+  ind_genes1  <- filterByExpr(expression_data,
                              group = phenotype_labels)
   #check whether the order of the genes is alignes
   all(names(ind_genes1) == rownames(expression_data))
 
 
   #add pre-filtered expression data set to the list
-  exprdat_list_prefilt <- append(exprdat_list_prefilt,
+  exprdat_list_prefilt  <- append(exprdat_list_prefilt,
                                  list(expression_data[ind_genes1, ]))
 
 
-  PADOG_prefilt_list <- list()
+  PADOG_prefilt_list  <- list()
 
   for(i in 1:length(exprdat_list_prefilt)){
 
@@ -222,24 +248,24 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
     # (i) transform ENSEMBL gene IDs to Entrez gene IDs (choose default removal manner) AND
     # transform RNA-Seq data using voom
 
-    expression_data_transf <- geneID_conversion(exprdat_list_prefilt[[i]], dupl_removal_method = 1) %>%
+    expression_data_transf  <- geneID_conversion(exprdat_list_prefilt[[i]], dupl_removal_method = 1) %>%
       voom_trans(phenotype_labels = phenotype_labels)
 
     # (ii) run PADOG
-    seed <- 1007
-    PADOG_prefilt_list[[i]] <- padog(expression_data_transf,
+    seed  <- 1007
+    PADOG_prefilt_list[[i]]  <- padog(expression_data_transf,
                                      group = phen_prep,
                                      dseed = seed,
                                      organism = organism)
 
     # 4. step: perform multiple test adjustment using Benjamini and Hochberg
-    PADOG_prefilt_list[[i]]$p_adj <- p.adjust(PADOG_prefilt_list[[i]]$Ppadog,
+    PADOG_prefilt_list[[i]]$p_adj  <- p.adjust(PADOG_prefilt_list[[i]]$Ppadog,
                                               method = "BH")
 
 
   }
 
-  metric_vec_prefilt <- unlist(lapply(X = PADOG_prefilt_list,
+  metric_vec_prefilt  <- unlist(lapply(X = PADOG_prefilt_list,
                                       FUN = pvalue_rank_padog,
                                       term = geneset,
                                       metric = metric))
@@ -247,23 +273,23 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   #get index of optimal pre-filtering threshold, i.e. threshold that maximizes the number
   #of differentially enriched gene sets
   #-> in case of a tie: choose lower index
-  ind_opt_prefilt <- min(which(metric_vec_prefilt == min(metric_vec_prefilt), arr.ind = TRUE))
+  ind_opt_prefilt  <- min(which(metric_vec_prefilt == min(metric_vec_prefilt), arr.ind = TRUE))
 
   #update documentation frame
   #update documentation frame
-  doc[1, metric] <- metric_vec_prefilt[1] #default result
+  doc[1, metric]  <- metric_vec_prefilt[1] #default result
   #optimal result:
-  ind_opt_prefilt <- min(which(metric_vec_prefilt == min(metric_vec_prefilt), arr.ind = TRUE)) #index of optimal pre-filtering manner
+  ind_opt_prefilt  <- min(which(metric_vec_prefilt == min(metric_vec_prefilt), arr.ind = TRUE)) #index of optimal pre-filtering manner
   # update documentation frame
-  doc[2, "optimal_parameter"] <- c(filt_threshold_alt,
+  doc[2, "optimal_parameter"]  <- c(filt_threshold_alt,
                                    "filterByExpr",
                                    "by cpm>1 in at least 2 samples")[ind_opt_prefilt] #optimal pre-filtering manner
-  doc[2, metric] <- min(metric_vec_prefilt)
+  doc[2, metric]  <- min(metric_vec_prefilt)
 
   #set current optimal number of differentially enriched gene sets
-  metric_value <- min(metric_vec_prefilt)
+  metric_value  <- min(metric_vec_prefilt)
   #set optimal PRE-FILTERED gene expression data set
-  exprdat_prefilt_opt <-  exprdat_list_prefilt[[ind_opt_prefilt]]
+  exprdat_prefilt_opt <- exprdat_list_prefilt[[ind_opt_prefilt]]
 
 
 
@@ -273,36 +299,36 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   ##########
 
   #perform 3 manners of gene ID conversion for the optimally pre-filtered gene expression data set
-  exprdat_convID <- lapply(FUN = geneID_conversion,
+  exprdat_convID  <- lapply(FUN = geneID_conversion,
                            expression_data = exprdat_prefilt_opt,
                            X = 1:2)
 
   #generate list containing GSEA results for each expression data set
-  PADOG_results_IDconv_list <- list()
+  PADOG_results_IDconv_list  <- list()
   #perform default DESeq2 workflow for each of the expression data sets
   for(i in 1:length(exprdat_convID)){
 
     # (i) prepare input as required for clusterProfiler's ORA tool
-    expression_data_transf <- voom_trans(exprdat_convID[[i]],
+    expression_data_transf  <- voom_trans(exprdat_convID[[i]],
                                          phenotype_labels,
                                          "TMM")
 
     # (ii) run PADOG
-    seed <- 1007
-    PADOG_results_IDconv_list[[i]] <- padog(expression_data_transf,
+    seed  <- 1007
+    PADOG_results_IDconv_list[[i]]  <- padog(expression_data_transf,
                                             group = phen_prep,
                                             dseed = seed,
                                             organism = organism)
 
     # 4. step: perform multiple test adjustment using Benjamini and Hochberg
-    PADOG_results_IDconv_list[[i]]$p_adj <- p.adjust(PADOG_results_IDconv_list[[i]]$Ppadog,
+    PADOG_results_IDconv_list[[i]]$p_adj  <- p.adjust(PADOG_results_IDconv_list[[i]]$Ppadog,
                                                      method = "BH")
 
   }
 
 
   #calculate lossfunction for each result and store in vector
-  metric_vec_convID <- unlist(lapply(X = PADOG_results_IDconv_list,
+  metric_vec_convID  <- unlist(lapply(X = PADOG_results_IDconv_list,
                                      FUN = pvalue_rank_padog,
                                      term = geneset,
                                      metric = metric))
@@ -310,14 +336,14 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   #update documentation
 
   #index of optimal gene ID removal technique
-  ind_opt_conv_ID <- min(which(metric_vec_convID == min(metric_vec_convID), arr.ind = TRUE))
-  doc[3, "optimal_parameter"] <- ind_opt_conv_ID
-  doc[3, metric] <- min(metric_vec_convID)
+  ind_opt_conv_ID  <- min(which(metric_vec_convID == min(metric_vec_convID), arr.ind = TRUE))
+  doc[3, "optimal_parameter"]  <- ind_opt_conv_ID
+  doc[3, metric]  <- min(metric_vec_convID)
 
-  metric_value <- min(metric_vec_convID)
+  metric_value  <- min(metric_vec_convID)
 
   #get optimal PRE-FILTERED gene expression data with converted gene IDs
-  expression_data_opt <- exprdat_convID[[ind_opt_conv_ID]]
+  expression_data_opt  <- exprdat_convID[[ind_opt_conv_ID]]
 
 
 
@@ -325,26 +351,26 @@ PADOG_rankp_optim <- function(geneset, expression_data, phenotype_labels, metric
   # 3. step: Choose optimal RNA-Seq transformation method
 
   #alternative to voom transformation (default): DESeq2's varianceStabilizingTransformation
-  seed <- 1007
-  PADOG_vst <- variancetransform(expression_data_opt, phenotype_labels) %>%
+  seed  <- 1007
+  PADOG_vst  <- variancetransform(expression_data_opt, phenotype_labels) %>%
     padog(group = phenotype_prep(phenotype_labels),
           dseed = seed,
           organism = organism) %>%
     mutate(p_adj = p.adjust(Ppadog, method = "BH"))
 
   #update documentation frame
-  doc[4, "optimal_parameter"] <- ifelse(pvalue_rank_padog(geneset,PADOG_vst, metric) < metric_value ,
+  doc[4, "optimal_parameter"]  <- ifelse(pvalue_rank_padog(geneset, PADOG_vst, metric) < metric_value ,
                                         "varianceStabilizingTransformation",
                                         "voom")
 
-  doc[4, metric] <- min(pvalue_rank_padog(geneset,PADOG_vst, metric), metric_value )
+  doc[4, metric]  <- min(pvalue_rank_padog(geneset, PADOG_vst, metric), metric_value )
 
   #set optimal PADOG results which will then be returned by this optimization function
-  if(pvalue_rank_padog(geneset,PADOG_vst, metric) < metric_value){
+  if(pvalue_rank_padog(geneset, PADOG_vst, metric) < metric_value){
 
-    PADOG_opt <- PADOG_vst
+    PADOG_opt  <- PADOG_vst
 
-  } else{PADOG_opt <- PADOG_results_IDconv_list[[ind_opt_conv_ID]]}
+  } else{PADOG_opt  <- PADOG_results_IDconv_list[[ind_opt_conv_ID]]}
 
 
   #return optimal documentation frame

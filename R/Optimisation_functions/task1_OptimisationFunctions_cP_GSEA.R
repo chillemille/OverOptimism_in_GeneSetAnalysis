@@ -14,11 +14,12 @@ library(dplyr)
 ##create ranked list from DE results##############################################
 ##################################################################################
 
-#for DESeq2 (method = "DESeq2") and limma (method = "limma")
-#rankby must be in c("p_value", "lfc") to perform ranking based on
-#(i) p-value (rank = sign(lfc)*(-1)*log10(unadjusted_pvalue)
-#(ii) log fold changes
-
+# function arguments:
+# - DE_results: results table from differential expression analysis
+# - rankby: metric by which the genes from DE_results are ranked, either
+#           "p_value": ranking value calculated as sign(lfc)*(-1)*log10(unadjusted_pvalue)
+#           "lfc": log fold changes
+# - method: method by which DE analysis was performed (either "DESeq2" or "limma")
 rankedList_cP_GSEA <- function(DE_results, rankby, method){
 
   if(method == "DESeq2"){#create ranking based on DESeq2 results table
@@ -26,19 +27,19 @@ rankedList_cP_GSEA <- function(DE_results, rankby, method){
     if(rankby == "lfc") {
       #ranking by log2 fold change
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec <-
-        as.vector(DE_results[!is.na(DE_results$pvalue),]$log2FoldChange)
-      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue),])
+      rankvec  <-
+        as.vector(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)
+      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
       # sort in decreasing manner
       rankvec <- sort(rankvec, decreasing = TRUE)
 
     }else if (rankby == "p_value") {
       #ranking by p-value
       #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec <-
-        as.vector(sign(DE_results[!is.na(DE_results$pvalue),]$log2FoldChange) *
-                    (-1) * log10(DE_results[!is.na(DE_results$pvalue),]$pvalue))
-      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue),])
+      rankvec  <-
+        as.vector(sign(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange) *
+                    (-1) * log10(DE_results[!is.na(DE_results$pvalue), ]$pvalue))
+      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
       # sort in decreasing manner
       rankvec <- sort(rankvec, decreasing = TRUE)
     }
@@ -59,7 +60,7 @@ rankedList_cP_GSEA <- function(DE_results, rankby, method){
 
     else if (rankby == "p_value") {
       #ranking based on p-value
-      rankvec <-
+      rankvec  <-
         as.vector(sign(DE_results$logFC) * (-1) * log10(DE_results$P.Value))
       names(rankvec) <- rownames(DE_results)
       rankvec <- sort(rankvec, decreasing = TRUE)
@@ -72,6 +73,9 @@ rankedList_cP_GSEA <- function(DE_results, rankby, method){
 ##################################################################################
 ###lossfunction###################################################################
 ##################################################################################
+
+# function argument
+# - gsa_result: GSEA results table
 lossfunction_cP_GSEA <- function(gsa_result){
 
   #count number of gene sets with adjusted p-value smaller than 0.05
@@ -84,6 +88,13 @@ lossfunction_cP_GSEA <- function(gsa_result){
 #######################################################################################
 ### Default GSEA (for KEGG or GO) #####################################################
 #######################################################################################
+
+# function arguments:
+# - gene_ranking: ranking of genes generated using function rankedList_cP_GSEA()
+# - geneset_database: gene set database, either "KEGG" or "GO" (which indicates Gene ontology
+#   with subontology "Biological processes")
+# - exponent: exponent in computation of enrichment score
+# - organism organism for which the analysis should be performed ("hsa" for human, "mmu" for house mouse)
 
 GSEA_pipeline_default <- function(gene_ranking, geneset_database, exp = 1, organism ){
 
@@ -128,7 +139,12 @@ GSEA_pipeline_default <- function(gene_ranking, geneset_database, exp = 1, organ
 #optimization of required input for clusterProfiler's GSEA tool: list of all genes in
 #experiment ranked by their magnitude of differential expression
 
-
+# function inputs:
+# - expression_data:  gene expression data to be processed
+# - geneset_database: gene set database, either "KEGG" or "GO" (which indicates Gene ontology
+#                     with subontology "Biological processes")
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#                     in the gene expression data set
 cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotype_labels){
 
   # identify organism for which gene expression is measured from the format of the gene IDs (all are Ensembl)
@@ -270,7 +286,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
     # filtering thresholds
 
     # pre-filtering thresholds
-    prefilt_thresh_list <- c(10,50)
+    prefilt_thresh_list <- c(10, 50)
     # vector to store resulting number of n_DEGS for the different pre-filtering thresholds
 
     exprdat_prefilt_list <- lapply(X = prefilt_thresh_list,
@@ -284,7 +300,7 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
     DESeq2_results_prefilt <- lapply(FUN = geneID_conversion, X = exprdat_prefilt_list, dupl_removal_method = 1) %>%
       lapply(FUN = deseq_preprocess, phenotype_labels = phenotype_labels) %>%
       lapply(FUN = DESeq) %>%
-      lapply(FUN = lfcShrink,coef = "condition_treated_vs_untreated", type = "apeglm") %>%
+      lapply(FUN = lfcShrink, coef = "condition_treated_vs_untreated", type = "apeglm") %>%
       lapply(FUN = as.data.frame)
 
     # generate ranking for each of the DESeq2 results
@@ -343,12 +359,12 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
     limma_results_prefilt <- lapply(FUN = geneID_conversion,
                                     X = exprdat_prefilt_list,
                                     dupl_removal_method = 1) %>%
-      lapply(FUN = DGEList,group = phenotype_labels) %>%
+      lapply(FUN = DGEList, group = phenotype_labels) %>%
       lapply(FUN = calcNormFactors) %>%
-      lapply(FUN = voom,design = mm) %>%
-      lapply(FUN = lmFit,design = mm) %>%
+      lapply(FUN = voom, design = mm) %>%
+      lapply(FUN = lmFit, design = mm) %>%
       lapply(FUN = eBayes) %>%
-      lapply(FUN = topTable,coef = ncol(mm), number = 100000)
+      lapply(FUN = topTable, coef = ncol(mm), number = 100000)
 
 
     #perform ranking by p-value for each of the limma results
@@ -424,12 +440,12 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
     limma_results_convID <- lapply(FUN = geneID_conversion,
                                    X = 1:2,
                                    expression_data = exprdat_prefilt_opt) %>%
-      lapply(FUN = DGEList,group = phenotype_labels) %>%
+      lapply(FUN = DGEList, group = phenotype_labels) %>%
       lapply(FUN = calcNormFactors) %>%
-      lapply(FUN = voom,design = mm) %>%
-      lapply(FUN = lmFit,design = mm) %>%
+      lapply(FUN = voom, design = mm) %>%
+      lapply(FUN = lmFit, design = mm) %>%
       lapply(FUN = eBayes) %>%
-      lapply(FUN = topTable,coef = ncol(mm), number = 100000)
+      lapply(FUN = topTable, coef = ncol(mm), number = 100000)
 
     #perform ranking by p-value for each of the limma results
     ranked_lists_convID <- lapply(FUN = rankedList_cP_GSEA,
@@ -480,6 +496,14 @@ cP_GSEA_preprocess_optim <- function(expression_data, geneset_database, phenotyp
 #####GSEA - optimization of internal parameters ##################################
 ##################################################################################
 
+# optimize internal parameters of function gseGO()
+
+# function arguments:
+# ranking: gene_ranking generated using function rankedList_cP_GSEA
+# organism_GO: organism for which the analysis is performed
+#             "org.Hs.eg.db" for human
+#             "org.Mm.eg.db" for mouse
+
 cP_GSEA_go_optim <- function(ranking, organism_GO){
 
   #for documentation of optimization process
@@ -504,7 +528,7 @@ cP_GSEA_go_optim <- function(ranking, organism_GO){
 
   ##########
   #change 1: exponent
-  exp_options <- c(1,0,1.5,2) # possible options for exponent
+  exp_options <- c(1, 0, 1.5, 2) # possible options for exponent
 
   n_DEGS_exp <- rep(NA, times = length(exp_options))
   n_DEGS_exp[1] <- n_DEGS #number of DEGS resulting from exponent = 1
@@ -565,6 +589,14 @@ cP_GSEA_go_optim <- function(ranking, organism_GO){
 #####GSEA KEGG optimization#######################################################
 ##################################################################################
 
+# optimize internal parameters of function gseKEGG()
+
+# function arguments:
+# ranking: gene_ranking generated using function rankedList_cP_GSEA
+# organism_KEGG: organism for which the analysis is performed
+#             "has" for human
+#             "mmu" for mouse
+
 cP_GSEA_kegg_optim <- function(ranking, organism_KEGG){
 
   #for documentation of optimization process
@@ -589,7 +621,7 @@ cP_GSEA_kegg_optim <- function(ranking, organism_KEGG){
 
   ##########
   #change 1: exponent
-  exp_options <- c(1,0,1.5,2) #possible options for exponent
+  exp_options <- c(1, 0, 1.5, 2) #possible options for exponent
 
   n_DEGS_exp <- rep(NA, times = length(exp_options))
   n_DEGS_exp[1] <- n_DEGS #number of DEGS resulting from exponent = 1
@@ -644,9 +676,13 @@ cP_GSEA_kegg_optim <- function(ranking, organism_KEGG){
 ##################################################################################
 
 #optimization of the internal parameters of clusterProfiler's GSEA
-# ind_organism: indicates from which organism the gene expression data originates
-# 1: human
-# 2: mouse
+
+# function arguments:
+# - ranking: ranking of genes generated using function rankedList_cP_GSEA()
+# - ind_organism: indicates from which organism the gene expression data originates
+#                 1: human
+#                 2: mouse
+
 cP_GSEA_internparam_optim <- function(ranking, ind_organism){
 
   ### generate organism indicator in required format for GO and KEGG
@@ -675,7 +711,7 @@ cP_GSEA_internparam_optim <- function(ranking, ind_organism){
                     n_DEGS = NA)
 
   #storage for number of DEGS of all three options
-  geneset_db <- c("GO","KEGG")
+  geneset_db <- c("GO", "KEGG")
   n_DEGS_geneset_db <- c()
 
   #change 1: Gene Set Database

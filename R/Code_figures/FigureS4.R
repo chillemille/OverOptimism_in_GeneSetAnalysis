@@ -108,16 +108,16 @@ rel_rank_GOSeq_MetabolicProcess_truephen_optim <-
 # Gene set t Cell mediated immunity
 
 # default p_adj
-rel_rank_DAVID_CellularProcess_truephen_default <- 1
-rel_rank_DAVID_CellularProcess_truephen_optim <- 1
+rel_rank_DAVID_CellularProcess_truephen_default  <- 1
+rel_rank_DAVID_CellularProcess_truephen_optim  <- 1
 
 
 # Gene set Demethylation
 
 # default p_adj
-rel_rank_DAVID_MetabolicProcess_truephen_default <- 1
+rel_rank_DAVID_MetabolicProcess_truephen_default  <- 1
 # optimal p_adj
-rel_rank_DAVID_MetabolicProcess_truephen_optim <- 1
+rel_rank_DAVID_MetabolicProcess_truephen_optim  <- 1
 
 ################################################################################
 ### clusterProfiler's ORA ######################################################
@@ -204,17 +204,17 @@ rel_rank_cP_GSEA_Demethylation_truephen_default <-
 # Gene set t Cell mediated immunity
 
 # default p_adj
-rel_rank_GSEA_tCell_truephen_default <- 0.9645
+rel_rank_GSEA_tCell_truephen_default  <- 0.9645
 # optimal p_adj
-rel_rank_GSEA_tCell_truephen_optim <- 0.8638
+rel_rank_GSEA_tCell_truephen_optim  <- 0.8638
 
 
 # Gene set Demethylation
 
 # default p_adj
-rel_rank_GSEA_Demethylation_truephen_default <- 0.9703
+rel_rank_GSEA_Demethylation_truephen_default  <- 0.9703
 # optimal p_adj
-rel_rank_GSEA_Demethylation_truephen_optim <- 0.8922
+rel_rank_GSEA_Demethylation_truephen_optim  <- 0.8922
 
 
 
@@ -225,17 +225,17 @@ rel_rank_GSEA_Demethylation_truephen_optim <- 0.8922
 # Gene set t Cell mediated immunity
 
 # default p_adj
-rel_rank_GSEAPreranked_tCell_truephen_default <- 1
+rel_rank_GSEAPreranked_tCell_truephen_default  <- 1
 # optimal p_adj
-rel_rank_GSEAPreranked_tCell_truephen_optim <- 1
+rel_rank_GSEAPreranked_tCell_truephen_optim  <- 1
 
 
 # Gene set Demethylation
 
 # default p_adj
-rel_rank_GSEAPreranked_Demethylation_truephen_default <- 1
+rel_rank_GSEAPreranked_Demethylation_truephen_default  <- 1
 # optimal p_adj
-rel_rank_GSEAPreranked_Demethylation_truephen_optim <- 0.7782
+rel_rank_GSEAPreranked_Demethylation_truephen_optim  <- 0.7782
 
 
 ################################################################################
@@ -258,7 +258,7 @@ rel_rank_GSEAPreranked_Demethylation_truephen_optim <- 0.7782
 
 
 # (i) Random permutations of the random permutations of the sample conditions, first data set
-rel_rank_GeneSet1_truephen <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_truephen_default, rel_rank_cP_ORA_tCell_truephen_optim),
+rel_rank_GeneSet1_truephen  <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_truephen_default, rel_rank_cP_ORA_tCell_truephen_optim),
                                          GOSeq = c(rel_rank_GOSeq_MetabolicProcess_truephen_default, rel_rank_GOSeq_MetabolicProcess_truephen_optim),
                                          PADOG = c(rel_rank_PADOG_PrimImmun_truephen_default, rel_rank_PADOG_PrimImmun_truephen_optim),
                                          cP_GSEA = c(rel_rank_cP_GSEA_tCell_truephen_default, rel_rank_cP_GSEA_tCell_truephen_optim),
@@ -270,7 +270,7 @@ rel_rank_GeneSet1_truephen <- data.frame(cP_ORA = c(rel_rank_cP_ORA_tCell_trueph
 
 
 # (ii) Random permutations of the random permutations of the sample conditions, second data set
-rel_rank_GeneSet2_truephen <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demethylation_truephen_default, rel_rank_cP_ORA_Demethylation_truephen_optim),
+rel_rank_GeneSet2_truephen  <- data.frame(cP_ORA = c(rel_rank_cP_ORA_Demethylation_truephen_default, rel_rank_cP_ORA_Demethylation_truephen_optim),
                                          GOSeq = c(rel_rank_GOSeq_CellularProcess_truephen_default, rel_rank_GOSeq_CellularProcess_truephen_optim),
                                          PADOG = c(rel_rank_PADOG_GraftvsHost_truephen_default, rel_rank_PADOG_GraftvsHost_truephen_optim),
                                          cP_GSEA = c(rel_rank_cP_GSEA_Demethylation_truephen_default, rel_rank_cP_GSEA_Demethylation_truephen_optim),
@@ -342,16 +342,16 @@ load("./Results/Intermediate_results/optimRank_cP_GSEA_tCell_Bottomly_PhenotypeP
 # Gene set t Cell mediated immunity
 
 # store default p_adj for the 10 permutations of the true sample labels
-rank_GOSeq_CellularProcess_phenpermutation_default <- c()
+rank_GOSeq_CellularProcess_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_GOSeq_CellularProcess_phenpermutation_optim <- c()
+rank_GOSeq_CellularProcess_phenpermutation_optim  <- c()
 
 
 # Demethylation
 # store default p_adj for the 10 permutations of the true sample labels
-rank_GOSeq_MetabolicProcess_phenpermutation_default <- c()
+rank_GOSeq_MetabolicProcess_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_GOSeq_MetabolicProcess_phenpermutation_optim <- c()
+rank_GOSeq_MetabolicProcess_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -386,16 +386,16 @@ for(i in 1:10){
 # Demethylation
 
 # store default p_adj for the 10 permutations of the true sample labels
-rank_cP_ORA_Demethylation_phenpermutation_default <- c()
+rank_cP_ORA_Demethylation_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_cP_ORA_Demethylation_phenpermutation_optim <- c()
+rank_cP_ORA_Demethylation_phenpermutation_optim  <- c()
 
 
 # t Cell mediated immunity
 # store default p_adj for the 10 permutations of the true sample labels
-rank_cP_ORA_tCell_phenpermutation_default <- c()
+rank_cP_ORA_tCell_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_cP_ORA_tCell_phenpermutation_optim <- c()
+rank_cP_ORA_tCell_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -428,16 +428,16 @@ for(i in 1:10){
 # Primary Immundeficiency
 
 # store default p_adj for the 10 permutations of the true sample labels
-rank_PADOG_PrimImmun_phenpermutation_default <- c()
+rank_PADOG_PrimImmun_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_PADOG_PrimImmun_phenpermutation_optim <- c()
+rank_PADOG_PrimImmun_phenpermutation_optim  <- c()
 
 
 # Graft versus host disease
 # store default p_adj for the 10 permutations of the true sample labels
-rank_PADOG_GraftvsHost_phenpermutation_default <- c()
+rank_PADOG_GraftvsHost_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_PADOG_GraftvsHost_phenpermutation_optim <- c()
+rank_PADOG_GraftvsHost_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -445,17 +445,17 @@ for(i in 1:10){
   # Primary immunodeficiency
 
   # store the default number of differentially enriched gene sets
-  rank_PADOG_PrimImmun_phenpermutation_default[i] <- optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations[[i]]$documentation$rank[1]
+  rank_PADOG_PrimImmun_phenpermutation_default[i]  <- optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations[[i]]$documentation$rank[1]
   # store the optimal number of differentially enriched gene sets
-  rank_PADOG_PrimImmun_phenpermutation_optim[i] <- optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations[[i]]$documentation$rank[length(optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations[[i]]$documentation$rank)]
+  rank_PADOG_PrimImmun_phenpermutation_optim[i]  <- optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations[[i]]$documentation$rank[length(optimRank_PADOG_PrimaryImmunodeficiency_Bottomly_phenotypepermutations[[i]]$documentation$rank)]
 
 
   # Graft versus host disease
 
   # store the default number of differentially enriched gene sets
-  rank_PADOG_GraftvsHost_phenpermutation_default[i] <- optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations[[i]]$documentation$rank[1]
+  rank_PADOG_GraftvsHost_phenpermutation_default[i]  <- optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations[[i]]$documentation$rank[1]
   # store the optimal number of differentially enriched gene sets
-  rank_PADOG_GraftvsHost_phenpermutation_optim[i] <- optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations[[i]]$documentation$rank[length(optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations[[i]]$documentation$rank)]
+  rank_PADOG_GraftvsHost_phenpermutation_optim[i]  <- optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations[[i]]$documentation$rank[length(optimRank_PADOG_GraftvsHost_Bottomly_phenotypepermutations[[i]]$documentation$rank)]
 
 }
 
@@ -467,16 +467,16 @@ for(i in 1:10){
 # Gene set t Cell mediated immunity
 
 # store default p_adj for the 10 permutations of the true sample labels
-rank_cP_GSEA_tCell_phenpermutation_default <- c()
+rank_cP_GSEA_tCell_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_cP_GSEA_tCell_phenpermutation_optim <- c()
+rank_cP_GSEA_tCell_phenpermutation_optim  <- c()
 
 
 # Demethylation
 # store default p_adj for the 10 permutations of the true sample labels
-rank_cP_GSEA_Demethylation_phenpermutation_default <- c()
+rank_cP_GSEA_Demethylation_phenpermutation_default  <- c()
 # store optimal p_adj for the 10 permutations of the true sample labels
-rank_cP_GSEA_Demethylation_phenpermutation_optim <- c()
+rank_cP_GSEA_Demethylation_phenpermutation_optim  <- c()
 
 
 for(i in 1:10){
@@ -484,17 +484,17 @@ for(i in 1:10){
   # t Cell mediated immunity
 
   # store the default number of differentially enriched gene sets
-  rank_cP_GSEA_tCell_phenpermutation_default[i] <- optimRank_tCell_Bottomly_phenotypepermutations[[i]]$documentation$rank[1]
+  rank_cP_GSEA_tCell_phenpermutation_default[i]  <- optimRank_tCell_Bottomly_phenotypepermutations[[i]]$documentation$rank[1]
   # store the optimal number of differentially enriched gene sets
-  rank_cP_GSEA_tCell_phenpermutation_optim[i] <- optimRank_tCell_Bottomly_phenotypepermutations[[i]]$documentation$rank[length(optimRank_tCell_Bottomly_phenotypepermutations[[i]]$documentation$rank)]
+  rank_cP_GSEA_tCell_phenpermutation_optim[i]  <- optimRank_tCell_Bottomly_phenotypepermutations[[i]]$documentation$rank[length(optimRank_tCell_Bottomly_phenotypepermutations[[i]]$documentation$rank)]
 
 
   # Demethylation
 
   # store the default number of differentially enriched gene sets
-  rank_cP_GSEA_Demethylation_phenpermutation_default[i] <- optimRank_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$rank[1]
+  rank_cP_GSEA_Demethylation_phenpermutation_default[i]  <- optimRank_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$rank[1]
   # store the optimal number of differentially enriched gene sets
-  rank_cP_GSEA_Demethylation_phenpermutation_optim[i] <- optimRank_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$rank[length(optimRank_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$rank)]
+  rank_cP_GSEA_Demethylation_phenpermutation_optim[i]  <- optimRank_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$rank[length(optimRank_Demethylation_Bottomly_Phenotypepermutations[[i]]$documentation$rank)]
 
 }
 
@@ -520,7 +520,7 @@ for(i in 1:10){
 
 
 # (i) Random permutations of the random permutations of the sample conditions, first data set
-rel_rank_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(rank_cP_ORA_tCell_phenpermutation_default, rank_cP_ORA_tCell_phenpermutation_optim),
+rel_rank_GeneSet1_phenpermutation  <- data.frame(cP_ORA = c(rank_cP_ORA_tCell_phenpermutation_default, rank_cP_ORA_tCell_phenpermutation_optim),
                                                 GOSeq = c(rank_GOSeq_MetabolicProcess_phenpermutation_default, rank_GOSeq_MetabolicProcess_phenpermutation_optim),
                                                 PADOG = c(rank_PADOG_PrimImmun_phenpermutation_default, rank_PADOG_PrimImmun_phenpermutation_optim),
                                                 cP_GSEA = c(rank_cP_GSEA_tCell_phenpermutation_default, rank_cP_GSEA_tCell_phenpermutation_optim),
@@ -530,7 +530,7 @@ rel_rank_GeneSet1_phenpermutation <- data.frame(cP_ORA = c(rank_cP_ORA_tCell_phe
 
 
 # (ii) Random permutations of the random permutations of the sample conditions, second data set
-rel_rank_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(rank_cP_ORA_Demethylation_phenpermutation_default, rank_cP_ORA_Demethylation_phenpermutation_optim),
+rel_rank_GeneSet2_phenpermutation  <- data.frame(cP_ORA = c(rank_cP_ORA_Demethylation_phenpermutation_default, rank_cP_ORA_Demethylation_phenpermutation_optim),
                                                 GOSeq = c(rank_GOSeq_CellularProcess_phenpermutation_default, rank_GOSeq_CellularProcess_phenpermutation_optim),
                                                 PADOG = c(rank_PADOG_GraftvsHost_phenpermutation_default, rank_PADOG_GraftvsHost_phenpermutation_optim),
                                                 cP_GSEA = c(rank_cP_GSEA_Demethylation_phenpermutation_default, rank_cP_GSEA_Demethylation_phenpermutation_optim),
@@ -545,10 +545,10 @@ rel_rank_GeneSet2_phenpermutation <- data.frame(cP_ORA = c(rank_cP_ORA_Demethyla
 ### Generate ggplots ###########################################################
 ################################################################################
 
-plot_truelabels <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_truephen, rel_rank_GeneSet2_truephen,
+plot_truelabels  <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_truephen, rel_rank_GeneSet2_truephen,
                                                            "rel_rank", "true_labels")
 
-plot_permutedlabels <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_phenpermutation, rel_rank_GeneSet2_phenpermutation,
+plot_permutedlabels  <- create_results_illustration_pvalue_rank(rel_rank_GeneSet1_phenpermutation, rel_rank_GeneSet2_phenpermutation,
                                                                "rel_rank", "random_permutations")
 
 plot_grid(plot_permutedlabels, plot_truelabels, labels=c("A", "B"), ncol = 1, nrow = 2)

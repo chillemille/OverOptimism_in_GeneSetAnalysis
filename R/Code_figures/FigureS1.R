@@ -6,23 +6,23 @@ library(stringr)
 load("./Results/Intermediate_results/cP_GSEA_Results_Pickrell_PhenotypePermutations.RData")
 
 # load documentation frame
-doc_illustration <- optim_cP_GSEA_results_Pickrell_phenotypepermutation[[6]]$documentation
+doc_illustration  <- optim_cP_GSEA_results_Pickrell_phenotypepermutation[[6]]$documentation
 
 # insert line break for one optimal parameter
-doc_illustration$optimal_parameter[doc_illustration$optimal_parameter == "by cpm>1 in at least 2 samples"] <- "by cpm > 1 in at \n least two samples"
-doc_illustration$optimal_parameter[4] <- paste0("method ", doc_illustration$optimal_parameter[4])
+doc_illustration$optimal_parameter[doc_illustration$optimal_parameter == "by cpm>1 in at least 2 samples"]  <- "by cpm > 1 in at \n least two samples"
+doc_illustration$optimal_parameter[4]  <- paste0("method ", doc_illustration$optimal_parameter[4])
 
 # Set optimisation steps to sentence case
-doc_illustration$step <- str_to_sentence(doc_illustration$step)
+doc_illustration$step  <- str_to_sentence(doc_illustration$step)
 # Revert "id" to "ID"
-doc_illustration$step[doc_illustration$step == "Duplicate gene id removal"] <- "Duplicate gene ID removal"
+doc_illustration$step[doc_illustration$step == "Duplicate gene id removal"]  <- "Duplicate gene ID removal"
 # Add numbering
-doc_illustration$step <- paste0(1:length(doc_illustration$step), ". ", doc_illustration$step)
+doc_illustration$step  <- paste0(1:length(doc_illustration$step), ". ", doc_illustration$step)
 
 
 #for facet wrap labels
 doc_illustration$phenotype_permutation <-as.factor("Phenotype Permutation 6")
-doc_illustration$step <- factor(doc_illustration$step,
+doc_illustration$step  <- factor(doc_illustration$step,
                                 levels = doc_illustration$step)
 
 

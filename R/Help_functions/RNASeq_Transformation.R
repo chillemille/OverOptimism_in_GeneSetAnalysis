@@ -1,9 +1,10 @@
 #Pre-Processing of the expression data set for FCS methods **PADOG and GSEA (web application)**
 
-#In this file, two functions are defined to perform voom and the variance
+#In this file,  two functions are defined to perform voom and the variance
 #stabilizing transformation on the expression data set(s)
 
 #-> required for PADOG and GSEA
+
 
 
 library(edgeR)
@@ -11,14 +12,16 @@ library(limma)
 library(DESeq2)
 library(dplyr)
 
-
-
 ################################################################################
 #option 1: voom transformation #################################################
 ################################################################################
 
-#argument normmethod is in c("TMM","upperquartile")
-voom_trans <- function(expression_data, phenotype_labels, normmethod = "TMM"){
+# function arguments:
+# - expression_data: gene expression data to be transformed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#       in the gene expression data set
+# - normmethod: normalization method (one of the values in c("TMM", "upperquartile")
+voom_trans <- function(expression_data,   phenotype_labels,   normmethod = "TMM"){
 
 
   #step 1: generate DGEList object from the expression data
@@ -45,13 +48,20 @@ voom_trans <- function(expression_data, phenotype_labels, normmethod = "TMM"){
 # transformed data are homoscedastic (and can be modeled as Microarray Data,
 # according to EnrichmentBrowser Package)
 
-variancetransform <- function(expression_data, phenotype_labels){
+
+
+# function arguments:
+# - expression_data: gene expression data to be transformed
+# - phenotype_labels: vector of binary labels indicating the status of each sample
+#       in the gene expression data set
+# - normmethod: normalization method (one of the values in c("TMM", "upperquartile")
+variancetransform <- function(expression_data,   phenotype_labels){
 
   #generate data frame that contains information on samples (required format for DESeq2)
   coldata <- data.frame(phenotype_labels,
                         row.names = colnames(expression_data))
   colnames(coldata) <- "condition"
-  coldata$condition <- factor(coldata$condition,labels = c("untreated","treated"))
+  coldata$condition <- factor(coldata$condition,  labels = c("untreated",  "treated"))
 
   #create DESeqDataSet (required format to later output normalized count data)
   dds <- DESeqDataSetFromMatrix(countData = expression_data,

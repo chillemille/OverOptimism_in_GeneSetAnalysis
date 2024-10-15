@@ -61,7 +61,7 @@ DAVID_input_preparation <- function(DE_results){
 
 
   # classify those genes as DE that have an adjusted p-value < 0.05
-  DEG_vec<-rownames(DE_results[(DE_results$p_adj < 0.05) & (!is.na(DE_results$p_adj)),])
+  DEG_vec<-rownames(DE_results[(DE_results$p_adj < 0.05) & (!is.na(DE_results$p_adj)), ])
 
 
   # return vector of differentially expressed genes
@@ -107,10 +107,10 @@ for(j in 1:2){
   path_DEGs_deseq2_phenorig <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original/DEGs_DESeq2_phenorig.txt")
 
   # export DESeq2 results
-  write.table(DEGs_DESeq2_phenorig,
-              file = path_DEGs_deseq2_phenorig,
-              quote = FALSE,
-              row.names = FALSE,
+  write.table(DEGs_DESeq2_phenorig, 
+              file = path_DEGs_deseq2_phenorig, 
+              quote = FALSE, 
+              row.names = FALSE, 
               col.names = FALSE)
 
 
@@ -119,17 +119,17 @@ for(j in 1:2){
 
 
   # generate alternative universe (i.e. all those genes from the experiment with a non-NA adjusted p-value)
-  universe_DESeq2_phenorig <- rownames(DESeq2_results_phenorig[!is.na(DESeq2_results_phenorig$p_adj),])
+  universe_DESeq2_phenorig <- rownames(DESeq2_results_phenorig[!is.na(DESeq2_results_phenorig$p_adj), ])
 
 
   # create path for storage of DESeq2 results
-  path_universe_deseq2_phenorig <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Phen_Original/universe_DESeq2_phenorig.txt")
+  path_universe_deseq2_phenorig <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original/universe_DESeq2_phenorig.txt")
 
   # export alternative universe
-  write.table(universe_DESeq2_phenorig,
-              file = path_universe_deseq2_phenorig,
-              quote = FALSE,
-              row.names = FALSE,
+  write.table(universe_DESeq2_phenorig, 
+              file = path_universe_deseq2_phenorig, 
+              quote = FALSE, 
+              row.names = FALSE, 
               col.names = FALSE)
 
 
@@ -149,7 +149,7 @@ for(j in 1:2){
   mm_phenorig <-  model.matrix(~ true_phen_labels)
 
   # (ii) run limma workflow and rename column containing adjusted p-values
-  limma_results_phenorig <- DGEList(raw_data[ind_filt_phenorig,], group= true_phen_labels) %>% calcNormFactors() %>%
+  limma_results_phenorig <- DGEList(raw_data[ind_filt_phenorig, ], group= true_phen_labels) %>% calcNormFactors() %>%
     voom(design=mm_phenorig) %>% lmFit(design=mm_phenorig) %>% eBayes() %>%
     topTable(coef=ncol(mm_phenorig), number=60000) %>%
     as.data.frame() %>% dplyr::rename(p_adj=adj.P.Val)
@@ -168,25 +168,25 @@ for(j in 1:2){
   path_DEGs_limma_phenorig <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original/DEGs_limma_phenorig.txt")
 
   # export DESeq2 results
-  write.table(DEGs_limma_phenorig,
-              file = path_DEGs_limma_phenorig,
-              quote = FALSE,
-              row.names = FALSE,
+  write.table(DEGs_limma_phenorig, 
+              file = path_DEGs_limma_phenorig, 
+              quote = FALSE, 
+              row.names = FALSE, 
               col.names = FALSE)
 
 
   # generate alternative universe (i.e. all those genes from the experiment with a non-NA adjusted p-value)
-  universe_limma_phenorig <- rownames(limma_results_phenorig[!is.na(limma_results_phenorig$p_adj),])
+  universe_limma_phenorig <- rownames(limma_results_phenorig[!is.na(limma_results_phenorig$p_adj), ])
 
 
   # create path for storage of limma results
-  path_universe_limma_phenorig <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Phen_Original/universe_limma_phenorig.txt")
+  path_universe_limma_phenorig <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Phen_Original/universe_limma_phenorig.txt")
 
   # export alternative universe
-  write.table(universe_limma_phenorig,
-              file = path_universe_limma_phenorig,
-              quote = FALSE,
-              row.names = FALSE,
+  write.table(universe_limma_phenorig, 
+              file = path_universe_limma_phenorig, 
+              quote = FALSE, 
+              row.names = FALSE, 
               col.names = FALSE)
 
 
@@ -212,7 +212,7 @@ for(j in 1:2){
 
     # generate DESeq2 results and rename column for adjusted p-values
     DESeq2_results <- pre_filt(raw_data, threshold=10) %>%
-      deseq_preprocess(phenotype_labels = perm_phen_labels[,i]) %>%
+      deseq_preprocess(phenotype_labels = perm_phen_labels[, i]) %>%
       DESeq() %>% results() %>%
       as.data.frame() %>% dplyr::rename(p_adj=padj)
 
@@ -225,30 +225,30 @@ for(j in 1:2){
 
 
     # create path for storage of DESeq2 results
-    path_DEGs_deseq2 <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Permutation", i, "/DEGs_DESeq2_permutation",i,".txt")
+    path_DEGs_deseq2 <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i, "/DEGs_DESeq2_permutation", i, ".txt")
 
     # # export DESeq2 results
-    write.table(DEGs_DESeq2,
-                file = path_DEGs_deseq2,
-                quote = FALSE,
-                row.names = FALSE,
+    write.table(DEGs_DESeq2, 
+                file = path_DEGs_deseq2, 
+                quote = FALSE, 
+                row.names = FALSE, 
                 col.names = FALSE)
 
 
     ### Universe ###
 
     # generate alternative universe (i.e. all those genes from the experiment with a non-NA adjusted p-value)
-    universe_DESeq2 <- rownames(DESeq2_results[!is.na(DESeq2_results$p_adj),])
+    universe_DESeq2 <- rownames(DESeq2_results[!is.na(DESeq2_results$p_adj), ])
 
 
     # create path for storage of DESeq2 results
-    path_universe_deseq2 <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Permutation", i, "/universe_DESeq2_permutation",i,".txt")
+    path_universe_deseq2 <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i, "/universe_DESeq2_permutation", i, ".txt")
 
     # export alternative universe
-    write.table(universe_DESeq2,
-                file = path_universe_deseq2,
-                quote = FALSE,
-                row.names = FALSE,
+    write.table(universe_DESeq2, 
+                file = path_universe_deseq2, 
+                quote = FALSE, 
+                row.names = FALSE, 
                 col.names = FALSE)
 
 
@@ -262,14 +262,14 @@ for(j in 1:2){
     # generate list of differentially expressed genes using limma
 
     # (i.1) generate pre-filtering indicator using edgeR's filterByExpr
-    ind_filt <- DGEList(raw_data, group= perm_phen_labels[,i]) %>%
+    ind_filt <- DGEList(raw_data, group= perm_phen_labels[, i]) %>%
       filterByExpr()
 
     # (i.2) generate design matrix
-    mm <-   mm <- model.matrix(~ perm_phen_labels[,i])
+    mm <-   mm <- model.matrix(~ perm_phen_labels[, i])
 
     # (ii) run limma workflow and rename column containing adjusted p-values
-    limma_results <- DGEList(counts = raw_data[ind_filt,],group= perm_phen_labels[,i]) %>%
+    limma_results <- DGEList(counts = raw_data[ind_filt, ], group= perm_phen_labels[, i]) %>%
       calcNormFactors() %>% voom(design=mm) %>% lmFit(design=mm) %>% eBayes() %>%
       topTable(coef=ncol(mm), number=60000) %>%
       as.data.frame() %>% dplyr::rename(p_adj=adj.P.Val)
@@ -285,28 +285,28 @@ for(j in 1:2){
 
 
     # create path for storage of limma results
-    path_DEGs_limma <- paste0("./Results/Intermediate_results/DAVID/",name_data[j],"/Data/Permutation", i, "/DEGs_limma_permutation",i,".txt")
+    path_DEGs_limma <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i, "/DEGs_limma_permutation", i, ".txt")
 
     # export DESeq2 results
-    write.table(DEGs_limma,
-                file = path_DEGs_limma,
-                quote = FALSE,
-                row.names = FALSE,
+    write.table(DEGs_limma, 
+                file = path_DEGs_limma, 
+                quote = FALSE, 
+                row.names = FALSE, 
                 col.names = FALSE)
 
 
     # generate alternative universe (i.e. all those genes from the experiment with a non-NA adjusted p-value)
-    universe_limma <- rownames(limma_results[!is.na(limma_results$p_adj),])
+    universe_limma <- rownames(limma_results[!is.na(limma_results$p_adj), ])
 
 
     # create path for storage of limma results
-    path_universe_limma <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i, "/universe_limma_permutation",i,".txt")
+    path_universe_limma <- paste0("./Results/Intermediate_results/DAVID/", name_data[j], "/Data/Permutation", i, "/universe_limma_permutation", i, ".txt")
 
     # export alternative universe
-    write.table(universe_limma,
-                file = path_universe_limma,
-                quote = FALSE,
-                row.names = FALSE,
+    write.table(universe_limma, 
+                file = path_universe_limma, 
+                quote = FALSE, 
+                row.names = FALSE, 
                 col.names = FALSE)
 
 

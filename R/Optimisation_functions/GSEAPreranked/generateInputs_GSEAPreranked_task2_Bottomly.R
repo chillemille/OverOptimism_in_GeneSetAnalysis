@@ -11,7 +11,7 @@ library(ggplot2)
 library(dplyr)
 library(biomaRt) #note that here, we have to work with biomaRt to convert the gene
 # IDs instead of clusterProfiler's bitr(). The reason for this is that we have
-# to convert between organisms, namely from mouse mouse ENSEMBL IDs to Human HGNC gene symbols,
+# to convert between organisms, namely from mouse mouse ENSEMBL IDs to Human HGNC gene symbols, 
 # which does not work with bitr().
 
 
@@ -35,10 +35,10 @@ dir.create("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw
 
 for(i in 1:10){
 
-  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation",
+  path_raw <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation", 
                      i)
 
-  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Prep/Phenotype_Permutation",
+  path_prep <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Prep/Phenotype_Permutation", 
                       i)
 
   dir.create(path_raw)
@@ -80,20 +80,20 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
 
   # connect to Biomart database for mouse
-  mouse <- useMart(biomart = "ensembl",
-                   dataset = "mmusculus_gene_ensembl",
+  mouse <- useMart(biomart = "ensembl", 
+                   dataset = "mmusculus_gene_ensembl", 
                    host = "https://dec2021.archive.ensembl.org")
   # connect to Biomart database for human
-  human <- useMart(biomart = "ensembl",
-                   dataset = "hsapiens_gene_ensembl",
+  human <- useMart(biomart = "ensembl", 
+                   dataset = "hsapiens_gene_ensembl", 
                    host = "https://dec2021.archive.ensembl.org")
 
   mouseEnsembl_to_humanSymbol <- getLDS(
-    mart = mouse,
-    attributes = c('ensembl_gene_id'),
-    martL = human,
-    attributesL = c('hgnc_symbol'),
-    #filters = 'ensembl_gene_id',
+    mart = mouse, 
+    attributes = c('ensembl_gene_id'), 
+    martL = human, 
+    attributesL = c('hgnc_symbol'), 
+    #filters = 'ensembl_gene_id', 
     values = rownames(expression_data)
   )
 
@@ -107,10 +107,10 @@ geneID_conversion_SYMBOL <- function(expression_data, dupl_removal_method){
 
   #this step is independent of sample IDs
   #merge by row names of expression data set and mouse ENSEMBL ID of conversion data set
-  expression_data <- merge(expression_data,
-                           mouseEnsembl_to_humanSymbol,
-                           by.x = 0,
-                           by.y = "Gene.stable.ID",
+  expression_data <- merge(expression_data, 
+                           mouseEnsembl_to_humanSymbol, 
+                           by.x = 0, 
+                           by.y = "Gene.stable.ID", 
                            all = FALSE)
   dim(expression_data)
 
@@ -394,10 +394,10 @@ DESeq2_ranking_phenorig <- pre_filt(Biobase::exprs(bottomly.eset), threshold = 1
 path_DESeq2_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Original_Phenotype/DESeq2_ranking_phenOrig.txt"
 
 # export
-write.table(DESeq2_ranking_phenorig,
-            file = path_DESeq2_phenorig,
-            quote = FALSE,
-            row.names = TRUE,
+write.table(DESeq2_ranking_phenorig, 
+            file = path_DESeq2_phenorig, 
+            quote = FALSE, 
+            row.names = TRUE, 
             col.names = FALSE)
 
 
@@ -422,8 +422,8 @@ limma_results <- geneID_conversion_SYMBOL(Biobase::exprs(bottomly.eset)[keep_phe
   topTable(coef = ncol(mm_phenorig), number = 100000)
 
 # create limma results and rank by p-value
-limma_ranking_phenorig <- rankedList_cP(limma_results,
-                                        rankby =  "p_value",
+limma_ranking_phenorig <- rankedList_cP(limma_results, 
+                                        rankby =  "p_value", 
                                         method = "limma")
 
 # Create path for storage of limma ranking
@@ -431,10 +431,10 @@ path_limma_phenorig <- "./Results/Intermediate_results/GSEAPreranked/Bottomly/Da
 
 
 # export
-write.table(limma_ranking_phenorig,
-            file = path_limma_phenorig,
-            quote = FALSE,
-            row.names = TRUE,
+write.table(limma_ranking_phenorig, 
+            file = path_limma_phenorig, 
+            quote = FALSE, 
+            row.names = TRUE, 
             col.names = FALSE)
 
 
@@ -459,17 +459,17 @@ for(i in 1:ncol(phen_bottomly)){
     rankedList_cP(rankby = "p_value", method = "DESeq2")
 
   # create path for storage of DESeq2 ranking
-  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation",
-                                 i,
-                                 "/DESeq2_ranking_permutation",
-                                 i,
+  path_DESeq2_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation", 
+                                 i, 
+                                 "/DESeq2_ranking_permutation", 
+                                 i, 
                                  ".txt")
 
   # export
-  write.table(DESeq2_ranking_phenperm,
-              file = path_DESeq2_phenperm,
-              quote = FALSE,
-              row.names = TRUE,
+  write.table(DESeq2_ranking_phenperm, 
+              file = path_DESeq2_phenperm, 
+              quote = FALSE, 
+              row.names = TRUE, 
               col.names = FALSE)
 
 
@@ -495,23 +495,23 @@ for(i in 1:ncol(phen_bottomly)){
 
 
   # create ranking by p-value
-  limma_ranking_phenperm <- rankedList_cP(limma_results_phenperm,
-                                          rankby =  "p_value",
+  limma_ranking_phenperm <- rankedList_cP(limma_results_phenperm, 
+                                          rankby =  "p_value", 
                                           method = "limma")
 
   # Create path for storage of limma ranking
-  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation",
-                                i,
-                                "/limma_ranking_permutation",
-                                i,
+  path_limma_phenperm <- paste0("./Results/Intermediate_results/GSEAPreranked/Bottomly/Data_task2/Raw/Phenotype_Permutation", 
+                                i, 
+                                "/limma_ranking_permutation", 
+                                i, 
                                 ".txt")
 
 
   # export
-  write.table(limma_ranking_phenperm,
-              file = path_limma_phenperm,
-              quote = FALSE,
-              row.names = TRUE,
+  write.table(limma_ranking_phenperm, 
+              file = path_limma_phenperm, 
+              quote = FALSE, 
+              row.names = TRUE, 
               col.names = FALSE)
 
 

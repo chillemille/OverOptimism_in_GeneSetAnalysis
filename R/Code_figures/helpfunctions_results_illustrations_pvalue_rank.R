@@ -10,18 +10,42 @@ library(dplyr)
 ### Prepare the data frame to be plotted in the ggplot #########################
 ################################################################################
 
-# argument goal: c("n_DEGS", "p_adj", "rel_rank")
-# sample_labels: c("true_labels", "random_permutations")
 
-prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_to_optim_geneset2, goal, sample_labels){
+# data.frame(cP_ORA = c(padj_cP_ORA_tCell_truephen_default, padj_cP_ORA_tCell_truephen_optim),
+#                                       GOSeq = c(padj_GOSeq_tCell_truephen_default, padj_GOSeq_tCell_truephen_optim),
+#                                       DAVID = c(padj_DAVID_tCell_truephen_default, padj_DAVID_tCell_truephen_optim),
+#                                       PADOG = c(padj_PADOG_PrimImmun_truephen_default, padj_PADOG_PrimImmun_truephen_optim),
+#                                       cP_GSEA = c(padj_cP_GSEA_tCell_truephen_default, padj_cP_GSEA_tCell_truephen_optim),
+#                                       GSEA = c(padj_GSEA_tCell_truephen_default,padj_GSEA_tCell_truephen_optim),
+#                                       GSEAPreranked = c(padj_GSEAPreranked_tCell_truephen_default, padj_GSEAPreranked_tCell_truephen_optim),
+#                                       state = c("Default","Minimum")) # state: default vs. optimum
+
+
+# function arguments
+
+# function arguments:
+# - default_to_optim_geneset_ ...: for each gene set a data frame containing
+#                     * ONE column for each method which contains first a vector of the default and then the optimized values
+#                       -> e.g. of the form DAVID = c(padj_DAVID_pickrell_phenpermutation_default, padj_DAVID_pickrell_phenpermutation_optim)
+#                     * column 'state' indicating for each value from the "method columns" whether it is a default or an optimized value
+#                       -> e.g. column state = c(rep("Default", 10), rep("Maximum", 10))
+#                     * column ID indicating the ID of the permutation (takes values 1 to 10; only needed for analysis on the random permutations)
+#                       -> e.g. colum ID = rep(c(1:10), 2))
+#
+# - goal: indicator whether the analysis followed goal 2("p_adj") or goal 3 ("rel_rank")
+#
+# - sample_labels: indicator whether the analysis was performed for the true sample labels
+#                   ("true_labels") or the  10 random permutations ("random_permutations")
+
+prep_data_for_ggplot_pvaluerank  <- function(default_to_optim_geneset1, default_to_optim_geneset2, goal, sample_labels){
 
 
   # if the data contain the data for the permutations of the sample labels, add column "ID" which contains the
   # which indicates the number of the corresponding permutation
   if(sample_labels == "random_permutations"){
 
-    default_to_optim_geneset1$ID <- rep(c(1:10),2)
-    default_to_optim_geneset2$ID <- rep(c(1:10),2)
+    default_to_optim_geneset1$ID  <- rep(c(1:10),2)
+    default_to_optim_geneset2$ID  <- rep(c(1:10),2)
 
   }
 
@@ -29,18 +53,18 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
   # "state" is always contained, "ID" is contained if the data set contains
   # data on the random permutations
   # we need this indicator "column" to NOT pivot these columns to a longer format
-  columns <- c("state", "ID")[c("state", "ID") %in% colnames(default_to_optim_geneset1)]
+  columns  <- c("state", "ID")[c("state", "ID") %in% colnames(default_to_optim_geneset1)]
 
 
   # transform data frame such that each observed adjusted p-value value is in a separate column, additionally labelled by the
   # associated GSA tool and state
-  default_to_optim_geneset1 <- pivot_longer(default_to_optim_geneset1,
+  default_to_optim_geneset1  <- pivot_longer(default_to_optim_geneset1,
                                             cols=!columns,
                                             names_to="GSA_tool",
                                             values_to = "value")
 
   # Add column that indicates that we consider the "first" gene set for each tool
-  default_to_optim_geneset1$GS <- 1
+  default_to_optim_geneset1$GS  <- 1
 
 
   # add the combination of
@@ -48,12 +72,12 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
   # - the gene set number for each tool (1 vs. 2)
   # - and the permutation ID, IF the data contains the permutations
   # -> this way, each value appears exactly twice and matches the default and optimal value for each tool in each permutation
-  default_to_optim_geneset1$unique_ID <- paste0(default_to_optim_geneset1$GSA_tool,
+  default_to_optim_geneset1$unique_ID  <- paste0(default_to_optim_geneset1$GSA_tool,
                                                 "_",
                                                 default_to_optim_geneset1$GS)
 
   if(sample_labels == "random_permutations"){
-    default_to_optim_geneset1$unique_ID <- paste0(default_to_optim_geneset1$unique_ID,
+    default_to_optim_geneset1$unique_ID  <- paste0(default_to_optim_geneset1$unique_ID,
                                                   "_",
                                                   default_to_optim_geneset1$ID)
 
@@ -63,24 +87,24 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
 
   # transform data frame such that each observed adjusted p-value is in a separate column, additionally labelled by the
   # associated GSA tool and state
-  default_to_optim_geneset2 <- pivot_longer(default_to_optim_geneset2,
+  default_to_optim_geneset2  <- pivot_longer(default_to_optim_geneset2,
                                             cols=!columns,
                                             names_to="GSA_tool",
                                             values_to = "value")
 
   # Indicate that we here consider the "second" gene set for each tool
-  default_to_optim_geneset2$GS <- 2
+  default_to_optim_geneset2$GS  <- 2
 
 
 
   # add the combination of the GSA tool, the gene set number for each tool (1 vs. 2) (and the permutation ID
   # -> this way, each value appears exactly twice and matches the default and optimal n_DEGS value for each tool in each permutation
-  default_to_optim_geneset2$unique_ID <- paste0(default_to_optim_geneset2$GSA_tool,
+  default_to_optim_geneset2$unique_ID  <- paste0(default_to_optim_geneset2$GSA_tool,
                                                 "_",
                                                 default_to_optim_geneset2$GS)
 
   if(sample_labels == "random_permutations"){
-    default_to_optim_geneset2$unique_ID <- paste0(default_to_optim_geneset2$unique_ID,
+    default_to_optim_geneset2$unique_ID  <- paste0(default_to_optim_geneset2$unique_ID,
                                                   "_",
                                                   default_to_optim_geneset2$ID)
 
@@ -88,7 +112,7 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
 
 
   # Combine both data sets into one big data set
-  default_to_optim_allgenesets <- rbind(default_to_optim_geneset1,
+  default_to_optim_allgenesets  <- rbind(default_to_optim_geneset1,
                                         default_to_optim_geneset2)
 
 
@@ -97,23 +121,23 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
   ############################
 
   # the order of the methods in the results illustration shall be based on the following
-  allmethods <- c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "cP_GSEA", "GSEA", "GSEAPreranked")
+  allmethods  <- c("GOSeq", "DAVID", "cP_ORA",  "PADOG", "cP_GSEA", "GSEA", "GSEAPreranked")
   # get the list of tools existent in the current data
-  currentmethods <- unique(default_to_optim_allgenesets$GSA_tool)
+  currentmethods  <- unique(default_to_optim_allgenesets$GSA_tool)
   # specify the order of the existent methods in the results illustrations
-  levels <- currentmethods[order(match(currentmethods,allmethods))]
+  levels  <- currentmethods[order(match(currentmethods,allmethods))]
 
 
 
   # transform GSA tools to factors
   # -> this way we can fix the order of the tools in the graphic
-  default_to_optim_allgenesets$GSA_tool <- factor(default_to_optim_allgenesets$GSA_tool,
+  default_to_optim_allgenesets$GSA_tool  <- factor(default_to_optim_allgenesets$GSA_tool,
                                                   levels = levels)
 
 
   # transform gene sets to factors
   # -> this way we can fix the order of the gene sets in the legend
-  default_to_optim_allgenesets$GS <- factor(default_to_optim_allgenesets$GS)
+  default_to_optim_allgenesets$GS  <- factor(default_to_optim_allgenesets$GS)
 
 
 
@@ -122,7 +146,7 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
     # for the results illustrations of the adjusted p-value:
     # add column which indicates default significant threshold used by each tool:
     # GSEA (web) and GSEAPreranked: FDR < 0.25, remaining GSA methods: 0.05
-    default_to_optim_allgenesets$sig_threshold <- ifelse(grepl(paste(c("GSEAPreranked","\\bGSEA\\b"), collapse='|'),
+    default_to_optim_allgenesets$sig_threshold  <- ifelse(grepl(paste(c("GSEAPreranked","\\bGSEA\\b"), collapse='|'),
                                                                default_to_optim_allgenesets$GSA_tool),
                                                          yes = 0.25, no = 0.05)
 
@@ -144,27 +168,27 @@ prep_data_for_ggplot_pvaluerank <- function(default_to_optim_geneset1, default_t
 
 # for the illustration on the adjusted p-value, insert "p_adj" for argument goal
 
-
-create_results_illustration_pvalue_rank <- function(default_to_optim_geneset1, default_to_optim_geneset2, goal = "p_adj", sample_labels){
-
-
-  data_prep <- prep_data_for_ggplot_pvaluerank(default_to_optim_geneset1, default_to_optim_geneset2, goal, sample_labels)
+# function arguments are the same arguments as above.
+create_results_illustration_pvalue_rank  <- function(default_to_optim_geneset1, default_to_optim_geneset2, goal = "p_adj", sample_labels){
 
 
-  set_ylab <- ifelse(goal == "rel_rank", "(Relative) rank", "Adjusted p-value")
+  data_prep  <- prep_data_for_ggplot_pvaluerank(default_to_optim_geneset1, default_to_optim_geneset2, goal, sample_labels)
+
+
+  set_ylab  <- ifelse(goal == "rel_rank", "(Relative) rank", "Adjusted p-value")
 
 
   # Replace "GSEAPreranked" by "GSEA- \n Preranked" (line break makes plot easier to understand)
-  add_labels_xaxis <- levels(data_prep$GSA_tool)
-  add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"] <- "GSEA- \n Preranked"
+  add_labels_xaxis  <- levels(data_prep$GSA_tool)
+  add_labels_xaxis[add_labels_xaxis == "GSEAPreranked"]  <- "GSEA- \n Preranked"
 
 
   # Replace "cP_GSEA" by "clusterProfiler's \n GSEA" (line break makes plot easier to understand)
-  add_labels_xaxis[add_labels_xaxis == "cP_GSEA"] <- "clusterProfiler's \n GSEA"
+  add_labels_xaxis[add_labels_xaxis == "cP_GSEA"]  <- "clusterProfiler's \n GSEA"
 
 
   # Replace "cP_ORA" by "clusterProfiler's \n ORA" (line break makes plot easier to understand)
-  add_labels_xaxis[add_labels_xaxis == "cP_ORA"] <- "clusterProfiler's \n ORA"
+  add_labels_xaxis[add_labels_xaxis == "cP_ORA"]  <- "clusterProfiler's \n ORA"
 
 
   plot <-
@@ -192,7 +216,7 @@ create_results_illustration_pvalue_rank <- function(default_to_optim_geneset1, d
 
   if(goal == "p_adj"){
 
-    plot <- plot +  geom_step( dat = data_prep,
+    plot  <- plot +  geom_step( dat = data_prep,
                                aes(interaction(GSA_tool, state, lex.order = TRUE),
                                    y= sig_threshold),
                                col="gray", linetype = "dashed")
