@@ -12,7 +12,7 @@ This repository contains instructions on how to
 - **reproduce analysis for web-based methods *DAVID*, *GSEA*, *GSEAPreranked***: detailed instructions on how to reproduce the intermediate results for the three web-based methods, containing
     - the generation of required input objects in *R*
     - the optimisation performed in the respective web-based method
-    - the documentation of results 
+    - the documentation of results in the form of screenshots and Excel files
 
 ### Important notes
 
