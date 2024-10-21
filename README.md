@@ -98,46 +98,26 @@ Note that for the Pickrell and the Bottomly data set respectively, the input obj
 #### 2. Run DAVID optimisation 
 Access the link https://david.ncifcrf.gov/ [last accessed: 08 Oct 2024 09:30am]. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the input gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. 
 
-The optimisation steps are the following (see corresponding screenshots in folder `Results/Screenshots_WebApplications` for more detailed illustrations): 
+The optimisation steps are the following (see corresponding screenshots in folder `Results/Screenshots_WebApplications` for more detailed illustrations of the optimisation of task 1): 
 
-1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt**
+1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt** and run DAVID with all parameters in their default configuration
+   - **01Load_Default_GeneList.PNG**: DEGs_DESeq2_... .txt is uploaded (**note** configurations for step 2 and step 3 on blue sidebar)
+   - **01Param_Default.PNG**: Geneset database is set to "GO_BP_direct" while "Check Defaults" is unchecked
+   - **01Results_Default.PNG**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value                                   of the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
 2. Change method to detect differentially expressed genes: upload **DEGs_limma_... .txt**
-3. **For task 1 only**: change gene set database to KEGG 
+   - **02Load_limma_GeneList.PNG**: DEGs_limma_... .text is uploaded (note configurations for step 2 and step 3 on blue sidebar)
+   - **02Param_limma.PNG**: Geneset database is set to "GO_BP_direct" while "Check Defaults" is unchecked
+   - **02Results_limma.PNG**: DAVID results table is inspected and number of differentially enriched gene sets is counted (Excel file offers better visuability)
+ 
+3. **For task 1 only**: change gene set database to KEGG
+   - **03Param_KEGG.PNG**: Geneset database is set to "KEGG_PATHWAY" while "Check Defaults" is unchecked
+   - **03Results_KEGG.PNG**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of                                 the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
 4. Change set of background genes: upload **universe_DESeq2_... .txt** or **universe_limma_... .txt** according to whether step 1 or step 2 leads to better results w.r.t the optimisation task).
+   - **04Load_alternativeUniverse.PNG**: the .txt file containing the alternative universe (based on DESeq2 or limma depending on optim. step 2) is uploaded (**note**                                                     configurations for step 2 and step 3 on blue sidebar)
+   - **04Param_alternativeUniverse.PNG**: the gene set database is specified based on optim. step 3 while "Check defaults" is unchecked
+   - **04Results_alternativeUniverse.PNG**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
 
 In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
-
-#### 3. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
-For task 1, you find the documentation screenshots (and Excel results files) in the folder 
-
-- **Screenshots_DAVID_Pickrell** for the Pickrell data set 
-- **Screenshots_DAVID_Bottomly** for the Bottomly data set
-
-The screenshots are numbered according to the optimisation step. 
-
-- **optim. step 1**: DAVID results are generated using all options in default configuration
-  - **01Load_Default_GeneList**: DEGs_DESeq2_... .txt is uploaded (**note** configurations for step 2 and step 3 on blue sidebar) 
-  - **01Param_Default**: Geneset database is set to "GO_BP_direct" while "Check Defaults" is unchecked 
-  - **01Results_Default**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
-- **optim. step 2**: method to detect differentially expressed genes is changed to limma and new DAVID results are generated 
-  - **02Load_limma_GeneList**: DEGs_limma_... .text is uploaded (note configurations for step 2 and step 3 on blue sidebar) 
-  - **02Param_limma**: Geneset database is set to "GO_BP_direct" while "Check Defaults" is unchecked 
-  - **02Results_limma**: DAVID results table is inspected and number of differentially enriched gene sets is counted (Excel file offers better visuability)
- 
-  -> depending on whether step 1 or step 2 leads to better results, one proceeds with DEGs_DESeq2_... .txt or with DEGs_limma_... .txt in the following steps 
-
-- **optim. step 3**: gene set database is changed to KEGG and new DAVID results are generated (**for optimisation task 1 only**)
-  - **03Param_KEGG**: Geneset database is set to "KEGG_PATHWAY" while "Check Defaults" is unchecked 
-  - **03Results_KEGG**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the   specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
- 
-  -> depending on whether this new configuration leads to better results w.r.t the given optimisation task, the changes are adopted 
-  
-- **optim. step 4**: universe is set changed (to all genes investigated for differential expression) and new DAVID results are generated 
-  - **04Load_alternativeUniverse**: the .txt file containing the alternative universe (based on DESeq2 or limma depending on optim. step 2) is uploaded (**note** configurations for step 2 and step 3 on blue sidebar)
-  - **04Param_alternativeUniverse**: the gene set database is specified based on optim. step 3 while "Check defaults" is unchecked 
-  - **04Results_alternativeUniverse**: DAVID results table is inspected and for number of differentially enriched gene sets is counted (**for optim. task 1**) or the adjusted p-value of the specified gene set is inspected (**for optim. task 2**) (Excel file offers better visuability) 
-
-
 
 **Important:**
 The documentation shows that the number of differentially enriched gene sets could **NOT** be increased for any of the two gene expression data sets and none of the sample labels (neither true nor permuted). Indeed, there was only one case (Bottomly data set, true sample labels) in which there were gene sets with a significant adjusted p-value. 
@@ -176,59 +156,52 @@ The corresponding preprocessed files are then stored in subfolder `Prep`.
 #### 3. Upload data and make optimisations according to task 1 or 2 
 In the application, the required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEA**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Intermediate_results/GSEA_Web`. Note that in each step, the random seed is set to **149**. 
 
-Optimisation steps for tasks 1 and 2: 
+Optimisation steps for tasks 1 and 2 (corresponding screenshots are indented; the documentation of the optimisation processes can also be inspected in the respective *R* file as comments ): 
 
-1. Upload pre-processed gene expression data set and phenotype assignments: upload **exprdat_default_... .gct**
-2. Change RNA-Seq transformation method: upload **exprdat_vst_... .gct**
-3. Change pre-filtering method: upload **exprdat_vst_filterByExpr_... .gct**
-4. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
-5. Change metric for ranking genes 
-    - change to **tTest**
-    - change to **Diff_of_classes**
-6. Change enrichment statistic 
-    - change to **classic**
-    - change to **weighted_p1.5**
-    - change to **weighted_p2**
-  
-For each optimisation step, the results of the GSEA run can be found in the provided report tab: 
-
-- For task 1, you add up the number of gene sets reported as "significant at FDR < 0.25" under both tabs "Enrichment in phenotype: ..."
-- For task 2, you get the adjusted p-value of the given gene set by transferring both "Detailed enrichment results in html format" to Excel and inspecting column "FDR_qval"
-
-In each optimisation step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
-
-#### 4. Inspect documentation of the results (folder `Results/Screenshots_WebApplications`)
-
-Note that the optimisation of GSEA was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimisation processes can be found in the screenshots containing the name "Param", namely 
-- in the top left corner for the version of the overall web application
-- in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
-
-
-The screenshots are numbered according to the optimisation step. 
-
-- **optim. step 1**: GSEA results are generated using all options in default configuration
-  - **01Param_Default**: The default parameters are specified, including
+1. Upload pre-processed gene expression data set and phenotype assignments: upload **exprdat_default_... .gct** and run the method with all parameters in their default configuration
+   - **01Param_Default.PNG**: The default parameters are specified, including
       - the gene expression data set exprdat_default_ ... .gct (tab "Expression dataset") 
       - gene set database GO with subontology Biological Processes (tab "Gene sets database")
-      - the exponent value p=1 in the computation of the enrichment score (tab "Enrichment statistic")
-      - the metric for ranking the genes (tab "Metric for ranking genes")
-      - the random seed ("Seed for permutation")
-  - **01Results_Default**: The overview of the results can be inspected. Obtain number of differentially enriched gene sets by adding up the numbers indicated in row "XX gene sets are significant at FDR < 25%" across
+      - the exponent "weighted" in the computation of the enrichment score (tab "Enrichment statistic")
+      - the metric "Signal2Noise" for ranking the genes (tab "Metric for ranking genes")
+      - the random seed 149 (tab "Seed for permutation")
+    - **01Results_Default.PNG**: The overview of the results can be inspected. Obtain number of differentially enriched gene sets by adding up the numbers indicated in row "XX             gene sets are significant at FDR < 25%" across
       - "Enrichment in phenotype: 0" and
       - "Enrichment in phenotype: 1" <br />
-  &rarr; note that the results can also be inspected in the Excel file of the same name 
-In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments.
-  - **02Param_vst**: Gene expression data set is changed to exprdat_vst_ ... .gct (see tab "Expression dataset")
-  - **02Results_vst**: Overview of results that result from changing gene expression data set to exprdat_vst_ ... .gct
-  - **03Param_filterByExpr**: Gene expression data set is changed to exprdat_filterByExpr_ ... .gct (see tab "Expression dataset")
-  - **03Results_filterByExpr**: Overview of results that result from changing gene expression data set to exprdat_filterByExpr_ ... .gct
-  - **04Param_KEGG**: Change gene set database to KEGG (see tab "Gene sets database"; **for task 1 only**)
-  - **04Results_KEGG**: Overview of results that result from changing the gene set database to KEGG (**for task 1 only**)
-  - **05Param_DoC**: Change ranking metric to "Diff_of_Classes" (see tab "Metric for ranking genes")
-  - **05Results_DoC**
+  &rarr; note that the results (and especially **the relevant adjusted p-value**) can also be inspected in the Excel file of the same name 
+2. Change RNA-Seq transformation method: upload **exprdat_vst_... .gct**
+    - **02Param_vst.PNG**: Gene expression data set is changed to exprdat_vst_ ... .gct (see tab "Expression dataset")
+    - **02Results_vst.PNG**: Overview of results for gene expression data set exprdat_vst_ ... .gct
+3. Change pre-filtering method: upload **exprdat_vst_filterByExpr_... .gct**
+    - **03Param_filterByExpr.PNG**: Gene expression data set is changed to exprdat_filterByExpr_ ... .gct (see tab "Expression dataset")
+    - **03Results_filterByExpr.PNG**: Overview of results for gene expression data set exprdat_filterByExpr_ ... .gct
+4. **For task 1 only**: Change gene set database to KEGG ("c2.cp.kegg...")
+    - **04Param_KEGG.PNG**: Change gene set database to KEGG (see tab "Gene sets database"; **for task 1 only**)
+    - **04Results_KEGG.PNG**: Overview of results for gene set database to KEGG (**for task 1 only**)
+5. Change metric for ranking genes 
+    - 5.1 change to **tTest**
+       - **05Param_tTest.PNG**: Change ranking (gene-level ranking) metric to "tTest" (see tab "Metric for ranking genes")
+       - **05Results_tTest.PNG**: Overview of results for metric to "tTest"
+    - 5.2 change to **Diff_of_classes**
+      - **05Param_DoC.PNG**: Change ranking (gene-level ranking) metric to "Diff_of_Classes" (see tab "Metric for ranking genes")
+      - **05Results_DoC.PNG**: Overview of results for metric "Diff_of_Classes"
+6. Change enrichment statistic 
+    - 6.1 change to **classic**
+      - **06Param_exp0.PNG**: Change exponent parameter (in calculation of enrichment score) to "classic" (see tab "Metric for ranking genes") 
+      - **06Results_exp0.PNG**: Overview of results for parameter "classic"
+      - 6.2 change to **weighted_p1.5**
+      - **06Param_exp1KOMMA5.PNG**: Change exponent parameter (in calculation of enrichment score) to "weighted_p1.5" (see tab "Metric for ranking genes")
+      - **06Results_exp1KOMMA5.PNG**: Overview of results for parameter "weighted_p1.5"
+    - 6.3 change to **weighted_p2**
+      - **06Param_exp2.PNG**: Change exponent parameter (in calculation of enrichment score) "weighted_p2" (see tab "Metric for ranking genes")
+      - **06Results_exp2.PNG**: Overview of results for parameter "weighted_p2"
+  
+In each optimisation step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
 
-
-
+Important note: the optimisation of GSEA was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimisation processes can be found in the screenshots containing the name "Param", namely 
+- in the top left corner for the version of the overall web application
+- in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
+  
 ***
 ### GSEAPreranked
 
@@ -241,6 +214,7 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 - **generateInputs_optimisation_GSEAPreranked_task1_... .R**: Input generation for task 1 for the Pickrell and Bottomly data set + additional documentation of the optimisation procedure as comments (documentation could not be placed in separate .txt files since for some optimisation steps, the options depend on the previous step(s)). 
 - **generateInputs_GSEAPreranked_task2_... .R**: Input generation for task 2 (additionally, the corresponding optimisation documentations are stored in text files in this folder).
 
+**Important note**: Unlike the "regular" web application GSEA, for GSEAPreranked, users are recommended to convert the gene IDs to "Gene Symbols", with which the analysis is performed, automatically. As a result, no remapping to gene symbols is performed by the method internally so that the tab "Collapse/Remap to gene symbols" should be set to **No_Collapse**. 
 #### 2. Further preprocessing in Excel 
 
 **Note** that further preprocessing must be performed in Excel according to section **RNK: Ranked list file format (*.rnk)** in https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats [last accessed: 08 Oct 2024 09:37am]. 
@@ -248,29 +222,40 @@ For the Pickrell and the Bottomly data set each, you will find the following *R*
 #### 3. Upload data and make optimisations according to task 1 or 2 
 The required data sets are uploaded in the tab **Load data**, after which you need to proceed to the tab **Run GSEAPreranked**. Further information on the necessary fields to be clicked and filled out can be obtained from the screenshots in folder `Results/Screenshots_WebApplications`. Note that in each step, the random seed is set to **149**. 
 
-Optimisation steps for tasks 1 and 2 : 
+Optimisation steps for tasks 1 and 2 (corresponding screenshots are indented; the documentation of the optimisation processes can also be inspected in the respective *R* file as comments): 
 
 1. Upload default gene ranking: upload **DESeq2_ranking_ ... .rnk**
+    - **01Param_Default.PNG**: The default parameters are specified, including
+      - the gene ranking DESeq2_ranking_ ... .rnk (tab "Ranked List") 
+      - gene set database GO with subontology Biological Processes (tab "Gene sets database")
+      - the exponent "weighted" in the computation of the enrichment score (tab "Enrichment statistic")
+      - the random seed 149 (tab "Seed for permutation")
+    - **01Results_Default.PNG**: The overview of the results can be inspected. Obtain number of differentially enriched gene sets by adding up the numbers indicated in row "XX             gene sets are significant at FDR < 25%" across
+      - "Enrichment in phenotype: 0" and
+      - "Enrichment in phenotype: 1" <br />
+  &rarr; note that the results (and especially **the relevant adjusted p-value**) can also be inspected in the Excel file of the same name 
 2. Change method to rank the genes: upload **limma_ranking_ ... .rnk**
-3. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
-4. Change enrichment statistic 
-    - change to **classic**
-    - change to **weighted_p1.5**
-    - change to **weighted_p2**
+    - **02Param_limma.PNG**: change method to rank genes to limma_ranking_... .rnk
+    - **02Results_limma.PNG**: overview of results for limma_ranking_... .rnk  
+4. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
+    - **04Param_KEGG.PNG**: Change gene set database to KEGG (see tab "Gene sets database"; **for task 1 only**)
+    - **04Results_KEGG.PNG**: Overview of results for gene set database to KEGG (**for task 1 only**)
+5. Change enrichment statistic 
+     - 6.1 change to **classic**
+      - **06Param_exp0.PNG**: Change exponent parameter (in calculation of enrichment score) to "classic" (see tab "Metric for ranking genes") 
+      - **06Results_exp0.PNG**: Overview of results for parameter "classic"
+    - 6.2 change to **weighted_p1.5**
+      - **06Param_exp1KOMMA5.PNG**: Change exponent parameter (in calculation of enrichment score) to "weighted_p1.5" (see tab "Metric for ranking genes")
+      - **06Results_exp1KOMMA5.PNG**: Overview of results for parameter to "weighted_p1.5"
+    - 6.3 change to **weighted_p2**
+      - **06Param_exp2.PNG**: Change exponent parameter (in calculation of enrichment score) to "weighted_p2" (see tab "Metric for ranking genes")
+      - **06Results_exp2.PNG**: Overview of results for parameter "weighted_p2"
   
-In each step, you compare the results w.r.t. the given task to the results from the previous step and choose the option yielding better results. 
-
-#### 4. Transfer results to *R* files to generate results figures 
-
-The screenshot documentation is placed in folders 
-- **Screenshots_GSEAPreranked_..._task1** for task 1 ("...": Bottomly or Pickrell data set)
-- **Screenshots_GSEAPreranked_... task2_GENESET** or task 2 ("...": Bottomly or Pickrell data set)
-
-The results from these screenshots are then transferred to the corresponding *R* scripts in folder **R/Code_figures**. 
-
-Note that the optimisation of GSEAPreranked was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimisation processes can be found in the screenshots containing the name "Param", namely 
+Important note: the optimisation of GSEAPreranked was carried out over several months and by hand. In this period, the application was updated as well as the gene set database GO (with subontology biological process). The versions that were current in the respective optimisation processes can be found in the screenshots containing the name "Param", namely 
 - in the top left corner for the version of the overall web application
 - in the specified gene set database (tab **Gene Sets database**) for the version of the gene set database
+
+The results from these screenshots are then transferred to the corresponding *R* scripts in folder **R/Code_figures**. 
 
 In addition to the screenshots, the optimisation processes are documented in the respective *R* scripts as comments for task 1 (**task1_optimisation_GSEAPreranked_ ... .R** in folder `R/Optimisation_functions/GSEAPreranked`) and in .txt files **task2_documentation_GSEAPreranked_ ... .txt** for task 2).  
 
