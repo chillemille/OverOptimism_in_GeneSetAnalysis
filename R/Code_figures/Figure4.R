@@ -289,9 +289,9 @@ padj_GeneSet1_truephen  <- data.frame(cP_ORA = c(padj_cP_ORA_tCell_truephen_defa
                                      DAVID = c(padj_DAVID_tCell_truephen_default, padj_DAVID_tCell_truephen_optim),
                                      PADOG = c(padj_PADOG_PrimImmun_truephen_default, padj_PADOG_PrimImmun_truephen_optim),
                                      cP_GSEA = c(padj_cP_GSEA_tCell_truephen_default, padj_cP_GSEA_tCell_truephen_optim),
-                                     GSEA = c(padj_GSEA_tCell_truephen_default,padj_GSEA_tCell_truephen_optim),
+                                     GSEA = c(padj_GSEA_tCell_truephen_default, padj_GSEA_tCell_truephen_optim),
                                      GSEAPreranked = c(padj_GSEAPreranked_tCell_truephen_default, padj_GSEAPreranked_tCell_truephen_optim),
-                                     state = c("Default","Minimum")) # state: default vs. optimum
+                                     state = c("Default", "Minimum")) # state: default vs. optimum
 
 
 
@@ -300,10 +300,10 @@ padj_GeneSet2_truephen  <- data.frame(cP_ORA = c(padj_cP_ORA_Demethylation_truep
                                      DAVID = c(padj_DAVID_Demethylation_truephen_default, padj_DAVID_Demethylation_truephen_optim),
                                      GOSeq = c(padj_GOSeq_Demethylation_truephen_default, padj_GOSeq_Demethylation_truephen_optim),
                                      PADOG = c(padj_PADOG_GraftvsHost_truephen_default, padj_PADOG_GraftvsHost_truephen_optim),
-                                     GSEA = c(padj_GSEA_Demethylation_truephen_default,padj_GSEA_Demethylation_truephen_optim),
+                                     GSEA = c(padj_GSEA_Demethylation_truephen_default, padj_GSEA_Demethylation_truephen_optim),
                                      cP_GSEA = c(padj_cP_GSEA_Demethylation_truephen_default, padj_cP_GSEA_Demethylation_truephen_optim),
                                      GSEAPreranked = c(padj_GSEAPreranked_Demethylation_truephen_default, padj_GSEAPreranked_Demethylation_truephen_optim),
-                                     state = c("Default","Minimum")) # state: default vs. optimum
+                                     state = c("Default", "Minimum")) # state: default vs. optimum
 
 
 
@@ -704,10 +704,10 @@ padj_GeneSet1_phenpermutation  <- data.frame(cP_ORA = c(padj_cP_ORA_tCell_phenpe
                                             DAVID = c(padj_DAVID_tCell_phenpermutation_default, padj_DAVID_tCell_phenpermutation_optim),
                                             PADOG = c(padj_PADOG_PrimImmun_phenpermutation_default, padj_PADOG_PrimImmun_phenpermutation_optim),
                                             cP_GSEA = c(padj_cP_GSEA_tCell_phenpermutation_default, padj_cP_GSEA_tCell_phenpermutation_optim),
-                                            GSEA = c(padj_GSEA_tCell_phenpermutation_default,padj_GSEA_tCell_phenpermutation_optim),
+                                            GSEA = c(padj_GSEA_tCell_phenpermutation_default, padj_GSEA_tCell_phenpermutation_optim),
                                             GSEAPreranked = c(padj_GSEAPreranked_tCell_phenpermutation_default, padj_GSEAPreranked_tCell_phenpermutation_optim),
-                                            state = c(rep("Default",10), rep("Minimum",10)), # state: default vs. optimum
-                                            ID = rep(c(1:10),2)) # add the number of the permutation
+                                            state = c(rep("Default", 10), rep("Minimum", 10)), # state: default vs. optimum
+                                            ID = rep(c(1:10), 2)) # add the number of the permutation
 
 
 
@@ -716,11 +716,11 @@ padj_GeneSet2_phenpermutation  <- data.frame(cP_ORA = c(padj_cP_ORA_Demethylatio
                                             GOSeq = c(padj_GOSeq_Demethylation_phenpermutation_default, padj_GOSeq_Demethylation_phenpermutation_optim),
                                             DAVID = c(padj_DAVID_Demethylation_phenpermutation_default, padj_DAVID_Demethylation_phenpermutation_optim),
                                             PADOG = c(padj_PADOG_GraftvsHost_phenpermutation_default, padj_PADOG_GraftvsHost_phenpermutation_optim),
-                                            GSEA = c(padj_GSEA_Demethylation_phenpermutation_default,padj_GSEA_Demethylation_phenpermutation_optim),
+                                            GSEA = c(padj_GSEA_Demethylation_phenpermutation_default, padj_GSEA_Demethylation_phenpermutation_optim),
                                             cP_GSEA = c(padj_cP_GSEA_Demethylation_phenpermutation_default, padj_cP_GSEA_Demethylation_phenpermutation_optim),
                                             GSEAPreranked = c(padj_GSEAPreranked_Demethylation_phenpermutation_default, padj_GSEAPreranked_Demethylation_phenpermutation_optim),
-                                            state = c(rep("Default",10), rep("Minimum",10)), # state: default vs. optimum
-                                            ID = rep(c(1:10),2)) # add the number of the permutation
+                                            state = c(rep("Default", 10), rep("Minimum", 10)), # state: default vs. optimum
+                                            ID = rep(c(1:10), 2)) # add the number of the permutation
 
 
 

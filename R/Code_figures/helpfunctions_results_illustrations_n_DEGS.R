@@ -37,7 +37,7 @@ prep_data_for_ggplot_n_DEGS  <- function(default_to_optim, sample_labels){
   # which indicates the number of the corresponding permutation
   if(sample_labels == "random_permutations"){
 
-    default_to_optim$ID  <- rep(c(1:10),2)
+    default_to_optim$ID  <- rep(c(1:10), 2)
 
   }
 
@@ -51,8 +51,8 @@ prep_data_for_ggplot_n_DEGS  <- function(default_to_optim, sample_labels){
   # transform data frame such that each observed adjusted p-value value is in a separate column, additionally labelled by the
   # associated GSA tool and state
   default_to_optim  <- pivot_longer(default_to_optim,
-                                   cols=!columns,
-                                   names_to="GSA_tool",
+                                   cols = !columns,
+                                   names_to = "GSA_tool",
                                    values_to = "n_DEGS")
 
 
@@ -82,7 +82,7 @@ prep_data_for_ggplot_n_DEGS  <- function(default_to_optim, sample_labels){
   # get the list of tools existent in the current data
   currentmethods  <- unique(default_to_optim$GSA_tool)
   # specify the order of the existent methods in the results illustrations
-  levels  <- currentmethods[order(match(currentmethods,allmethods))]
+  levels  <- currentmethods[order(match(currentmethods, allmethods))]
 
 
 
@@ -112,7 +112,6 @@ labels_sq  <- function(x) {
 }
 
 
-## function arguments:
 # function arguments:
 # - default_to_optim: a data frame containing
 #                     * ONE column for each method which contains first the default and then the optimized values
@@ -153,20 +152,20 @@ create_results_illustration_n_DEGS  <- function(default_to_optim, sample_labels,
   plot  <- ggplot(data = data_prep,
                  aes(x = interaction(GSA_tool, state, lex.order = TRUE),
                      y = sqrt(n_DEGS), group = 1)) +
-    geom_line(aes(group=unique_ID), size=0.4,  col ="#F8766D") +
+    geom_line(aes(group = unique_ID), size = 0.4,  col = "#F8766D") +
     geom_point(size = 1.3,  col = "#F8766D") +
-    scale_x_discrete(labels= rep(c("Default", "Maximum"),
+    scale_x_discrete(labels = rep(c("Default", "Maximum"),
                                  times = length(unique(data_prep$GSA_tool)))) +
-    theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 11),
+    theme(axis.text.x = element_text(angle = 50, vjust = 1, hjust = 1, size = 11),
           axis.title.x = element_text(vjust = -15, size = 14),
-          plot.margin = margin(t=1, b =3, l=1, r=1, unit="cm"),  ## add space below the actual plot (needed for the GSA tool names)
-          axis.title.y = element_text(size =14)) +
+          plot.margin = margin(t = 1, b = 3, l = 1, r = 1, unit = "cm"),  ## add space below the actual plot (needed for the GSA tool names)
+          axis.title.y = element_text(size = 14)) +
     # Add the tool names to the plot:
     annotate(geom = "text",
              x = 1.5 + 2*(0:(length(unique(data_prep$GSA_tool))-1)),
              y = vpos_methodlabels,
-             label = add_labels_xaxis, size =4 )+
-    coord_cartesian(ylim=c(0,round_any(sqrt(max(data_prep$n_DEGS)), 5, ceiling)),clip = "off")+ # clip = "off" required to add GSA tool names below the plot
+             label = add_labels_xaxis, size = 4 )+
+    coord_cartesian(ylim = c(0, round_any(sqrt(max(data_prep$n_DEGS)), 5, ceiling)), clip = "off")+ # clip = "off" required to add GSA tool names below the plot
     xlab("GSA methods") +
     ylab("Number of differentially enriched gene sets")+
     theme(panel.grid.minor = element_blank()) +

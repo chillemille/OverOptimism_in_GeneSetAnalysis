@@ -1,6 +1,6 @@
 #Illustration of results in step diagram
 library(stringr)
-
+library(ggplot2)
 # load clusterProfiler's GSEA results
 
 load("./Results/Intermediate_results/cP_GSEA_Results_Pickrell_PhenotypePermutations.RData")
@@ -29,21 +29,21 @@ doc_illustration$step  <- factor(doc_illustration$step,
 
 #plot step diagram
 ggplot(doc_illustration) +
-  geom_step(aes(x=step, y=n_DEGS, group=factor(phenotype_permutation), colour="#F8766D"), direction="hv", linetype=2) +
-  geom_point(aes(x=step, y=n_DEGS, colour="#F8766D"), size=1.5) +
-  geom_text(aes(x=step, y=n_DEGS), label=doc_illustration$optimal_parameter, nudge_y = 4,  colour="black",size = 4.5)+
-  theme(axis.text.x=element_text(angle=30,hjust=1)) +
+  geom_step(aes(x = step, y = n_DEGS, group = factor(phenotype_permutation), colour = "#F8766D"), direction = "hv", linetype = 2) +
+  geom_point(aes(x = step, y = n_DEGS, colour = "#F8766D"), size = 1.5) +
+  geom_text(aes(x = step, y = n_DEGS), label = doc_illustration$optimal_parameter, nudge_y = 4,  colour = "black", size = 4.5)+
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
   #xlab("Optimization Step") +
   theme(axis.title.x = element_blank(),
         axis.title.y = element_text(size = 14),
         axis.text.x = element_text(size = 12)) +
   ylab("Number of differentially enriched gene sets") +
   xlab("Optimisation step") +
-  scale_y_continuous(breaks=seq(0, 50, 10), limits = c(-5,40)) +
-  theme(legend.position="none")
+  scale_y_continuous(breaks = seq(0, 50, 10), limits = c(-5, 40)) +
+  theme(legend.position = "none")
 
 # Export to .eps
-ggsave(file="./Results/Figures/FigureS1.eps",
+ggsave(file = "./Results/Figures/FigureS1.eps",
        width = 10,
        height = 7)
 

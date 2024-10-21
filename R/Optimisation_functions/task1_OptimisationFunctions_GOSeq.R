@@ -117,7 +117,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
   ###### generate documentation data frame to document development of number of differentially enriched gene sets
   doc <- data.frame(step = c("Default", "Differential Expression Technique", "Pre-Filtering Threshold"),
                     optimal_parameter = NA,
-                    n_DEGS=NA)
+                    n_DEGS = NA)
 
   # required for GOSeq workflow: get identifier of gene IDs
   gene_ID <- ifelse(grepl("ENS",
@@ -151,7 +151,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
   #######################
 
   # (i) perform differential expression analysis with default parameters
-  deseq2_results_default <- pre_filt(expression_data, threshold=10) %>%
+  deseq2_results_default <- pre_filt(expression_data, threshold = 10) %>%
     deseq_preprocess(phenotype_labels = phenotype_labels) %>%
     DESeq() %>% results() %>%
     as.data.frame() %>% rename( p_adj = padj)
@@ -183,10 +183,10 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 
   # (i.3) run standard limma workflow
   # for pre-filtering: reuse indicator keep from preceding alternative edgeR
-  limma_results_default <- DGEList(expression_data[keep, ], group=phenotype_labels) %>%
-    calcNormFactors() %>% voom(design=mm) %>% lmFit(design=mm) %>%
-    eBayes() %>% topTable(coef=ncol(mm), number=100000) %>%
-    as.data.frame() %>% rename(p_adj=adj.P.Val)
+  limma_results_default <- DGEList(expression_data[keep, ], group = phenotype_labels) %>%
+    calcNormFactors() %>% voom(design = mm) %>% lmFit(design = mm) %>%
+    eBayes() %>% topTable(coef = ncol(mm), number = 100000) %>%
+    as.data.frame() %>% rename(p_adj = adj.P.Val)
 
   # (ii) run GOSeq
   GOSeq_results_limma <- GOSeq_pipeline(limma_results_default,
@@ -232,27 +232,27 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
     # alternative pre-filtering thresholds of X read counts across all samples
     filt_threshold_alt <- c(10, 50)
     # perform pre-filtering according to the alternative thresholds
-    exprdat_list_prefilt <- lapply(X=filt_threshold_alt,
-                                   FUN=pre_filt,
-                                   expression_data=expression_data)
+    exprdat_list_prefilt <- lapply(X = filt_threshold_alt,
+                                   FUN = pre_filt,
+                                   expression_data = expression_data)
 
 
     # (i) perform differential expression analysis with default parameters
 
-    DE_results_prefilt <- lapply(FUN=deseq_preprocess, X= exprdat_list_prefilt, phenotype_labels=phenotype_labels) %>%
-      lapply(FUN=DESeq) %>% lapply(FUN=results) %>%
-      lapply(as.data.frame) %>% lapply(rename, p_adj=padj)
+    DE_results_prefilt <- lapply(FUN = deseq_preprocess, X = exprdat_list_prefilt, phenotype_labels = phenotype_labels) %>%
+      lapply(FUN = DESeq) %>% lapply(FUN = results) %>%
+      lapply(as.data.frame) %>% lapply(rename, p_adj = padj)
 
     #(ii) run GOSeq with default parameters for each of the pre-filtered gene expression data sets
     GOSeq_results_prefilt <- lapply(FUN = GOSeq_pipeline,
                                     X = DE_results_prefilt,
-                                    geneID= gene_ID,
+                                    geneID = gene_ID,
                                     organism = organism)
 
 
     #count number of differentially enriched gene sets resulting from the alternative prefiltering thresholds
-    n_DEGS_prefilt <- unlist(lapply(X= GOSeq_results_prefilt,
-                                    FUN=lossfunction_GOSeq))
+    n_DEGS_prefilt <- unlist(lapply(X = GOSeq_results_prefilt,
+                                    FUN = lossfunction_GOSeq))
 
     # get index of optimal pre-filtering threshold (in case of ties choose lower index)
     ind_opt_prefilt <- min(which( n_DEGS_prefilt == max( n_DEGS_prefilt)))
@@ -273,9 +273,9 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
   } else if(opt_DE_technique == "limma"){ # for edgeR and limma, pre-filtering is performed differently, namely using filterByExpr (default) OR using cpm()
 
     # DEFAULT pre-filtering using filterByExpr
-    keep1 <- DGEList(counts=expression_data, group=phenotype_labels) %>% filterByExpr()
+    keep1 <- DGEList(counts = expression_data, group = phenotype_labels) %>% filterByExpr()
     # 1. ALTERNATIVE pre-filtering using cpm: keep those genes that have at least 1 count per million in at least 2 samples
-    keep2 <- rowSums(cpm(expression_data) > 1) >=2
+    keep2 <- rowSums(cpm(expression_data) > 1) >= 2
 
 
 
@@ -292,11 +292,11 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 
 
 
-    DE_results_prefilt <- lapply(FUN=DGEList, X= exprdat_list_prefilt,  group=phenotype_labels) %>%
-      lapply(FUN=calcNormFactors) %>% lapply(FUN=voom, design=mm) %>%
-      lapply(FUN=lmFit, design=mm) %>% lapply(FUN=eBayes) %>%
-      lapply(FUN=topTable, coef=ncol(mm), number=100000) %>%
-      lapply(FUN=as.data.frame) %>% lapply(FUN=rename, p_adj=adj.P.Val)
+    DE_results_prefilt <- lapply(FUN = DGEList, X = exprdat_list_prefilt,  group = phenotype_labels) %>%
+      lapply(FUN = calcNormFactors) %>% lapply(FUN = voom, design = mm) %>%
+      lapply(FUN = lmFit, design = mm) %>% lapply(FUN = eBayes) %>%
+      lapply(FUN = topTable, coef = ncol(mm), number = 100000) %>%
+      lapply(FUN = as.data.frame) %>% lapply(FUN = rename, p_adj = adj.P.Val)
 
 
     # perform GOSeq for each of the pre-filtered gene expression data sets
@@ -307,7 +307,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
 
 
     # store number of differentially enriched gene sets for each GOSeq result
-    n_DEGS_prefilt <- unlist(lapply(X= GOSeq_results_prefilt, FUN=lossfunction_GOSeq))
+    n_DEGS_prefilt <- unlist(lapply(X = GOSeq_results_prefilt, FUN = lossfunction_GOSeq))
 
     # get index optimal pre-filtering method (in case of tie, choose default filterByExpr)
     ind_opt_prefilt <- min(which(n_DEGS_prefilt == max(n_DEGS_prefilt)))
@@ -315,7 +315,7 @@ GOSeq_preprocess_optim <- function(expression_data, phenotype_labels){
     opt_prefilt <-  filt_methods[ind_opt_prefilt]
 
     # current optimal number of differentially enriched gene sets
-    n_DEGS <- max( n_DEGS_prefilt )
+    n_DEGS <- max(n_DEGS_prefilt)
 
 
     # update documentation frame
@@ -400,9 +400,9 @@ GOSeq_optim <- function(DE_results, expression_data){
 
 
   # prepare dataframe to document stepwise optimization
-  doc <- data.frame(step=c("Default", "Bias", "Gene Set Database", "Universe: Use Genes w/o Gene Set", "p-Value Calculation"),
-                  optimal_parameter=NA,
-                  n_DEGS=NA)
+  doc <- data.frame(step = c("Default", "Bias", "Gene Set Database", "Universe: Use Genes w/o Gene Set", "p-Value Calculation"),
+                  optimal_parameter = NA,
+                  n_DEGS = NA)
 
   #################################
   ### step 1: Default GOSeq results
@@ -549,9 +549,9 @@ GOSeq_optim <- function(DE_results, expression_data){
 
 
   #return optimal result with only those gene sets detected as differetially enriched
-  return(list(default_GOSeq =GOSeq_default[GOSeq_default$p_adj_overrep< 0.05, ], # default GOSeq results
-              optim_GOSeq =GOSeq_final[GOSeq_final$p_adj_overrep< 0.05, ], # optimal GOSeq results
-              documentation=doc)) # documentation of all optimisation steps performed in this function
+  return(list(default_GOSeq  = GOSeq_default[GOSeq_default$p_adj_overrep< 0.05, ], # default GOSeq results
+              optim_GOSeq  = GOSeq_final[GOSeq_final$p_adj_overrep< 0.05, ], # optimal GOSeq results
+              documentation = doc)) # documentation of all optimisation steps performed in this function
                                   # and resultig number of differentialle enriched gene sets
 
 }

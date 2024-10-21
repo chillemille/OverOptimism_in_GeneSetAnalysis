@@ -21,7 +21,7 @@ library(dplyr)
 # - phenotype_labels: vector of binary labels indicating the status of each sample
 #       in the gene expression data set
 # - normmethod: normalization method (one of the values in c("TMM", "upperquartile")
-voom_trans <- function(expression_data,   phenotype_labels,   normmethod = "TMM"){
+voom_trans <- function(expression_data, phenotype_labels, normmethod = "TMM"){
 
 
   #step 1: generate DGEList object from the expression data
@@ -55,7 +55,7 @@ voom_trans <- function(expression_data,   phenotype_labels,   normmethod = "TMM"
 # - phenotype_labels: vector of binary labels indicating the status of each sample
 #       in the gene expression data set
 # - normmethod: normalization method (one of the values in c("TMM", "upperquartile")
-variancetransform <- function(expression_data,   phenotype_labels){
+variancetransform <- function(expression_data, phenotype_labels){
 
   #generate data frame that contains information on samples (required format for DESeq2)
   coldata <- data.frame(phenotype_labels,

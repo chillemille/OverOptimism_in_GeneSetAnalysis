@@ -38,7 +38,7 @@ for(i in 1:10){
 
 pre_filt<-function(expression_data, threshold){
 
-  expression_data_filt <- expression_data[rowSums(expression_data)>=threshold, ]
+  expression_data_filt <- expression_data[rowSums(expression_data) >= threshold, ]
 
   # pre-filtered gene expression data set
   return(expression_data_filt)
@@ -602,7 +602,7 @@ i <- 5
 # generate pre-filtering indicator using filterByExpr()
 prefilt_ind_phen5 <-  DGEList(bottomly.eset, group = phen_bottomly[, 5]) %>% filterByExpr()
 # perform voom-transformation on accordingly pre-filtered bottomly data set
-exprdat_prefilt_phen5 <-voom_trans(bottomly.eset[prefilt_ind_phen5, ], phenotype_labels = phen_bottomly[, 5])
+exprdat_prefilt_phen5 <- voom_trans(bottomly.eset[prefilt_ind_phen5, ], phenotype_labels = phen_bottomly[, 5])
 
 ### export
 path_filterByExpr_phen5 <- paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i, "/exprdat_filterByExpr_phen_permutation", i, ".txt")

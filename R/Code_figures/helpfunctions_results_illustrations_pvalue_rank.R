@@ -14,17 +14,6 @@ library(dplyr)
 ### Prepare the data frame to be plotted in the ggplot #########################
 ################################################################################
 
-
-# data.frame(cP_ORA = c(padj_cP_ORA_tCell_truephen_default, padj_cP_ORA_tCell_truephen_optim),
-#                                       GOSeq = c(padj_GOSeq_tCell_truephen_default, padj_GOSeq_tCell_truephen_optim),
-#                                       DAVID = c(padj_DAVID_tCell_truephen_default, padj_DAVID_tCell_truephen_optim),
-#                                       PADOG = c(padj_PADOG_PrimImmun_truephen_default, padj_PADOG_PrimImmun_truephen_optim),
-#                                       cP_GSEA = c(padj_cP_GSEA_tCell_truephen_default, padj_cP_GSEA_tCell_truephen_optim),
-#                                       GSEA = c(padj_GSEA_tCell_truephen_default,padj_GSEA_tCell_truephen_optim),
-#                                       GSEAPreranked = c(padj_GSEAPreranked_tCell_truephen_default, padj_GSEAPreranked_tCell_truephen_optim),
-#                                       state = c("Default","Minimum")) # state: default vs. optimum
-
-
 # function arguments
 
 # function arguments:
@@ -48,8 +37,8 @@ prep_data_for_ggplot_pvaluerank  <- function(default_to_optim_geneset1, default_
   # which indicates the number of the corresponding permutation
   if(sample_labels == "random_permutations"){
 
-    default_to_optim_geneset1$ID  <- rep(c(1:10),2)
-    default_to_optim_geneset2$ID  <- rep(c(1:10),2)
+    default_to_optim_geneset1$ID  <- rep(c(1:10), 2)
+    default_to_optim_geneset2$ID  <- rep(c(1:10), 2)
 
   }
 
@@ -129,7 +118,7 @@ prep_data_for_ggplot_pvaluerank  <- function(default_to_optim_geneset1, default_
   # get the list of tools existent in the current data
   currentmethods  <- unique(default_to_optim_allgenesets$GSA_tool)
   # specify the order of the existent methods in the results illustrations
-  levels  <- currentmethods[order(match(currentmethods,allmethods))]
+  levels  <- currentmethods[order(match(currentmethods, allmethods))]
 
 
 
@@ -150,7 +139,7 @@ prep_data_for_ggplot_pvaluerank  <- function(default_to_optim_geneset1, default_
     # for the results illustrations of the adjusted p-value:
     # add column which indicates default significant threshold used by each tool:
     # GSEA (web) and GSEAPreranked: FDR < 0.25, remaining GSA methods: 0.05
-    default_to_optim_allgenesets$sig_threshold  <- ifelse(grepl(paste(c("GSEAPreranked","\\bGSEA\\b"), collapse='|'),
+    default_to_optim_allgenesets$sig_threshold  <- ifelse(grepl(paste(c("GSEAPreranked", "\\bGSEA\\b"), collapse='|'),
                                                                default_to_optim_allgenesets$GSA_tool),
                                                          yes = 0.25, no = 0.05)
 
@@ -201,7 +190,7 @@ create_results_illustration_pvalue_rank  <- function(default_to_optim_geneset1, 
            aes(x = interaction(GSA_tool, state, lex.order = TRUE),
                y = value, group = 1)) +
     geom_line( aes(group=unique_ID, color = GS), size=0.4) +
-    geom_point(aes(color = GS),size = 1.3) +
+    geom_point(aes(color = GS), size = 1.3) +
     scale_x_discrete(labels= rep(c("Default", "Minimum"),
                                  times = length(unique(data_prep$GSA_tool)))) +
     theme(axis.text.x=element_text(angle = 50, vjust = 1, hjust = 1, size = 9),
@@ -212,7 +201,7 @@ create_results_illustration_pvalue_rank  <- function(default_to_optim_geneset1, 
              x = 1.5 + 2*(0:(length(unique(data_prep$GSA_tool))-1)),
              y = -0.32,
              label = add_labels_xaxis, size =4 )+
-    coord_cartesian(ylim = c(0,1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
+    coord_cartesian(ylim = c(0, 1),  clip = "off")+ # clip = "off" required to add GSA tool names below the plot
     xlab("GSA method") +
     ylab(set_ylab) +
     labs(color = "Gene set") +

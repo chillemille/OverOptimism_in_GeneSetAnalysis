@@ -221,9 +221,9 @@ n_DEGS_GSEA_bottomly_truephen_optim  <- 265
 # random permutations of conditions
 
 # optimal n_DEGS
-n_DEGS_GSEA_bottomly_phenpermutation_default  <- c(3,1,0,1,0,1,0,10,7,0)
+n_DEGS_GSEA_bottomly_phenpermutation_default  <- c(3, 1, 0, 1, 0, 1, 0, 10, 7, 0)
 # true n_DEGS
-n_DEGS_GSEA_bottomly_phenpermutation_optim  <- c(4,10,0,13,1,8,5,42,17,0)
+n_DEGS_GSEA_bottomly_phenpermutation_optim  <- c(4, 10, 0, 13, 1, 8, 5, 42, 17, 0)
 
 
 
@@ -269,13 +269,13 @@ dat_overview_n_DEGS_bottomly_truephen  <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bo
 # (ii) Random permutations of the true sample conditions (bottomly data set)
 dat_overview_n_DEGS_bottomly_phenpermutation  <- data.frame(cP_ORA = c(n_DEGS_cP_ORA_bottomly_phenpermutation_default, n_DEGS_cP_ORA_bottomly_phenpermutation_optim),
                                                            GOSeq = c(n_DEGS_GOSeq_bottomly_phenpermutation_default, n_DEGS_GOSeq_bottomly_phenpermutation_optim),
-                                                           DAVID = c(n_DEGS_DAVID_bottomly_phenpermutation_default,n_DEGS_DAVID_bottomly_phenpermutation_optim),
+                                                           DAVID = c(n_DEGS_DAVID_bottomly_phenpermutation_default, n_DEGS_DAVID_bottomly_phenpermutation_optim),
                                                            PADOG = c(n_DEGS_PADOG_bottomly_phenpermutation_default, n_DEGS_PADOG_bottomly_phenpermutation_optim),
-                                                           GSEA = c(n_DEGS_GSEA_bottomly_phenpermutation_default,n_DEGS_GSEA_bottomly_phenpermutation_optim),
+                                                           GSEA = c(n_DEGS_GSEA_bottomly_phenpermutation_default, n_DEGS_GSEA_bottomly_phenpermutation_optim),
                                                            GSEAPreranked = c(n_DEGS_GSEAPreranked_bottomly_phenpermutation_default, n_DEGS_GSEAPreranked_bottomly_phenpermutation_optim),
                                                            cP_GSEA = c(n_DEGS_cP_GSEA_bottomly_phenpermutation_default, n_DEGS_cP_GSEA_bottomly_phenpermutation_optim),
-                                                           state = c(rep("Default",10), rep("Maximum",10)), # state: default vs. optimum
-                                                           ID = rep(c(1:10),2)) # add the number of the permutation
+                                                           state = c(rep("Default", 10), rep("Maximum", 10)), # state: default vs. optimum
+                                                           ID = rep(c(1:10), 2)) # add the number of the permutation
 
 
 
