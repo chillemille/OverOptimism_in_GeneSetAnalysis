@@ -95,7 +95,7 @@ Note that for the Pickrell and the Bottomly data set respectively, the input obj
 #### 2. Run DAVID optimisation 
 Access the link https://david.ncifcrf.gov/ [last accessed: 08 Oct 2024 09:30am]. An input list generated in step 1 can be uploaded by clicking on **Start Analysis** and submitting the input gene list under `Step 1: Enter Gene List`. Select the identifier as **Ensembl_Gene_ID** and set the list type as **Gene List**. 
 
-The optimisation steps are the following (see corresponding screenshots in folder `Results/Screenshots_WebApplications`) for more detailed illustrations: 
+The optimisation steps are the following (see corresponding screenshots in folder `Results/Screenshots_WebApplications` for more detailed illustrations): 
 
 1. Upload default list of differentially expressed genes (generated using DESeq2; gene set database GO (BP)): **DEGs_DESeq2_... .txt**
 2. Change method to detect differentially expressed genes: upload **DEGs_limma_... .txt**
