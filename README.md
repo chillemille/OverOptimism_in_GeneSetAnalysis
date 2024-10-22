@@ -35,7 +35,7 @@ Note: After installing and activating *renv*, there may be packages that are ind
 
 **Note 3:**
 
-I produced the results for the three web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*) over several months, including the part where I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course, not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, for the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
+I produced the results for the three web-based applications (*DAVID*, *GSEA*, and *GSEAPreranked*) over several months, including the part where I (partly) prepared the required input objects in *R*. Unfortunately, I was not aware of reproducible environments such as *renv* and therefore naively proceeded over the months without ensuring exact reproducibility by documenting the current versions of all packages needed in the process. However, I compared **many, but of course, not all** of the *R* outputs generated using *renv* to those I generated at the time and they were very similar (for instance, the rankings required as input to *GSEAPreranked* differed only from the third decimal place).  
 
 **Note 4:**
 
@@ -57,14 +57,14 @@ Note, while the *R* scripts source the intermediate results from the GSA methods
 
 ***
 ## Reproduce figures from scratch
-Note this takes several days or weeks, depending on the available resources. The following *R* scripts are stored in the folder `R/Run_optimisations`.
+Note this can take several days, depending on the available resources. The following *R* scripts are stored in the folder `R/Run_optimisations`.
 
 ### 1. Run optimisations for *R*-based GSA methods *GOSeq*, *clusterProfiler*'s ORA, *PADOG*, and *clusterProfiler*'s GSEA in the following scripts:
 
 - **Run_task1_optimisations.R**: required for Figures 3 and S2, 
 - **Run_task2_3_optimisations.R**: required for Figures 4, 5, S3, and S4,  
 
-where tasks 1, 2, and 3 are the optimisation tasks based on which over-optimism is assessed. Both scripts source all required functions and preprocess the initial gene expression data sets internally. 
+where tasks 1, 2, and 3 are the optimisation tasks based on which the potential for over-optimism is assessed. Both scripts source all required functions and preprocess the initial gene expression data sets internally. 
 
 For the remaining, web-based applications *DAVID*, *GSEA*, and *GSEAPreranked*, the optimisations were performed in the corresponding web-based application (i.e., by hand). To generate the results figures from the manuscript, the optimisation results were therefore also transferred manually to the corresponding *R* scripts (`R/Code_figures`). See below for instructions on how to reproduce the optimisation results for the web-based applications. 
 
@@ -85,7 +85,7 @@ The web-based application *DAVID* can be accessed via the following link: https:
 Our analysis was performed with *DAVID* version 6.8 and the DAVID Knowledgebase v2023q3.
 
 #### 1. Generation of input data sets (folder `R/Optimisation_functions/DAVID`)
-The *R* script to generate the input files for the Pickrell **and** the Bottomly data set is stored in the file  **generate_Inputs_DAVID.R**. These input files either contain lists of differentially expressed genes (.txt files "DEGs_..._.txt") or an alternative universe (i.e. list of background genes; .txt files "universe_..._.txt"). Note that input files containing lists of differentially expressed genes can sometimes be empty if **no genes are detected as differentially expressed** by the given method). No differentially expressed genes logically lead to no differentially enriched gene sets, so these empty files **do not** have to be updated to the web application and 0 differentially enriched gene sets can be concluded automatically.  
+The *R* script to generate the input files for the Pickrell **and** the Bottomly data set is stored in the file  **generate_Inputs_DAVID.R**. These input files either contain lists of differentially expressed genes (.txt files "DEGs_..._.txt") or an alternative universe (i.e. list of background genes; .txt files "universe_..._.txt"). Note that input files containing lists of differentially expressed genes can sometimes be empty if **no genes are detected as differentially expressed** by the given method. No differentially expressed genes logically lead to no differentially enriched gene sets, so these empty files **do not** have to be uploaded to the web application and zero differentially enriched gene sets can be concluded automatically.  
   
 The generated input data sets are then stored in the folders
 - `Results/Intermediate_results/DAVID/Pickrell`
