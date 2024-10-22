@@ -187,11 +187,11 @@ Optimisation steps for tasks 1 and 2 (corresponding screenshots are indented; th
       - **05Results_DoC.PNG**: Overview of results for metric "Diff_of_Classes"
 6. Change enrichment statistic 
     - 6.1 change to **classic**
-      - **06Param_exp0.PNG**: Change exponent parameter (in calculation of enrichment score) to "classic" (see tab "Metric for ranking genes") 
-      - **06Results_exp0.PNG**: Overview of results for parameter "classic"
+       - **06Param_exp0.PNG**: Change exponent parameter (in calculation of enrichment score) to "classic" (see tab "Metric for ranking genes")
+       - **06Results_exp0.PNG**: Overview of results for parameter "classic"
     - 6.2 change to **weighted_p1.5**
-      - **06Param_exp1KOMMA5.PNG**: Change exponent parameter (in calculation of enrichment score) to "weighted_p1.5" (see tab "Metric for ranking genes")
-      - **06Results_exp1KOMMA5.PNG**: Overview of results for parameter "weighted_p1.5"
+        - **06Param_exp1KOMMA5.PNG**: Change exponent parameter (in calculation of enrichment score) to "weighted_p1.5" (see tab "Metric for ranking genes")
+        - **06Results_exp1KOMMA5.PNG**: Overview of results for parameter "weighted_p1.5"
     - 6.3 change to **weighted_p2**
       - **06Param_exp2.PNG**: Change exponent parameter (in calculation of enrichment score) "weighted_p2" (see tab "Metric for ranking genes")
       - **06Results_exp2.PNG**: Overview of results for parameter "weighted_p2"
@@ -241,8 +241,8 @@ Optimisation steps for tasks 1 and 2 (corresponding screenshots are indented; th
 3. **For task 1 only**: change gene set database to KEGG ("c2.cp.kegg...")
     - **04Param_KEGG.PNG**: Change gene set database to KEGG (see tab "Gene sets database"; **for task 1 only**)
     - **04Results_KEGG.PNG**: Overview of results for gene set database to KEGG (**for task 1 only**)
-4. Change enrichment statistic 
-     - 4.1 change to **classic**
+4. Change enrichment statistic
+   - 4.1 change to **classic**
       - **06Param_exp0.PNG**: Change exponent parameter (in calculation of enrichment score) to "classic" (see tab "Metric for ranking genes") 
       - **06Results_exp0.PNG**: Overview of results for parameter "classic"
     - 4.2 change to **weighted_p1.5**
