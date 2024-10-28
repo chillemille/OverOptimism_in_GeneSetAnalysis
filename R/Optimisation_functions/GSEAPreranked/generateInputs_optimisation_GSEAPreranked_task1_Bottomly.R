@@ -19,6 +19,9 @@ source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 # load preprocessing functions
 source("./R/Help_functions/PreProcessing_Functions.R")
 
+# load help function for GSEAPreranked
+source("./R/Help_functions/helpfunctions_GSEAPreranked.R")
+
 
 ######################################
 ### generate required folders ########
@@ -44,89 +47,6 @@ for(i in 1:10){
   dir.create(path_prep)
 
 
-}
-
-
-
-
-
-##################################################################################
-##create ranked list from DE results##############################################
-##################################################################################
-
-#for DESeq2 (method = "DESeq2") and edgeR (method = "edgeR")
-#rankby must be in c("p_value", "lfc") to perform ranking based on
-#(i) p-value (rank = sign(lfc)*(-1)*log10(unadjusted_pvalue)
-#(ii) log fold changes
-
-rankedList_cP <- function(DE_results, rankby, method){
-
-  if(method  ==  "DESeq2"){#create ranking based on DESeq2 results table
-
-    # first step: replace p-values of 0 with the smallest representable positive number
-    # in R (necessary since one term of ranking metric is equal to log10(p-value))
-
-    DE_results$pvalue[ DE_results$pvalue  ==  0] <- min(DE_results$pvalue[ DE_results$pvalue > 0 ]) / 10
-
-    #DE_results <- edgeR_results
-    if(rankby  ==  "lfc"){ #ranking by log2 fold change
-      #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec <- as.vector(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)
-      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
-      rankvec <- sort(rankvec, decreasing  =  TRUE)
-
-    }else if (rankby  ==  "p_value"){#ranking by p-value
-      #remove rows containing NA p-values (relevant if Cook's outlier detection turned on)
-      rankvec <- as.vector(sign(DE_results[!is.na(DE_results$pvalue), ]$log2FoldChange)*(-1)*log10(DE_results[!is.na(DE_results$pvalue), ]$pvalue))
-      names(rankvec) <- rownames(DE_results[!is.na(DE_results$pvalue), ])
-      rankvec <- sort(rankvec, decreasing  =  TRUE)
-    }
-  }
-
-
-  else if(method  ==  "edgeR"){#create ranking based on edgeR results table
-
-    # first step: replace p-values of 0 with the smallest representable positive number
-    # in R (necessary since one term of ranking metric is equal to log10(p-value))
-
-    DE_results$table$PValue[ DE_results$table$PValue == 0 ] <- min(DE_results$table$PValue[ DE_results$table$PValue > 0 ]) /10
-
-    if(rankby  ==  "lfc"){#ranking based on log2 fold change
-      rankvec <- as.vector(DE_results$table$logFC)
-      names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing  =  TRUE)
-    }
-
-    else if(rankby  ==  "p_value"){#ranking based on p-value
-      rankvec <- as.vector(sign(DE_results$table$logFC)*(-1)*log10(DE_results$table$PValue))
-      names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing  =  TRUE)
-    }
-  }
-
-  else if(method  ==  "limma"){#create ranking based on edgeR results table
-
-    # first step: replace p-values of 0 with the smallest representable positive number
-    # in R (necessary since one term of ranking metric is equal to log10(p-value))
-
-    DE_results$P.Value[ DE_results$P.Value  ==  0 ] <- min(DE_results$P.Value[ DE_results$P.Value > 0 ]) / 10
-
-    if(rankby  ==  "lfc"){#ranking based on log2 fold change
-      rankvec <- as.vector(DE_results$logFC)
-      names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing  =  TRUE)
-    }
-
-    else if(rankby  ==  "p_value"){#ranking based on p-value
-      rankvec <- as.vector(sign(DE_results$logFC)*(-1)*log10(DE_results$P.Value))
-      names(rankvec) <- rownames(DE_results)
-      rankvec <- sort(rankvec, decreasing  =  TRUE)
-    }
-  }
-
-  # return gene ranking (vector of all genes from differential expression experiment
-  # ranked according to the ranking metric)
-  return(rankvec)
 }
 
 

@@ -6,10 +6,11 @@ library(edgeR) # for filterByExpr()
 
 # load Bottomly data set
 
-
 source("./R/Prepare_data_and_permutations/Random_Phenotype_Permutations.R")
 # load data preprocessing functions
 source("./R/Help_functions/RNASeq_Transformation.R")
+# load help functions
+source("./R/Help_functions/PreProcessing_Functions.R")
 
 ################################################################################
 ### Generate folder structure ##################################################
@@ -30,24 +31,6 @@ for(i in 1:10){
   dir.create(paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Prep/Phen_Permutation", i))
   dir.create(paste0("./Results/Intermediate_results/GSEA_Web/Bottomly/Data_task1/Raw/Phen_Permutation", i))
 }
-
-
-################################################################################
-###pre-filtering function ######################################################
-################################################################################
-
-pre_filt<-function(expression_data, threshold){
-
-  expression_data_filt <- expression_data[rowSums(expression_data) >= threshold, ]
-
-  # pre-filtered gene expression data set
-  return(expression_data_filt)
-
-
-}
-
-
-
 
 #######################################################################################
 ### (I) Full Optimization (pre-processing and internal parameters) ####################
